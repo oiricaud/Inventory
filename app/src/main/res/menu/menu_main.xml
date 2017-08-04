@@ -1,0 +1,46 @@
+<menu
+        xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context="activity.MainActivity">
+
+    <item
+            android:id="@+id/Lams"
+            android:title="@string/action_lams"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+    <item
+            android:id="@+id/Sams"
+            android:title="@string/action_sams"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+    <item
+            android:id="@+id/TaiwanTrading"
+            android:title="@string/action_taiwan_trading"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+    <item
+            android:id="@+id/Depot"
+            android:title="@string/action_depot"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+    <item
+            android:id="@+id/Shamrock"
+            android:title="@string/action_shamrock"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+    <item
+            android:id="@+id/Cosco"
+            android:title="@string/action_cosco"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+    <item
+            android:id="@+id/Food_King"
+            android:title="@string/action_foodking"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+    <item
+            android:id="@+id/allItems"
+            android:title="@string/all_items"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+</menu>

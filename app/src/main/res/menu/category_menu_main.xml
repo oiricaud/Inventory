@@ -1,0 +1,31 @@
+<menu
+        xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context="activity.MainActivity">
+
+    <item
+            android:id="@+id/category_front_of_house"
+            android:title="@string/action_front_of_house"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+    <item
+            android:id="@+id/category_back_of_house"
+            android:title="@string/action_back_of_house"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+    <item
+            android:id="@+id/Kitchen"
+            android:title="@string/action_kitchen"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+    <item
+            android:id="@+id/Bar"
+            android:title="@string/action_bar"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+    <item
+            android:id="@+id/all_sections"
+            android:title="@string/action_sections"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+</menu>

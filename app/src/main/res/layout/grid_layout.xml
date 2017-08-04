@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp" android:weightSum="1">
+    <ImageView
+            android:id="@+id/grid_item_image"
+            android:layout_height="200dp"
+            android:layout_width="200dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" android:contentDescription="@string/food_item_image">
+    </ImageView>
+    <TextView
+            android:id="@+id/grid_item_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@+id/label"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif-smallcaps" android:textSize="0sp">
+    </TextView>
+
+</RelativeLayout>

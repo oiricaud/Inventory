@@ -1,0 +1,127 @@
+<resources>
+    <string name="errandsgo">Pho Tre Bien Inventory</string>
+    <string name="app_name">POS Inventory</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="nav_item_home">Menu</string>
+    <string name="nav_item_view_employees">Employees</string>
+    <string name="nav_item_accounts">Restaurant Sections</string>
+    <string name="nav_item_inventory">Inventory</string>
+    <string name="nav_item_weekly_count">Inventory Count</string>
+    <string name="nav_item_view_prices">View Prices</string>
+    <string name="nav_item_send_order">Place Order</string>
+    <string name="nav_item_logout">Log Out</string>
+
+    <!-- navigation drawer item labels  -->
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_home</item>
+        <item>@string/nav_item_employees</item>
+        <item>@string/nav_item_sections</item>
+        <item>@string/nav_item_inventory</item>
+        <item>@string/nav_item_weekly_count</item>
+        <item>@string/nav_item_view_prices</item>
+        <item>@string/nav_item_send_order</item>
+        <item>@string/nav_item_logout</item>
+    </string-array>
+
+    <string name="title_messages">Messages</string>
+    <string name="title_errands">Errands</string>
+    <string name="title_home">Home</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="ErrandsGo">ErrandsGo</string>
+    <string name="POS">POS Inventory</string>
+    <string name="action_foodking">Food King</string>
+    <string name="action_cosco">Cosco</string>
+    <string name="action_shamrock">Shamrock</string>
+    <string name="action_depot">Restaurant Depot</string>
+    <string name="action_taiwan_trading">Taiwan Trading</string>
+    <string name="action_sams">Sams</string>
+    <string name="action_lams">Lams</string>
+    <string name="all_items">All Items</string>
+    <string name="add_item">Add item</string>
+    <string name="view_list_of_items">View list of items</string>
+    <string name="add_item_string">Add Item</string>
+    <string name="address">Address</string>
+    <string name="category">Section</string>
+    <string name="comments">Comments</string>
+    <string name="confirm">Confirm</string>
+    <string name="current_qty">Current QTY</string>
+    <string name="distrubutor">Distrubutor</string>
+    <string name="email">Email</string>
+    <string name="finalize">Finalize</string>
+    <string name="first_name_last_name">First Name, Last Name</string>
+    <string name="how_much_are_you_willing_to_spend">How much $ are you willing to spend</string>
+    <string name="in_stock">In Stock</string>
+    <string name="item">Item</string>
+    <string name="max_qty">Max QTY</string>
+    <string name="name">Name</string>
+    <string name="need_to_order">Need to Order</string>
+    <string name="item_2">Item</string>
+    <string name="name_2">Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="remove_item">Remove item</string>
+    <string name="schedule_a_time">Schedule a Time</string>
+    <string name="section">Section</string>
+    <string name="textview">TextView</string>
+    <string name="food_item_enlarged">Food Item Enlarged</string>
+    <string name="food_item_image">Food Item Image</string>
+    <string name="pho_tre_bien_logo">Pho Tre Bien Logo</string>
+    <string name="username">Username</string>
+    <string name="login">Login</string>
+    <string name="no_account_yet_create_one">No account yet? Create one</string>
+    <string name="password">Password</string>
+    <string name="already_a_member_login">Already a member? Login</string>
+    <string name="create_account">Create Account</string>
+    <string name="first_and_last_name">First and Last Name</string>
+    <string name="job_title">Job title</string>
+    <string name="password2">Password</string>
+    <string name="pho_tre_bien_logo2">Pho Tre Bien Logo</string>
+    <string name="user_id">User ID</string>
+    <string name="menu">Menu</string>
+    <string name="user_add_item">Add Item</string>
+    <string name="action_front_of_house">Front Of House</string>
+    <string name="action_back_of_house">Back of House</string>
+    <string name="action_kitchen">Kitchen</string>
+    <string name="action_sections">All Sections</string>
+    <string name="action_bar">Bar</string>
+    <string name="cart">cart</string>
+    <string name="nav_item_employees">Employees</string>
+    <string name="nav_item_sections">Sections</string>
+    <string name="prices">Price</string>
+    <string name="less_than_5">4.99</string>
+    <string name="less_than_10">9.99</string>
+    <string name="less_than_15">14.99</string>
+    <string name="less_than_20">19.99</string>
+    <string name="employee_id">Employee ID</string>
+    <string name="name_of_employee">Name of Employee</string>
+    <string name="user_name">User ID</string>
+    <string name="action_ep_front_of_house">EP: Front Of House</string>
+    <string name="action_ep_back_of_house">EP: Back Of House</string>
+    <string name="action_ep_kitchen">EP: Kitchen</string>
+    <string name="action_ep_bar">EP: Bar</string>
+    <string name="action_ep_employees">All Employees</string>
+    <string name="user_confirm_place_order">Place Order</string>
+    <string name="recc_orders">Recommended Orders</string>
+    <string name="place_order_item">Item</string>
+    <string name="place_oder_distributor">Distributor</string>
+    <string name="place_order_price">Price</string>
+    <string name="place_order_qty">QTY</string>
+    <string name="custom_order">Custom Order</string>
+    <string name="high_stock">High Stock</string>
+    <string name="low_stock">Low Stock</string>
+    <string name="place_order">Place Order</string>
+    <string name="recommended_orders">Recommended Orders</string>
+    <string-array name="errand_names">
+        <item>Do Laundry for Jim, $5</item>
+        <item>Walk pet for Erin, $10</item>
+        <item>BabySit for Adriana, $20</item>
+        <item>Carwash for Mike, $20</item>
+        <item>Pick up Oscar, $10</item>
+        <item>Pick up Groceries for Adela, $20</item>
+        <item>Pick up Fast Food for Josh, $3</item>
+    </string-array>
+</resources>

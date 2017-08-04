@@ -1,0 +1,86 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fitsSystemWindows="true" android:background="@drawable/starfall">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="56dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
+
+        <!-- Pho Tre Bien Logo !-->
+        <ImageView
+                android:src="@drawable/pho_tre_bien_nice"
+                android:scaleType="fitCenter"
+                android:layout_width="match_parent" android:layout_height="200dp"
+                android:contentDescription="Pho Tre Bien Logo"/>
+
+
+        <!-- Email Label -->
+        <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:indeterminate="true"
+                android:id="@+id/loadingCircle"
+                android:foregroundGravity="center"/>
+        <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/white_border"
+                android:layout_marginBottom="20dp" android:textColorHint="@color/material_drawer_background"
+                android:layout_height="60dp" android:paddingTop="10dp">
+            <EditText android:id="@+id/input_user_name"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="@string/username" android:textColorHint="@color/material_drawer_background"
+                      android:inputType="none|phone"
+                      android:background="@null"
+                      android:textColor="@color/material_drawer_background"
+                      android:layout_marginStart="10dp" android:paddingTop="10dp"
+                      android:fontFamily="sans-serif-smallcaps"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Password Label -->
+        <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/white_border" android:textColorHint="@color/material_drawer_background"
+                android:layout_marginBottom="20dp" android:layout_height="60dp" android:paddingTop="10dp">
+            <EditText android:id="@+id/input_password"
+                      android:background="@null"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:inputType="textPassword|numberPassword"
+                      android:hint="@string/password" android:textColorHint="@color/material_drawer_background"
+                      android:textColor="@color/material_drawer_background"
+                      android:layout_marginStart="10dp" android:paddingTop="10dp"
+                      android:fontFamily="sans-serif-smallcaps"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_login"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:padding="12dp"
+                android:text="@string/login" android:background="@color/md_amber_400"
+                android:fontFamily="sans-serif-smallcaps"/>
+
+        <TextView android:id="@+id/link_signup"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="24dp"
+                  android:text="@string/no_account_yet_create_one"
+                  android:gravity="center"
+                  android:textSize="16sp" android:textColor="?android:attr/textColorPrimaryInverseNoDisable"
+                  android:textColorLink="?android:attr/textColorPrimaryInverse"
+                  android:fontFamily="sans-serif-smallcaps"/>
+        <!-- Dynamically fill table here -->
+
+    </LinearLayout>
+
+</ScrollView>
