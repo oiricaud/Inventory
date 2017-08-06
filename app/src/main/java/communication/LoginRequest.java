@@ -1,4 +1,4 @@
-package Communication;
+package communication;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;

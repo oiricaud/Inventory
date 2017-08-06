@@ -1,4 +1,4 @@
-package Communication;
+package communication;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
@@ -8,6 +8,7 @@ import java.util.Map;
 
 
 /**
+ *
  * Created by oscarricaud on 4/10/17.
  */
 public class RegisterRequest extends StringRequest {

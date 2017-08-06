@@ -1,8 +1,8 @@
 package activity;
 
-import Communication.InventoryRequest;
-import Communication.LoginRequest;
-import Communication.RegisterRequest;
+import communication.InventoryRequest;
+import communication.LoginRequest;
+import communication.RegisterRequest;
 import adapter.ImageAdapter;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -74,10 +74,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private TextView titleClicked;
     private ProgressBar loading;
 
-    private Distributors distributors = new Distributors();
-    private MyCategory categories = new MyCategory();
-    private MyEmployees employees = new MyEmployees();
-    private Prices prices = new Prices();
+    private Parser parser = new Parser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -340,96 +337,96 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 /* EMPLOYEES DROP DOWN */
         if (item.getTitle().equals("EP: Front Of House")) {
             mToolbar.setTitle("Employees - Front of House");
-            currListView = employees.getEmployeeFrontOfHouse();
+            currListView = parser.getEmployeeFrontOfHouse();
             updateEmployeesView();
         }
         if (item.getTitle().equals("EP: Back Of House")) {
             mToolbar.setTitle("Employees - Back of House");
-            currListView = employees.getEmployeeBackOfHouse();
+            currListView = parser.getEmployeeBackOfHouse();
             updateEmployeesView();
         }
         if (item.getTitle().equals("EP: Kitchen")) {
             mToolbar.setTitle("Employees - Kitchen");
-            currListView = employees.getEmployeeKitchen();
+            currListView = parser.getEmployeeKitchen();
             updateEmployeesView();
         }
         if (item.getTitle().equals("EP: Bar")) {
             mToolbar.setTitle("Employees - Bar");
-            currListView = employees.getEmployeeBar();
+            currListView = parser.getEmployeeBar();
             updateEmployeesView();
         }
         if (item.getTitle().equals("All Employees")) {
             mToolbar.setTitle("Employee - All Employees");
-            currListView = employees.getAllEmployee();
+            currListView = parser.getAllEmployee();
             updateEmployeesView();
         }
 
 /* SECTIONS DROP DOWN */
         if (item.getTitle().equals("Front Of House")) {
             mToolbar.setTitle("Restaurant - Front of House");
-            currListView = categories.getFrontOfHouse();
+            currListView = parser.getFrontOfHouse();
             updateSectionsView();
         }
         if (item.getTitle().equals("Back of House")) {
             mToolbar.setTitle("Restaurant - Back of House");
-            currListView = categories.getBackOfHouse();
+            currListView = parser.getBackOfHouse();
             updateSectionsView();
         }
         if (item.getTitle().equals("Kitchen")) {
             mToolbar.setTitle("Restaurant - Kitchen");
-            currListView = categories.getKitchen();
+            currListView = parser.getKitchen();
             updateSectionsView();
         }
         if (item.getTitle().equals("Bar")) {
             mToolbar.setTitle("Restaurant - Bar");
-            currListView = categories.getBar();
+            currListView = parser.getBar();
             updateSectionsView();
         }
         if (item.getTitle().equals("All Sections")) {
             mToolbar.setTitle("Restaurant - All Sections");
-            currListView = categories.getAllItems();
+            currListView = parser.getAllItems();
             updateSectionsView();
         }
 
 /* INVENTORY DROP DOWN */
         if (item.getTitle().equals("Lams")) {
             mToolbar.setTitle("Inventory - Lams Items");
-            currListView = distributors.getLamsItemsList();
+            currListView = parser.getLamsItemsList();
             updateInventoryView();
         }
         if (item.getTitle().equals("Sams")) {
             mToolbar.setTitle("Inventory - Sams Items");
-            currListView = distributors.getSamsItemsList();
+            currListView = parser.getSamsItemsList();
             updateInventoryView();
         }
         if (item.getTitle().equals("Taiwan Trading")) {
             mToolbar.setTitle("Inventory - Taiwan Trading Items");
-            currListView = distributors.getTaiwanTradingItemsList();
+            currListView = parser.getTaiwanTradingItemsList();
             updateInventoryView();
         }
         if (item.getTitle().equals("Restaurant Depot")) {
             mToolbar.setTitle("Inventory - Restaurant Depot Items");
-            currListView = distributors.getRestaurantDepotItemsList();
+            currListView = parser.getRestaurantDepotItemsList();
             updateInventoryView();
         }
         if (item.getTitle().equals("Shamrock")) {
             mToolbar.setTitle("Inventory - Shamrock Items");
-            currListView = distributors.getShamrockItemsList();
+            currListView = parser.getShamrockItemsList();
             updateInventoryView();
         }
         if (item.getTitle().equals("Cosco")){
             mToolbar.setTitle("Inventory - Cosco Items");
-            currListView = distributors.getCoscoItemsList();
+            currListView = parser.getCoscoItemsList();
             updateInventoryView();
         }
         if (item.getTitle().equals("Food King")) {
             mToolbar.setTitle("Inventory - Food Of King Items");
-            currListView = distributors.getFoodOfKingItemListItemList();
+            currListView = parser.getFoodOfKingItemListItemList();
             updateInventoryView();
         }
         if (item.getTitle().equals("All Items")) {
             mToolbar.setTitle("Inventory - All Items");
-            currListView = distributors.getAllItems();
+            currListView = parser.getAllItemsFromDistributors();
             updateInventoryView();
         }
 
@@ -566,7 +563,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         mToolbar.setTitle("Employee - All Employees");
 
-        new getEmployeesFromDB().execute();
+        new talkToDataBase().execute();
         showLoadingCircle();
     }
 
@@ -644,7 +641,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         mToolbar.setTitle("Restaurant - All Sections");
 
-        new getInventoryFromDB().execute();
+        new talkToDataBase().execute();
         showLoadingCircle();
     }
 
@@ -656,7 +653,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             @Override
             public void run() {
 
-                int numOfItems = currListView.size();
                 sectionsTable.removeAllViews();
 
                 // get a reference for the TableLayout
@@ -669,6 +665,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     TextView category1 = new TextView(MainActivity.this);
 
                     String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
+                    Log.w("categories", String.valueOf(currListView.toString()));
 
                     item1.setText(strArray[0]); //ITEM
                     category1.setText(strArray[1]); // SECTION
@@ -716,7 +713,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         mRecyclerView.setLayoutManager(layoutManager);
 
         mToolbar.setTitle("Inventory - All Inventory");
-        new getInventoryFromDB().execute();
+        new talkToDataBase().execute();
 
         showLoadingCircle();
 
@@ -985,7 +982,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
             }
         });
-        new getInventoryFromDB().execute();
+        new talkToDataBase().execute();
 
     }
 
@@ -996,7 +993,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             public void run() {
                 placeOrderTable.removeAllViews();
                 // get a reference for the TableLayout
-                for (String aCurrListView : prices.getPricesItemsList()) {
+                for (String aCurrListView : parser.allItemsFromLowStock()) {
 
                     final TableRow row = new TableRow(MainActivity.this);
                     row.setClickable(true);
@@ -1007,12 +1004,12 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     TextView curr_qty1 = new TextView(MainActivity.this);
 
                     String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
-
+                    Log.w("HERE4", String.valueOf(parser.allItemsFromLowStock().toString()));
                     item1.setText(strArray[0]); //ITEM
                     distributor1.setText(strArray[1]);
                     price1.setText(strArray[2]);
                     curr_qty1.setText(strArray[3]);
-                    Log.w("numOfItems", String.valueOf(prices.getPricesItemsList().toString()));
+
                     row.addView(item1);
                     row.addView(distributor1);
                     row.addView(price1);
@@ -1049,10 +1046,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         });
     }
 
-
-
-/* Get Employees From Database */
-    private class getEmployeesFromDB extends AsyncTask<Void, Void, Void> {
+/* Get Data From Database */
+    private class talkToDataBase extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -1064,10 +1059,16 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
             /* Building Parameters */
             List<NameValuePair> params = new ArrayList<>();
+            JSONObject json = new JSONObject();
+            if(mToolbar.getTitle().equals("Employee - All Employees")){
+                String URL_PHP = "http://www.narped.com/inventory/Employees.php";
+               json = jParser.makeHttpRequest(URL_PHP, "GET", params);
+            }
+            if(mToolbar.getTitle().equals("Restaurant - All Sections") || (mToolbar.getTitle().equals("Inventory - All Inventory"))){
+                String URL_PHP = "http://www.narped.com/inventory/ItemsInventory.php";
+                json = jParser.makeHttpRequest(URL_PHP, "GET", params);
+            }
 
-            /* getting JSON string from URL */
-            String URL_EMPLOYEESPHP = "http://www.narped.com/inventory/Employees.php";
-            JSONObject json = jParser.makeHttpRequest(URL_EMPLOYEESPHP, "GET", params);
             try {
                 /* Checking for SUCCESS TAG */
                 int success = json.getInt(TAG_SUCCESS);
@@ -1080,20 +1081,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     if (intStuff != 0) {
                         for (int i = 0; i < JAStuff.length(); i++) {
                             JSONObject JOStuff = JAStuff.getJSONObject(i);
-                            //Log.e("ALL THE STUFF", JOStuff.toString());
-
-                            EmployeeParser employeeParser = new EmployeeParser(JOStuff);
-                            final String currentRow = String.valueOf(employeeParser.allEmployees());
-                            String nameOfEmployee = String.valueOf(JOStuff.get("fullname"));
-                            String username = String.valueOf(JOStuff.get("username"));
-                            String userType = String.valueOf(JOStuff.get("usertype"));
-
-                            Log.w("currentRow", currentRow);
-                            Log.w("nameOfEmployee", nameOfEmployee);
-                            Log.w("userType", userType);
-                            Log.w("username", username);
-
-                            addEmployee(currentRow, userType);
+                            parser.parseInventory(JOStuff);
+                            parser.parseCategory(JOStuff);
+                            parser.parseEmployees(JOStuff);
                         }
                     }
                 }
@@ -1105,123 +1095,24 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            currListView = employees.getAllEmployee();
-            updateEmployeesView();
-            super.onPostExecute(aVoid);
-        }
-    }
-
-/* Get Inventory From Database */
-    private class getInventoryFromDB extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... args) {
-
-            /* Building Parameters */
-            List<NameValuePair> params = new ArrayList<>();
-
-            /* getting JSON string from URL */
-            String URL_INVENTORYPHP = "http://www.narped.com/inventory/ItemsInventory.php";
-            JSONObject json = jParser.makeHttpRequest(URL_INVENTORYPHP, "GET", params);
-            try {
-                /* Checking for SUCCESS TAG */
-                int success = json.getInt(TAG_SUCCESS);
-                if (success == 1) {
-                    JSONArray JAStuff = json.getJSONArray(TAG_STUFF);
-
-                    /** CHECK THE NUMBER OF RECORDS **/
-                    int intStuff = JAStuff.length();
-
-                    if (intStuff != 0) {
-                        for (int i = 0; i < JAStuff.length(); i++) {
-                            JSONObject JOStuff = JAStuff.getJSONObject(i);
-                            //Log.e("ALL THE STUFF", JOStuff.toString());
-
-                            Parser inventory = new Parser(JOStuff);
-                            final String currentRow = String.valueOf(inventory.allItems());
-                            final String lowStockRow = String.valueOf(inventory.allItemsFromLowStock());
-                            String nameOfItem = String.valueOf(JOStuff.get("item"));
-                            String distributor = String.valueOf(JOStuff.get("distributor"));
-                            String category = String.valueOf(JOStuff.get("category"));
-                            String curr_qty = String.valueOf(JOStuff.get("curr_qty"));
-                            String max_qty = String.valueOf(JOStuff.get("max_qty"));
-                            String price = String.valueOf(JOStuff.get("price"));
-                            Log.w("currentRow", currentRow);
-                            Log.w("lowStockRow", lowStockRow);
-
-                            Log.w("nameOfItem", nameOfItem);
-                            Log.w("distributor", distributor);
-
-                            addDistributors(currentRow, distributor);
-                            addCategories(currentRow, category);
-                            if(!lowStockRow.equals("[]")) {
-                                addPrice(lowStockRow);
-                            }
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(mToolbar.getTitle().equals("Employee - All Employees")){
+                currListView = parser.getAllEmployee();
+                updateEmployeesView();
             }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            currListView = distributors.getAllItems();
-            updateInventoryView(); // Loads all inventory on the inventory  tab
-            updateSectionsView();
-            updatePlaceOrderView();
+            if(mToolbar.getTitle().equals("Restaurant - All Sections")){
+                currListView = parser.getAllItems();
+                updateSectionsView();
+            }
+            if(mToolbar.getTitle().equals("Inventory - All Inventory")){
+                currListView = parser.getAllItemsFromDistributors();
+                updateInventoryView();
+            }
+            if(mToolbar.getTitle().equals("Order - Place an Order")){
+                Log.w("HERE2", parser.allItemsFromLowStock().toString());
+                currListView = parser.allItemsFromLowStock();
+                updatePlaceOrderView();
+            }
             super.onPostExecute(aVoid);
-        }
-    }
-
-    private void addEmployee(String currentRow, String userType) {
-        if (userType.equalsIgnoreCase("Front Of House")) {
-            employees.addEmployeeToFrontOfHouse(currentRow);
-        } else if (userType.equalsIgnoreCase("Back Of House")) {
-            employees.addEmployeeToBackOfHouse(currentRow);
-        } else if (userType.equalsIgnoreCase("Kitchen")) {
-            employees.addEmployeeToKitchen(currentRow);
-        } else if (userType.equalsIgnoreCase("Bar")) {
-            employees.addEmployeeToBar(currentRow);
-        }
-    }
-    private void addCategories(String currentRow, String category) {
-        if (category.equalsIgnoreCase("Front Of House")) {
-            categories.addItemToFrontOfHouse(currentRow);
-        } else if (category.equalsIgnoreCase("Back Of House")) {
-            categories.addItemToBackOfHouse(currentRow);
-        }  else if (category.equalsIgnoreCase("Kitchen")) {
-            categories.addItemToKitchen(currentRow);
-        } else if (category.equalsIgnoreCase("Bar")) {
-            categories.addItemToBar(currentRow);
-        }
-    }
-    private void addPrice(String lowStockRow) {
-        System.out.println("Adding: " + lowStockRow);
-        prices.addPricesToList(lowStockRow);
-    }
-    private void addDistributors(String currentRow, String distributor) {
-        if (distributor.equalsIgnoreCase("Lams")) {
-            distributors.addItemToLamsList(currentRow);
-        } else if (distributor.equalsIgnoreCase("Sams")) {
-            distributors.addItemToSamsList(currentRow);
-        }  else if (distributor.equalsIgnoreCase("Taiwan Trading")){
-            distributors.addItemToTaiwanTradingItemList(currentRow);
-        } else if (distributor.equalsIgnoreCase("Restaurant Depot")){
-            distributors.addItemToRestaurantDepotItemList(currentRow);
-        } else if (distributor.equalsIgnoreCase("Shamrock")) {
-            distributors.addItemToShamrockItemList(currentRow);
-        } else if (distributor.equalsIgnoreCase("Cosco")){
-            distributors.addItemToCoscoItemList(currentRow);
-        } else if (distributor.equalsIgnoreCase("Food King")){
-            distributors.addItemToFoodOfKingItemList(currentRow);
         }
     }
 
