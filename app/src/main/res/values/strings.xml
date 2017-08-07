@@ -115,6 +115,8 @@
     <string name="low_stock">Low Stock</string>
     <string name="place_order">Place Order</string>
     <string name="recommended_orders">Recommended Orders</string>
+    <string name="pricePerQty">Price Per QTY</string>
+    <string name="seller">Distributor</string>
     <string-array name="errand_names">
         <item>Do Laundry for Jim, $5</item>
         <item>Walk pet for Erin, $10</item>

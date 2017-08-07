@@ -540,6 +540,215 @@
     </RelativeLayout>
 
 
+
+
+
+
+
+
+
+
+
+
+    <!-- Prices Tab Items -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:context=".MainActivity" android:id="@+id/prices_tab" android:layout_marginTop="80dp"
+                    android:layout_marginStart="20dp" android:layout_marginEnd="20dp">
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/prices_columns">
+            <TextView
+                    android:text="@string/item_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/Prices" android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                    android:textAlignment="center" android:textColorHint="@color/md_white_1000"
+                    android:textColor="@color/md_white_1000"
+                    android:textColorHighlight="@color/md_white_1000" android:textCursorDrawable="@color/md_white_1000"
+                    android:fontFamily="sans-serif-smallcaps"/>
+            <TextView
+                    android:text="@string/pricePerQty"
+                    android:textColor="@color/md_white_1000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/priceperqty" android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+            <TextView
+                    android:text="@string/seller"
+                    android:textColor="@color/md_white_1000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/seller" android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+        </LinearLayout>
+        <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:fitsSystemWindows="true"
+                android:layout_above="@+id/buttonsForPrices"
+                android:background="@drawable/white_box" android:layout_marginTop="30dp">
+            <!--Scrollable content here-->
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:layout_marginTop="20dp"
+                        android:id="@+id/prices_table" android:contextClickable="true">
+                </TableLayout>
+                <ProgressBar
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:indeterminate="true"
+                        android:id="@+id/loadingCircleForPrices"
+                        android:layout_marginStart="100dp" android:layout_marginTop="170dp"/>
+                <!-- Dynamically fill table here -->
+            </LinearLayout>
+        </ScrollView>
+        <LinearLayout
+                android:id="@+id/buttonsForPrices"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:layout_alignParentBottom="true">
+
+            <!-- Remove Button -->
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/remove_item"
+                    android:backgroundTint="@android:color/holo_red_light"
+                    android:textColor="@color/material_drawer_background" tools:ignore="ButtonStyle"
+                    android:fontFamily="sans-serif-smallcaps"/>
+
+            <!-- Add Button -->
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_item"
+                    android:id="@+id/plus_button_for_prices"
+                    android:backgroundTint="@android:color/holo_blue_light"
+                    android:textColor="@color/material_drawer_background" tools:ignore="ButtonStyle"
+                    android:fontFamily="sans-serif-smallcaps"/>
+
+        </LinearLayout>
+        <!-- Begin Add Item View -->
+        <!-- End Add Item -->
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MainActivity" android:id="@+id/add_price_view" android:layout_marginTop="80dp"
+                android:layout_marginBottom="110dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" android:background="@drawable/black_box">
+            <android.support.design.widget.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    app:fabSize="mini" app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+                    android:id="@+id/close_Popup_for_price"
+                    android:layout_alignParentTop="true" android:layout_alignParentEnd="true"
+                    app:backgroundTint="@android:color/holo_red_light" android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp" tools:ignore="RelativeOverlap"/>
+            <ScrollView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:fitsSystemWindows="true">
+
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="56dp"
+                        android:paddingLeft="24dp"
+                        android:paddingRight="24dp">
+
+                    <!-- Item Label -->
+                    <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp">
+                        <EditText android:id="@+id/price_item"
+                                  android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:inputType="textCapWords"
+                                  android:hint="@string/item" android:fontFamily="sans-serif-smallcaps"/>
+                    </android.support.design.widget.TextInputLayout>
+
+
+                    <!--  Price Per QTY Label -->
+                    <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp">
+                        <EditText android:id="@+id/price_per_qty"
+                                  android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:hint="@string/current_qty" android:inputType="number"
+                                  android:fontFamily="sans-serif-smallcaps"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!-- Distributor Label -->
+                    <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp">
+                        <Spinner android:id="@+id/distributor_for_prices"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:hint="@string/distrubutor"/>
+                    </android.support.design.widget.TextInputLayout>
+
+
+
+                    <!-- Add Item Button -->
+                    <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/btn_add_item_for_prices"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:layout_marginBottom="24dp"
+                            android:padding="12dp"
+                            android:text="@string/add_item_string" android:background="@color/md_amber_400"
+                            android:fontFamily="sans-serif-smallcaps"/>
+
+                    <TextView android:id="@+id/view_prices"
+                              android:layout_width="fill_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_marginBottom="24dp"
+                              android:text="@string/view_list_of_items"
+                              android:gravity="center"
+                              android:textSize="16sp" android:fontFamily="sans-serif-smallcaps"/>
+
+                </LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:id="@+id/place_order_tab" android:layout_marginEnd="20dp"

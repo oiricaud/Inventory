@@ -37,6 +37,15 @@ public class Parser {
     private LinkedList<String> ivCoscoItemList = new LinkedList<>();
     private LinkedList<String> ivFoodOfKingItemList = new LinkedList<>();
 
+/* Prices */
+    private LinkedList<String> pcLamsPriceList = new LinkedList<>();
+    private LinkedList<String> pcSamsPriceList = new LinkedList<>();
+    private LinkedList<String> pcTaiwanTradingPriceList = new LinkedList<>();
+    private LinkedList<String> pcRestaurantDepotPriceList = new LinkedList<>();
+    private LinkedList<String> pcShamrockPriceList = new LinkedList<>();
+    private LinkedList<String> pcCoscoPriceList = new LinkedList<>();
+    private LinkedList<String> pcFoodOfKingPriceList = new LinkedList<>();
+
     public Parser(){
 
     }
@@ -174,8 +183,45 @@ public class Parser {
         }
     }
 
+/* PARSE PRICES */
+public void parsePrices(JSONObject jsonObject){
+    try {
+        String currentRow = String.valueOf(jsonObject);
+        String item = String.valueOf(jsonObject.get("item"));
+        String pricePerQty = String.valueOf(jsonObject.get("pricePerQty"));
+        String seller = String.valueOf(jsonObject.get("seller"));
+
+        Log.w("current row", currentRow);
+        Log.w("item", item);
+        Log.w("pricePerQty", pricePerQty);
+        Log.w("seller", seller);
+
+            /* If you remove the next 4 lines of code then it will mess up the table in the inventory view */
+        item = item.replace(' ', '-');
+        pricePerQty = pricePerQty.replace(' ', '-');
+        seller = seller.replace(' ', '-');
+
+        if (seller.equalsIgnoreCase("Lams")) {
+            addPriceToLams(item + " " + pricePerQty + " " + seller);
+        } else if (seller.equalsIgnoreCase("Sams")) {
+            addPriceToSams(item + " " + pricePerQty + " " + seller);
+        } else if (seller.equalsIgnoreCase("Taiwan-Trading")) {
+            addPriceToTaiwanTrading(item + " " + pricePerQty + " " + seller);
+        } else if (seller.equalsIgnoreCase("Restaurant-Depot")) {
+            addPriceToRestaurantDepot(item + " " + pricePerQty + " " + seller);
+        } else if (seller.equalsIgnoreCase("Shamrock")) {
+            addPriceToShamrock(item + " " + pricePerQty + " " + seller);
+        } else if (seller.equalsIgnoreCase("Cosco")) {
+            addPriceToCosco(item + " " + pricePerQty + " " + seller);
+        } else if (seller.equalsIgnoreCase("Food King")) {
+            addPriceToFoodKing(item + " " + pricePerQty + " " + seller);
+    }
 
 
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+}
 
 /* GETTERS AND SETTERS FOR EMPLOYEES */
     public LinkedList<String> getEmployeeFrontOfHouse() {
@@ -460,5 +506,42 @@ public LinkedList<String> getFoodOfKingItemListItemList() {
             }
         }
         return tempList;
+    }
+
+/* GETTERS AND SETTERS FOR PRICES */
+    private void addPriceToLams(String item) {
+        if(!pcLamsPriceList.contains(item)){ // If the list does not contain the item then don't add it
+            pcLamsPriceList.add(item);
+        }
+    }
+    private void addPriceToSams(String item) {
+        if(!pcSamsPriceList.contains(item)){ // If the list does not contain the item then don't add it
+            pcSamsPriceList.add(item);
+        }
+    }
+    private void addPriceToTaiwanTrading(String item) {
+        if(!pcTaiwanTradingPriceList.contains(item)){ // If the list does not contain the item then don't add it
+            pcTaiwanTradingPriceList.add(item);
+        }
+    }
+    private void addPriceToRestaurantDepot(String item) {
+        if(!pcRestaurantDepotPriceList.contains(item)){ // If the list does not contain the item then don't add it
+            pcRestaurantDepotPriceList.add(item);
+        }
+    }
+    private void addPriceToShamrock(String item) {
+        if(!pcShamrockPriceList.contains(item)){ // If the list does not contain the item then don't add it
+            pcShamrockPriceList.add(item);
+        }
+    }
+    private void addPriceToCosco(String item) {
+        if(!pcCoscoPriceList.contains(item)){ // If the list does not contain the item then don't add it
+            pcCoscoPriceList.add(item);
+        }
+    }
+    private void addPriceToFoodKing(String item) {
+        if(!pcFoodOfKingPriceList.contains(item)){ // If the list does not contain the item then don't add it
+            pcFoodOfKingPriceList.add(item);
+        }
     }
 }
