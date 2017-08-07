@@ -125,8 +125,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                         toast("Success logon!", 5000);
                         setContentView(R.layout.activity_main);
                         launchHomeView();
-                        //launchInventoryView();
-                        //customer = new Customer(jsonResponse); // load customer before launching the home view
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         loading.setVisibility(View.GONE);
@@ -227,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         switch (position) {
             case 0:  // Home Sweet Home
                 menuView.setVisibility(LinearLayout.VISIBLE);
-
                 employeesView.setVisibility(RelativeLayout.GONE);
                 sectionsView.setVisibility(RelativeLayout.GONE);
                 inventoryView.setVisibility(RelativeLayout.GONE);
@@ -237,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 launchHomeView();
                 break;
             case 1:  // Employees
-                //confirmatationPopUp.setVisibility(LinearLayout.INVISIBLE);
                 menuView.setVisibility(LinearLayout.GONE);
                 sectionsView.setVisibility(RelativeLayout.GONE);
                 inventoryView.setVisibility(RelativeLayout.GONE);
@@ -249,7 +245,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 break;
 
             case 2:  // Sections
-               // confirmatationPopUp.setVisibility(LinearLayout.INVISIBLE);
                 menuView.setVisibility(LinearLayout.GONE);
                 employeesView.setVisibility(RelativeLayout.GONE);
                 inventoryView.setVisibility(RelativeLayout.GONE);
@@ -287,7 +282,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 break;
             case 6:  // Place Order
                 placeOrderView.setVisibility(RelativeLayout.VISIBLE);
-
                 menuView.setVisibility(LinearLayout.GONE);
                 employeesView.setVisibility(RelativeLayout.GONE);
                 sectionsView.setVisibility(LinearLayout.GONE);
@@ -306,8 +300,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
-
-        if(mToolbar.getTitle().equals("Pho Tre Bien")){ // Display the settings icon
+    if(mToolbar.getTitle().equals("Pho Tre Bien")){ // Display the settings icon
         getMenuInflater().inflate(R.menu.home_menu, menu);
     }
     if(mToolbar.getTitle().equals("Employee - All Employees")){ // Display the settings icon
@@ -517,7 +510,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 foodItemPopUp.setVisibility(RelativeLayout.VISIBLE);
-              //  errandsDetailsPopUp.setVisibility(RelativeLayout.VISIBLE);
                 menuGridView.setVisibility(GridView.INVISIBLE);
                 titleClicked.setText(imageTitle[position]);
                 details.setText(imageDetails[position]);
@@ -529,7 +521,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //    confirmView();
                 confirm.setVisibility(Button.INVISIBLE);
             }
         });
@@ -541,7 +532,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 menuGridView.setVisibility(GridView.VISIBLE);
                 titleClicked.setVisibility(TextView.VISIBLE);
                 confirm.setVisibility(Button.VISIBLE);
-                //inventoryTable.removeAllViews();
             }
         });
     }
@@ -594,7 +584,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     row.addView(nameOfEmployee);
                     row.addView(userName);
                     row.addView(userType);
-
 
                     LinearLayout.LayoutParams paramsNameOfEmployee = (LinearLayout.LayoutParams) nameOfEmployee.getLayoutParams();
                     paramsNameOfEmployee.setMargins(pixelToDP(25), 0, pixelToDP(85), pixelToDP(25));
@@ -732,9 +721,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             @Override
             public void run() {
 
-                int numOfItems = currListView.size();
                 inventoryTable.removeAllViews();
-
 
                 // get a reference for the TableLayout
                 for (String aCurrListView : currListView) {
@@ -886,29 +873,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     /* -----> Inventory Remove Item Function */
     private void launchRemoveItemView() {
-        menuGridView.setVisibility(RelativeLayout.INVISIBLE);
-        swipeRefresh.setVisibility(RelativeLayout.VISIBLE);
-        //swipeLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
-        mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_recyclerview);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mToolbar.setTitle("Remove Item ");
-        //setUpErrands();
-        /*
-        swipeLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setUpErrands();
-                        swipeLayout.setRefreshing(false);
-                    }
-                }, 2500);
-            }
-        });
-        */
+
     }
 
 
@@ -919,10 +884,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         inventoryColumns.setVisibility(LinearLayout.INVISIBLE);
         inventoryTable.setVisibility(LinearLayout.INVISIBLE);
         addItem.setVisibility(RelativeLayout.INVISIBLE);
-
         swipeRefresh.setVisibility(RelativeLayout.INVISIBLE);
 
-        //swipeLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_recyclerview);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -936,9 +899,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         inventoryColumns.setVisibility(LinearLayout.INVISIBLE);
         inventoryTable.setVisibility(LinearLayout.INVISIBLE);
         addItem.setVisibility(RelativeLayout.INVISIBLE);
-
         swipeRefresh.setVisibility(RelativeLayout.INVISIBLE);
-        //swipeLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
+
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_recyclerview);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -983,7 +945,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             }
         });
         new talkToDataBase().execute();
-
     }
 
     /* ----> Place Order Recommended Table */
@@ -1064,7 +1025,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 String URL_PHP = "http://www.narped.com/inventory/Employees.php";
                json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
-            if(mToolbar.getTitle().equals("Restaurant - All Sections") || (mToolbar.getTitle().equals("Inventory - All Inventory"))){
+            if(mToolbar.getTitle().equals("Restaurant - All Sections") || (mToolbar.getTitle().equals("Inventory - " +
+                    "All Inventory") || (mToolbar.getTitle().equals("Order - Place an Order")))){
                 String URL_PHP = "http://www.narped.com/inventory/ItemsInventory.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
@@ -1075,7 +1037,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 if (success == 1) {
                     JSONArray JAStuff = json.getJSONArray(TAG_STUFF);
 
-                    /** CHECK THE NUMBER OF RECORDS **/
+                    /* CHECK THE NUMBER OF RECORDS **/
                     int intStuff = JAStuff.length();
 
                     if (intStuff != 0) {
