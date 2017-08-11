@@ -28,6 +28,11 @@ public class PriceRequest extends StringRequest {
 
     public PriceRequest(String item, String pricePerQty, String seller, Response.Listener<String> listener) {
         super(Request.Method.POST, REGISTER_REQUEST_URL, listener, null);
+
+        System.out.println("ALPHA" + item);
+        System.out.println("pricePerQty" + pricePerQty);
+        System.out.println("seller" + seller);
+
         params = new HashMap<>();
         params.put("item", item);
         params.put("pricePerQty", pricePerQty);

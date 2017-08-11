@@ -25,20 +25,25 @@ public class InventoryRequest extends StringRequest {
      * @param curr_qty    The current quantity Pho Tre Bien has.
      * @param max_qty     The max quantity Pho Tre Bien orders.
      * @param distributor The distributor where the item is coming from
-     * @param price       Price of an item
      * @param listener    The listener listens to the responses from the user.
      */
 
-    public InventoryRequest(String item, String category, String curr_qty, String max_qty, String distributor,
-                            String price, Response.Listener<String> listener) {
+    public InventoryRequest(String item, String curr_qty, String max_qty, String category, String distributor, Response.Listener<String> listener) {
         super(Request.Method.POST, REGISTER_REQUEST_URL, listener, null);
         params = new HashMap<>();
+
+        System.out.println("INVENTORY REQUEST" + item);
+        System.out.println("curr_qty" + curr_qty);
+        System.out.println("max_qty" + max_qty);
+        System.out.println("category" + category);
+        System.out.println("distributor" + distributor);
+
+
         params.put("item", item);
-        params.put("category", category);
         params.put("curr_qty", curr_qty);
         params.put("max_qty", max_qty);
+        params.put("category", category);
         params.put("distributor", distributor);
-        params.put("price", price);
     }
 
     @Override

@@ -117,6 +117,20 @@
     <string name="recommended_orders">Recommended Orders</string>
     <string name="pricePerQty">Price Per QTY</string>
     <string name="seller">Distributor</string>
+    <string name="price_per_qty">Price Per QTY</string>
+    <string name="search">search</string>
+    <string name="weekly_count">Count</string>
+    <string name="save">Save</string>
+    <string name="place_order_category">Category</string>
+    <string name="weekly_count_category">Category</string>
+    <string name="weekly_count_count">0</string>
+    <string name="item_id">ID</string>
+    <string name="place_order_min_max">Min - Max</string>
+    <string name="place_order_reccommended">Recommend</string>
+    <string name="place_order_dropdown_order">Order</string>
+    <string name="place_order_par">Par</string>
+    <string name="place_order_recommended">Rcmd</string>
+    <string name="place_oder_dist">Dist</string>
     <string-array name="errand_names">
         <item>Do Laundry for Jim, $5</item>
         <item>Walk pet for Erin, $10</item>

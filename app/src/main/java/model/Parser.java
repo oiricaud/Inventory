@@ -13,6 +13,7 @@ import java.util.LinkedList;
 /* This class allows you to parse json objects */
 public class Parser {
     private LinkedList<String> items = new LinkedList<>();
+    private LinkedList<String> countItems = new LinkedList<>();
     private LinkedList<String> lowStockItems = new LinkedList<>();
 
 /* Employees  */
@@ -36,6 +37,15 @@ public class Parser {
     private LinkedList<String> ivShamrockItemList = new LinkedList<>();
     private LinkedList<String> ivCoscoItemList = new LinkedList<>();
     private LinkedList<String> ivFoodOfKingItemList = new LinkedList<>();
+
+/* Weekly Count */
+    private LinkedList<String> wcLamsItemList = new LinkedList<>();
+    private LinkedList<String> wcSamsItemList = new LinkedList<>();
+    private LinkedList<String> wcTaiwanTradingItemList = new LinkedList<>();
+    private LinkedList<String> wcRestaurantDepotItemList = new LinkedList<>();
+    private LinkedList<String> wcShamrockItemList = new LinkedList<>();
+    private LinkedList<String> wcCoscoItemList = new LinkedList<>();
+    private LinkedList<String> wcFoodOfKingItemList = new LinkedList<>();
 
 /* Prices */
     private LinkedList<String> pcLamsPriceList = new LinkedList<>();
@@ -61,7 +71,7 @@ public class Parser {
             String userType = String.valueOf(jsonObject.get("usertype"));
 
             Log.w("current row", currentRow);
-            Log.w("nameOfEmployee", fullName);
+            Log.w("fullName", fullName);
             Log.w("userType", userType);
             Log.w("username", username);
 
@@ -98,7 +108,6 @@ public class Parser {
             String category = String.valueOf(jsonObject.get("category"));
             String curr_qty = String.valueOf(jsonObject.get("curr_qty"));
             String max_qty = String.valueOf(jsonObject.get("max_qty"));
-            String price = String.valueOf(jsonObject.get("price"));
             //Log.w("lowStockRow", lowStockRow);
 
             Log.w("nameOfItem", nameOfItem);
@@ -133,13 +142,12 @@ public class Parser {
             String curr_qty = String.valueOf(jsonObject.get("curr_qty"));
             String max_qty = String.valueOf(jsonObject.get("max_qty"));
             String distributor = String.valueOf(jsonObject.get("distributor"));
-            String price = String.valueOf(jsonObject.get("price"));
-
-            System.out.println("Category " + category);
 
             double convertCurrQty = Double.parseDouble(curr_qty.toString());
             double convertMaxQty = Double.parseDouble(max_qty.toString());
             double ratio = convertCurrQty / convertMaxQty;
+            System.out.println("parseInventory");
+            System.out.println("category " + category);
             System.out.println("convertCurrQty " + convertCurrQty);
             System.out.println("convertMaxQty " + convertMaxQty);
             System.out.println("ratio " + ratio);
@@ -155,7 +163,6 @@ public class Parser {
             items.add(curr_qty);
             items.add(max_qty);
             items.add(distributor);
-            items.add(price);
             setItems(items);
 
             if (distributor.equalsIgnoreCase("Lams")) {
@@ -175,7 +182,9 @@ public class Parser {
             }
 
             if((ratio) <= .2){ // Low Stock
-                setLowStockItems(item + " " + distributor + " " + price + " " + curr_qty);
+                // Negate the ratio value
+                int negateRatio = (int) (convertMaxQty - convertCurrQty);
+                setLowStockItems(item + " " + distributor + " " + negateRatio);
             }
 
         } catch (JSONException e) {
@@ -183,18 +192,69 @@ public class Parser {
         }
     }
 
+/* PARSE WEEKLY COUNT */
+    public void parseWeeklyCount(JSONObject jsonObject) {
+
+    try {
+        String item = String.valueOf(jsonObject.get("item"));
+        String category = String.valueOf(jsonObject.get("category"));
+        String curr_qty = String.valueOf(jsonObject.get("curr_qty"));
+        String max_qty = String.valueOf(jsonObject.get("max_qty"));
+        String distributor = String.valueOf(jsonObject.get("distributor"));
+
+        System.out.println("parseInventory");
+        System.out.println("category " + category);
+
+        item = item.replace(' ', '-');
+        category = category.replace(' ', '-');
+        curr_qty = curr_qty.replace(' ', '-');
+        max_qty = max_qty.replace(' ', '-');
+        distributor = distributor.replace(' ', '-');
+
+        countItems.add(item);
+        countItems.add(category);
+        countItems.add(curr_qty);
+        countItems.add(max_qty);
+        countItems.add(distributor);
+        setWeeklyCount(countItems);
+
+        if (distributor.equalsIgnoreCase("Lams")) {
+            addItemToLamsListWC(item + " " + category + " " + curr_qty);
+        } else if (distributor.equalsIgnoreCase("Sams")) {
+            addItemToSamsListWC(item + " " + category + " " + curr_qty);
+        }  else if (distributor.equalsIgnoreCase("Taiwan-Trading")){
+            addItemToTaiwanTradingItemListWC(item + " " + category + " " + curr_qty);
+        } else if (distributor.equalsIgnoreCase("Restaurant-Depot")){
+            addItemToRestaurantDepotItemListWC(item + " " + category + " " + curr_qty);
+        } else if (distributor.equalsIgnoreCase("Shamrock")) {
+            addItemToShamrockItemListWC(item + " " + category + " " + curr_qty);
+        } else if (distributor.equalsIgnoreCase("Cosco")){
+            addItemToCoscoItemListWC(item + " " + category + " " + curr_qty);
+        } else if (distributor.equalsIgnoreCase("Food-King")){
+            addItemToFoodOfKingItemListWC(item + " " + category + " " + curr_qty);
+        }
+
+
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+}
+
 /* PARSE PRICES */
-public void parsePrices(JSONObject jsonObject){
+    public void parsePrices(JSONObject jsonObject){
     try {
         String currentRow = String.valueOf(jsonObject);
         String item = String.valueOf(jsonObject.get("item"));
         String pricePerQty = String.valueOf(jsonObject.get("pricePerQty"));
         String seller = String.valueOf(jsonObject.get("seller"));
 
-        Log.w("current row", currentRow);
+        Log.w("parsePrices", currentRow);
+
         Log.w("item", item);
         Log.w("pricePerQty", pricePerQty);
         Log.w("seller", seller);
+
+
 
             /* If you remove the next 4 lines of code then it will mess up the table in the inventory view */
         item = item.replace(' ', '-');
@@ -213,7 +273,7 @@ public void parsePrices(JSONObject jsonObject){
             addPriceToShamrock(item + " " + pricePerQty + " " + seller);
         } else if (seller.equalsIgnoreCase("Cosco")) {
             addPriceToCosco(item + " " + pricePerQty + " " + seller);
-        } else if (seller.equalsIgnoreCase("Food King")) {
+        } else if (seller.equalsIgnoreCase("Food-King")) {
             addPriceToFoodKing(item + " " + pricePerQty + " " + seller);
     }
 
@@ -222,6 +282,95 @@ public void parsePrices(JSONObject jsonObject){
         e.printStackTrace();
     }
 }
+
+
+
+/* PARSE - RECOMMENDED */
+    public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedList<String> prices){
+        LinkedList<String> copy = new LinkedList<String>();
+
+        LinkedList<String> temp = new LinkedList<>();
+        for(int i = 0; i < lowStock.size(); i++) {
+            String currRowLowStock = lowStock.get(i);
+            String lowStockBreak[] = currRowLowStock.split(" ");
+            /*
+            System.out.println("lowStockBreak[0]" + lowStockBreak[0]); // Item
+            System.out.println("lowStockBreak[1]" + lowStockBreak[1]); // Price
+            System.out.println("lowStockBreak[2]" + lowStockBreak[2]); // qty
+            */
+
+            for(int j = 0; j < prices.size(); j++){
+                String currRowPrice = prices.get(j);
+                String priceBreak[] = currRowPrice.split(" ");
+                /*
+                System.out.println("    priceBreak[0]" + priceBreak[0]); // Item
+                System.out.println("    priceBreak[1]" + priceBreak[1]); // Price
+                System.out.println("    priceBreak[2]" + priceBreak[2]); // Distributor
+                */
+                // From the inventory table we found an item that is sold by a distributor
+                if(!temp.contains(lowStockBreak[0])){ //
+                    System.out.println("We already added this item " + lowStockBreak[0]);
+                   // temp.add(temp.get(j));
+                }
+                if(lowStockBreak[0].equalsIgnoreCase(priceBreak[0])){
+                    temp.add(lowStockBreak[0] + " " +  priceBreak[2] + " " + priceBreak[1]  + " " + lowStockBreak[2]);
+                }
+
+
+            }
+
+            // If an item is sold in multiple market/distributors then get the cheapest one
+            if(lowStockBreak[0].contains(temp.toString())){
+                System.out.println("We found a multiple item that is sold by multiple distributors");
+            }
+        }
+
+        System.out.println("TEMP LIST"  + temp.toString());
+
+        // If an item is sold in multiple market/distributors then get the cheapest one
+
+
+        for(int k = 0; k < temp.size(); k++){
+            String currRow = temp.get(k);
+            String[] breakString = currRow.split(" ");
+
+            System.out.println("currRow[item] =  " + breakString[0]); // Item
+            System.out.println("currRow[seller] = " + breakString[1]); // Seller
+            System.out.println("currRow[price] = " + breakString[2]); // Price
+
+            for(int l = 1; l < temp.size(); l++){
+                String nextRow = temp.get(l);
+
+                String[] breakSecondString = nextRow.split(" ");
+                System.out.println("    nextRow[item] = " + breakSecondString[0]); // Item
+                System.out.println("    nextRow[seller] = " + breakSecondString[1]); // Seller
+                System.out.println("    nextRow[price] =" + breakSecondString[2]); // Price
+
+                String a = breakString[0];
+                String b = breakSecondString[0];
+
+                System.out.println("        A = " + a);
+                System.out.println("        B = " + b);
+                double c = Double.parseDouble(breakString[2]);
+                double d = Double.parseDouble(breakSecondString[2]);
+                System.out.println("                C = " + c);
+                System.out.println("                D = " + d);
+
+                if(a.equalsIgnoreCase(b)){ // A == B
+                    if(c < d){
+                        temp.remove(l);
+                    }
+                    if(c > d){
+                        temp.remove(l-1);
+                    }
+                }
+            }
+        }
+
+        return temp;
+    }
+
+
 
 /* GETTERS AND SETTERS FOR EMPLOYEES */
     public LinkedList<String> getEmployeeFrontOfHouse() {
@@ -508,6 +657,126 @@ public LinkedList<String> getFoodOfKingItemListItemList() {
         return tempList;
     }
 
+
+
+/* GETTERS AND SETTERS FOR WEEKLY COUNT */
+
+    public LinkedList<String> getFoodOfKingItemListItemListWC() {
+        if(wcFoodOfKingItemList.isEmpty()){
+            System.out.println("Food Of King List is empty");
+        }
+        return wcFoodOfKingItemList;
+    }
+
+    public void addItemToFoodOfKingItemListWC(String item) {
+        if(!wcFoodOfKingItemList.contains(item)){ // If the list does not contain the item then don't add it
+            wcFoodOfKingItemList.add(item);
+        }
+    }
+
+    /* Cosco */
+    public LinkedList<String> getCoscoItemsListWC() {
+        if(wcCoscoItemList.isEmpty()){
+            System.out.println("Shamrock List is empty");
+        }
+        return wcCoscoItemList;
+    }
+
+    public void addItemToCoscoItemListWC(String item) {
+        if(!wcCoscoItemList.contains(item)){ // If the list does not contain the item then don't add it
+            wcCoscoItemList.add(item);
+        }
+    }
+
+    /* Shamrock */
+    public LinkedList<String> getShamrockItemsListWC() {
+        if(wcShamrockItemList.isEmpty()){
+            System.out.println("Shamrock List is empty");
+        }
+        return wcShamrockItemList;
+    }
+
+    public void addItemToShamrockItemListWC(String item) {
+        if(!wcShamrockItemList.contains(item)){ // If the list does not contain the item then don't add it
+            wcShamrockItemList.add(item);
+        }
+    }
+
+    /* Restaurant Depot */
+    public LinkedList<String> getRestaurantDepotItemsListWC() {
+        if(wcRestaurantDepotItemList.isEmpty()){
+            System.out.println("Taiwan Trading Item List is empty");
+        }
+        return wcRestaurantDepotItemList;
+    }
+
+    public void addItemToRestaurantDepotItemListWC(String item) {
+        if(!wcRestaurantDepotItemList.contains(item)){ // If the list does not contain the item then don't add it
+            wcRestaurantDepotItemList.add(item);
+        }
+    }
+
+    /* Taiwan Trading */
+    public LinkedList<String> getTaiwanTradingItemsListWC() {
+        if(wcTaiwanTradingItemList.isEmpty()){
+            System.out.println("Taiwan Trading Item List is empty");
+        }
+        return wcTaiwanTradingItemList;
+    }
+
+    public void addItemToTaiwanTradingItemListWC(String item) {
+        if(!wcTaiwanTradingItemList.contains(item)){ // If the list does not contain the item then don't add it
+            wcTaiwanTradingItemList.add(item);
+        }
+    }
+
+    /* SAMS */
+    public LinkedList<String> getSamsItemsListWC() {
+        if(wcSamsItemList.isEmpty()){
+            System.out.println("Sams Item List is empty");
+        }
+        return wcSamsItemList;
+    }
+
+    public void addItemToSamsListWC(String item) {
+        if(!wcSamsItemList.contains(item)){ // If the list does not contain the item then don't add it
+            wcSamsItemList.add(item);
+        }
+    }
+
+    /* LAMS */
+    public LinkedList<String> getLamsItemsListWC() {
+        if(wcLamsItemList.isEmpty()){
+            System.out.println("Lams Item List is empty");
+        }
+        return wcLamsItemList;
+    }
+
+    public void addItemToLamsListWC(String item) {
+        if(!wcLamsItemList.contains(item)){ // If the list does not contain the item then don't add it
+            wcLamsItemList.add(item);
+        }
+    }
+
+
+    private void setWeeklyCount(LinkedList<String> countItems) {
+    this.countItems = countItems;
+}
+    public LinkedList<String> getAllItemsFromWeeklyCount() {
+        LinkedList<String> concatenateLists = new LinkedList<>();
+
+        concatenateLists.addAll(wcLamsItemList);
+        concatenateLists.addAll(wcSamsItemList);
+        concatenateLists.addAll(wcTaiwanTradingItemList);
+        concatenateLists.addAll(wcRestaurantDepotItemList);
+        concatenateLists.addAll(wcShamrockItemList);
+        concatenateLists.addAll(wcCoscoItemList);
+        concatenateLists.addAll(wcFoodOfKingItemList);
+
+        return concatenateLists;
+    }
+
+
 /* GETTERS AND SETTERS FOR PRICES */
     private void addPriceToLams(String item) {
         if(!pcLamsPriceList.contains(item)){ // If the list does not contain the item then don't add it
@@ -543,5 +812,18 @@ public LinkedList<String> getFoodOfKingItemListItemList() {
         if(!pcFoodOfKingPriceList.contains(item)){ // If the list does not contain the item then don't add it
             pcFoodOfKingPriceList.add(item);
         }
+    }
+    public LinkedList<String> getAllPrices(){
+        LinkedList<String> concatenateLists = new LinkedList<>();
+
+        concatenateLists.addAll(pcLamsPriceList);
+        concatenateLists.addAll(pcSamsPriceList);
+        concatenateLists.addAll(pcTaiwanTradingPriceList);
+        concatenateLists.addAll(pcRestaurantDepotPriceList);
+        concatenateLists.addAll(pcShamrockPriceList);
+        concatenateLists.addAll(pcCoscoPriceList);
+        concatenateLists.addAll(pcFoodOfKingPriceList);
+
+        return concatenateLists;
     }
 }

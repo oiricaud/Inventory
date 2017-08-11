@@ -1,10 +1,7 @@
 package activity;
 
-import communication.InventoryRequest;
-import communication.LoginRequest;
-import communication.PriceRequest;
-import communication.RegisterRequest;
 import adapter.ImageAdapter;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,8 +22,12 @@ import android.widget.*;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import communication.InventoryRequest;
+import communication.LoginRequest;
+import communication.PriceRequest;
+import communication.RegisterRequest;
 import inc.pheude.inventory.R;
-import model.*;
+import model.Parser;
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     private LinearLayout placeOrderColumns;
     private LinearLayout inventoryColumns;
+    private LinearLayout weeklyCountColumns;
     private LinearLayout pricesColumns;
 
 
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private TableLayout employeesTable;
     private TableLayout sectionsTable;
     private TableLayout inventoryTable;
+    private TableLayout weeklyCountTable;
     private TableLayout pricesTable;
     private TableLayout placeOrderTable;
 
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     private LinearLayout menuView;
     private RelativeLayout inventoryView;
+    private RelativeLayout weeklyCountView;
     private RelativeLayout placeOrderView;
     private RelativeLayout employeesView;
     private RelativeLayout sectionsView;
@@ -238,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 employeesView.setVisibility(RelativeLayout.GONE);
                 sectionsView.setVisibility(RelativeLayout.GONE);
                 inventoryView.setVisibility(RelativeLayout.GONE);
+                weeklyCountView.setVisibility(RelativeLayout.GONE);
                 pricesView.setVisibility(RelativeLayout.GONE);
                 placeOrderView.setVisibility(RelativeLayout.GONE);
 
@@ -248,6 +253,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 menuView.setVisibility(LinearLayout.GONE);
                 sectionsView.setVisibility(RelativeLayout.GONE);
                 inventoryView.setVisibility(RelativeLayout.GONE);
+                weeklyCountView.setVisibility(RelativeLayout.GONE);
                 pricesView.setVisibility(RelativeLayout.GONE);
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
@@ -260,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 menuView.setVisibility(LinearLayout.GONE);
                 employeesView.setVisibility(RelativeLayout.GONE);
                 inventoryView.setVisibility(RelativeLayout.GONE);
+                weeklyCountView.setVisibility(RelativeLayout.GONE);
                 pricesView.setVisibility(RelativeLayout.GONE);
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
@@ -271,6 +278,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 menuView.setVisibility(LinearLayout.GONE);
                 employeesView.setVisibility(RelativeLayout.GONE);
                 pricesView.setVisibility(RelativeLayout.GONE);
+                weeklyCountView.setVisibility(RelativeLayout.GONE);
                 sectionsView.setVisibility(RelativeLayout.GONE);
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
@@ -280,27 +288,37 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 break;
             case 4:  // Weekly Count
                 menuView.setVisibility(LinearLayout.GONE);
+                inventoryView.setVisibility(RelativeLayout.GONE);
                 employeesView.setVisibility(RelativeLayout.GONE);
                 pricesView.setVisibility(RelativeLayout.GONE);
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
+
                 drawerFragment.closeDrawers();
                 launchWeeklyCountView();
                 break;
             case 5:  // View Prices
                 menuView.setVisibility(LinearLayout.GONE);
                 employeesView.setVisibility(RelativeLayout.GONE);
+                weeklyCountView.setVisibility(RelativeLayout.GONE);
+                inventoryView.setVisibility(RelativeLayout.GONE);
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
+
                 drawerFragment.closeDrawers();
                 launchPricesView();
                 break;
             case 6:  // Place Order
                 placeOrderView.setVisibility(RelativeLayout.VISIBLE);
+
                 menuView.setVisibility(LinearLayout.GONE);
                 employeesView.setVisibility(RelativeLayout.GONE);
+                weeklyCountView.setVisibility(RelativeLayout.GONE);
                 sectionsView.setVisibility(LinearLayout.GONE);
+                inventoryView.setVisibility(RelativeLayout.GONE);
+                pricesView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
+
                 drawerFragment.closeDrawers();
                 launchPlaceOrderView();
                 break;
@@ -320,14 +338,21 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
     if(mToolbar.getTitle().equals("Employee - All Employees")){ // Display the settings icon
         getMenuInflater().inflate(R.menu.employees_menu, menu);
+        getMenuInflater().inflate(R.menu.prices_menu, menu); // Search Icon
     }
     if(mToolbar.getTitle().equals("Restaurant - All Sections")){ // Display the settings icon
         getMenuInflater().inflate(R.menu.category_menu_main, menu);
+        getMenuInflater().inflate(R.menu.prices_menu, menu); // Search Icon
     }
     if(mToolbar.getTitle().equals("Inventory - All Inventory")){ // Display the settings icon
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.prices_menu, menu); // Search Icon
+    }
+    if(mToolbar.getTitle().equals("Weekly Count")){ // Display the settings icon
+        getMenuInflater().inflate(R.menu.menu_main, menu); // Dropdown Icons
+        getMenuInflater().inflate(R.menu.prices_menu, menu); // Search Icon
     }
     if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){ // Display the settings icon
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         getMenuInflater().inflate(R.menu.prices_menu, menu);
     }
     return true;
@@ -449,11 +474,19 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 R.drawable.grilled_pork_rolls,
         };
         final String[] imageTitle = {
-                "Pork Roleld Beef", "Rare Steak Brisket", "Shrimp Spring Rolls", "Summer Rolls", "Vietnamese Egg Rolls",
+                "Pork Rolled Beef", "Rare Steak Brisket", "Shrimp Spring Rolls", "Summer Rolls", "Vietnamese Egg Rolls",
                 "Winter Rolls", "Calamari", "Four Seasons Rolls", "Grilled Pork Rolls",
         };
         final String[] imageDetails = {
-                "100 pork rolled beef", "", "", "", "", "", "", "", "",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
         };
 
         final FloatingActionButton closePopUp = (FloatingActionButton) findViewById(R.id.closePopup);
@@ -471,6 +504,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         employeesView = (RelativeLayout) findViewById(R.id.employees_tab);
         sectionsView = (RelativeLayout) findViewById(R.id.sections_tab);
         inventoryView = (RelativeLayout) findViewById(R.id.inventory_tab);
+        weeklyCountView = (RelativeLayout) findViewById(R.id.weekly_count_tab);
         pricesView = (RelativeLayout) findViewById(R.id.prices_tab);
         placeOrderView = (RelativeLayout) findViewById(R.id.place_order_tab);
         loading = (ProgressBar) findViewById(R.id.loadingCircle);
@@ -482,6 +516,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         menuGridView = (GridView) findViewById(R.id.grid_view);
 
         inventoryColumns = (LinearLayout) findViewById(R.id.inventory_columns);
+        weeklyCountColumns =  (LinearLayout) findViewById(R.id.weekly_columns);
         pricesColumns =  (LinearLayout) findViewById(R.id.prices_columns);
         placeOrderColumns = (LinearLayout) findViewById(R.id.place_order_columns);
         menuView = (LinearLayout) findViewById(R.id.menu_view);
@@ -490,6 +525,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         employeesTable = (TableLayout) findViewById(R.id.employee_table);
         sectionsTable = (TableLayout) findViewById(R.id.section_table);
         inventoryTable = (TableLayout) findViewById(R.id.inventory_table);
+        weeklyCountTable = (TableLayout) findViewById(R.id.weekly_table);
         pricesTable =  (TableLayout) findViewById(R.id.prices_table);
         placeOrderTable = (TableLayout) findViewById(R.id.place_order_table);
 
@@ -501,6 +537,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         employeesView.setVisibility(RelativeLayout.GONE);
         sectionsView.setVisibility(RelativeLayout.GONE);
         inventoryView.setVisibility(RelativeLayout.GONE);
+        weeklyCountView.setVisibility(RelativeLayout.GONE);
         pricesView.setVisibility(RelativeLayout.GONE);
         placeOrderView.setVisibility(RelativeLayout.GONE);
         addItem.setVisibility(RelativeLayout.GONE);
@@ -715,7 +752,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         inventoryColumns.setVisibility(LinearLayout.VISIBLE);
         inventoryTable.setVisibility(LinearLayout.VISIBLE);
-
         inventoryView.setVisibility(RelativeLayout.VISIBLE);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_recyclerview);
@@ -772,10 +808,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     paramsItem.setMargins(pixelToDP(20), 0, pixelToDP(0), pixelToDP(25));
 
                     LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) category1.getLayoutParams();
-                    paramsCategory.setMargins(pixelToDP(25), 0, 10, pixelToDP(25)); // Left, Top, Right, Bottom
+                    paramsCategory.setMargins(pixelToDP(15), 0, 10, pixelToDP(25)); // Left, Top, Right, Bottom
 
                     LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) curr_qty1.getLayoutParams();
-                    paramsCurrentQTY.setMargins(pixelToDP(80), 0, 60, pixelToDP(25)); //substitute
+                    paramsCurrentQTY.setMargins(pixelToDP(50), 0, 60, pixelToDP(25)); //substitute
 
                     LinearLayout.LayoutParams paramsMaxQTY = (LinearLayout.LayoutParams) max_qty1.getLayoutParams();
                     paramsMaxQTY.setMargins(pixelToDP(80), 0, 0, pixelToDP(25)); //substitute
@@ -786,7 +822,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     max_qty1.setLayoutParams(paramsMaxQTY);
 
                     inventoryTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT));
-                    loading.setVisibility(View.GONE); // Hide loading circle
+                    //loading.setVisibility(View.GONE); // Hide loading circle
 
                     row.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -812,9 +848,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 "Shamrock", "Cosco", "Food King"};
 
         final EditText etItem = (EditText) findViewById(R.id.food_item);
-        final Spinner etSections = (Spinner) findViewById(R.id.et_section);
         final EditText etCurrentQty = (EditText) findViewById(R.id.current_qty);
         final EditText etMaxQty = (EditText) findViewById(R.id.max_qty);
+        final Spinner etSections = (Spinner) findViewById(R.id.et_section);
         final Spinner etDistributor = (Spinner) findViewById(R.id.distributor);
 
         ArrayAdapter<String> adapterForSections = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sections);
@@ -823,17 +859,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         ArrayAdapter<String> adapterForDistributors = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, distributors);
         etDistributor.setAdapter(adapterForDistributors);
 
-        final EditText etPrices = (EditText) findViewById(R.id.prices);
         final Button btn_addItem = (Button) findViewById(R.id.btn_add_item);
         final TextView view_items = (TextView) findViewById(R.id.view_items);
 
         /* Clear Form */
         etItem.setText("");
-        //etSections.setText("");
         etCurrentQty.setText("");
         etMaxQty.setText("");
-        //  etDistributor.setText("");
-        etPrices.setText("");
 
         /* Close Dialog  */
         FloatingActionButton close_Popup = (FloatingActionButton) findViewById(R.id.close_Popup);
@@ -857,11 +889,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             @Override
             public void onClick(View v) {
                 final String item = etItem.getText().toString();
-                final String category = etSections.getSelectedItem().toString();
                 final String currentQty = etCurrentQty.getText().toString();
                 final String maxQty = etMaxQty.getText().toString();
+                final String category = etSections.getSelectedItem().toString();
                 final String distributor = etDistributor.getSelectedItem().toString();
-                final String comments = etPrices.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -885,8 +916,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 };
 
                 // The next 3 lines calls the @see RegisterRequest class.
-                InventoryRequest inventoryRequest = new InventoryRequest(item, category, currentQty, maxQty, distributor,
-                        comments, responseListener);
+                InventoryRequest inventoryRequest = new InventoryRequest(item, currentQty, maxQty, category,
+                        distributor, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
                 queue.add(inventoryRequest);
             }
@@ -903,17 +934,110 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 /* Weekly Count View **/
     private void launchWeeklyCountView() {
         menuGridView.setVisibility(RelativeLayout.INVISIBLE);
-        inventoryColumns.setVisibility(LinearLayout.INVISIBLE);
-        inventoryTable.setVisibility(LinearLayout.INVISIBLE);
         addItem.setVisibility(RelativeLayout.INVISIBLE);
-        swipeRefresh.setVisibility(RelativeLayout.INVISIBLE);
+
+        weeklyCountColumns.setVisibility(LinearLayout.VISIBLE);
+        weeklyCountTable.setVisibility(LinearLayout.VISIBLE);
+        weeklyCountView.setVisibility(RelativeLayout.VISIBLE);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_recyclerview);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         mToolbar.setTitle("Weekly Count");
+        new talkToDataBase().execute();
+
+        Button saveBtn = (Button) findViewById(R.id.save_button);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Update Inventory?")
+                        .setMessage("You will be updating Pho Tre Bien's restaurant inventory. Are you sure you want " +
+                                "to proceed?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                loading.setVisibility(View.VISIBLE); // Show loading circle
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                    }
+                                }, 5500);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(R.drawable.ic_eye)
+                        .show();
+            }
+        });
+        showLoadingCircle();
     }
 
+    /* ----> Weekly Count Table */
+    private void updateWeeklyCount() {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                weeklyCountTable.removeAllViews();
+                int rowCounter = 0;
+                // get a reference for the TableLayout
+                for (String aCurrListView : currListView) {
+
+                    final TableRow row = new TableRow(MainActivity.this);
+                    row.setClickable(true);
+
+                    TextView counter = new TextView(MainActivity.this);
+                    final TextView item1 = new TextView(MainActivity.this);
+                    TextView category1 = new TextView(MainActivity.this);
+                    EditText count = new EditText(MainActivity.this);
+
+                    String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
+
+                    counter.setText(String.valueOf(rowCounter));
+                    item1.setText(strArray[0]); //ITEM
+                    category1.setText(strArray[1]);
+                    count.setText(strArray[2]);
+
+                    row.addView(counter);
+                    row.addView(item1);
+                    row.addView(category1);
+                    row.addView(count);
+
+                    LinearLayout.LayoutParams paramsCounter = (LinearLayout.LayoutParams) counter.getLayoutParams();
+                    paramsCounter.setMargins(pixelToDP(50), 0, pixelToDP(0), pixelToDP(25));
+
+                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item1.getLayoutParams();
+                    paramsItem.setMargins(pixelToDP(70), 0, 10, pixelToDP(25));
+
+                    LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) category1.getLayoutParams();
+                    paramsCategory.setMargins(pixelToDP(40), 0, 60, pixelToDP(25)); // Left, Top, Right, Bottom
+
+                    LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) count.getLayoutParams();
+                    paramsCurrentQTY.setMargins(pixelToDP(10), 0, 0, pixelToDP(25)); //substitute
+
+                    counter.setLayoutParams(paramsCounter);
+                    item1.setLayoutParams(paramsItem);
+                    category1.setLayoutParams(paramsCategory);
+                    count.setLayoutParams(paramsCurrentQTY);
+
+                    weeklyCountTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT));
+
+                    row.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            Log.w("Name of Item Selected", String.valueOf(item1.getText()));
+                        }
+                    });
+                    rowCounter++;
+                }
+            }
+        });
+    }
 
 /* Prices View **/
     private void launchPricesView() {
@@ -933,7 +1057,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         mToolbar.setTitle("Prices - All Prices from sellers");
         new talkToDataBase().execute();
 
-       // showLoadingCircle();
+        showLoadingCircle();
 
         Button plusButton = (Button) findViewById(R.id.plus_button_for_prices);
         plusButton.setOnClickListener(new View.OnClickListener() {
@@ -976,10 +1100,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     row.addView(distributor);
 
                     LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item1.getLayoutParams();
-                    paramsItem.setMargins(pixelToDP(20), 0, pixelToDP(0), pixelToDP(25));
+                    paramsItem.setMargins(pixelToDP(50), 0, pixelToDP(0), pixelToDP(25));
 
                     LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) pricePerQty1.getLayoutParams();
-                    paramsCategory.setMargins(pixelToDP(25), 0, 10, pixelToDP(25)); // Left, Top, Right, Bottom
+                    paramsCategory.setMargins(pixelToDP(100), 0, 75, pixelToDP(25)); // Left, Top, Right, Bottom
 
                     LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) distributor.getLayoutParams();
                     paramsCurrentQTY.setMargins(pixelToDP(80), 0, 60, pixelToDP(25)); //substitute
@@ -1010,29 +1134,27 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_recyclerview);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
-        mToolbar.setTitle("Add Item to Inventory ");
+        mToolbar.setTitle("Add Item to Distributors ");
         /* Prepare data */
         String[] distributors = {"Select Vendor", "Lams", "Sams", "Taiwan Trading", "Restaurant Depot",
                 "Shamrock", "Cosco", "Food King"};
 
-        final EditText etItem = (EditText) findViewById(R.id.food_item);
+        final EditText etItem = (EditText) findViewById(R.id.price_item);
         final EditText etPricePerQty = (EditText) findViewById(R.id.price_per_qty);
-        final Spinner etDistributor = (Spinner) findViewById(R.id.distributor);
+        final Spinner etDistributor = (Spinner) findViewById(R.id.distributor_for_prices);
 
         ArrayAdapter<String> adapterForDistributors = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, distributors);
         etDistributor.setAdapter(adapterForDistributors);
 
-        final EditText etPrices = (EditText) findViewById(R.id.prices);
-        final Button btn_addItem = (Button) findViewById(R.id.btn_add_item);
-        final TextView view_items = (TextView) findViewById(R.id.view_items);
+        final Button btn_addItem = (Button) findViewById(R.id.btn_add_item_for_prices);
+        final TextView view_items = (TextView) findViewById(R.id.view_prices);
 
         /* Clear Form */
         etItem.setText("");
         etPricePerQty.setText("");
-        etPrices.setText("");
 
         /* Close Dialog  */
-        FloatingActionButton close_Popup = (FloatingActionButton) findViewById(R.id.close_Popup);
+        FloatingActionButton close_Popup = (FloatingActionButton) findViewById(R.id.close_Popup_for_price);
         close_Popup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1048,39 +1170,58 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             }
         });
 
-        // User presses the "No account yet? Create one"
         btn_addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String item = etItem.getText().toString();
-                final String currentQty = etPricePerQty.getText().toString();
-                final String distributor = etDistributor.getSelectedItem().toString();
 
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-                            if (success) {
-                                toast("Success adding item", 10000000);
-                                launchPricesView();
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                toast("Failed, please try again, perhaps item is already added?", 5000);
-                                builder.setMessage("Adding Item Failed").setNegativeButton("Retry", null).create()
-                                        .show();
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Add Item to Distributors?")
+                        .setMessage("You will be adding an item to a vendor. Are you sure you want to proceed?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                loading.setVisibility(View.VISIBLE); // Show loading circle
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        final String item = etItem.getText().toString();
+                                        final String currentQty = etPricePerQty.getText().toString();
+                                        final String distributor = etDistributor.getSelectedItem().toString();
+
+                                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                try {
+                                                    JSONObject jsonResponse = new JSONObject(response);
+                                                    boolean success = jsonResponse.getBoolean("success");
+                                                    if (success) {
+                                                        toast("Success adding item", 10000000);
+                                                        launchPricesView();
+                                                    } else {
+                                                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                                        toast("Failed, please try again, perhaps item is already added?", 5000);
+                                                        builder.setMessage("Adding Item Failed").setNegativeButton("Retry", null).create()
+                                                                .show();
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        };
+                                        // The next 3 lines calls the @see RegisterRequest class.
+                                        PriceRequest priceRequest = new PriceRequest(item, currentQty, distributor, responseListener);
+                                        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                                        queue.add(priceRequest);
+                                    }
+                                }, 500);
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-
-                // The next 3 lines calls the @see RegisterRequest class.
-                PriceRequest inventoryRequest = new PriceRequest(item, currentQty, distributor, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                queue.add(inventoryRequest);
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(R.drawable.ic_eye)
+                        .show();
             }
         });
     }
@@ -1102,11 +1243,16 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_recyclerview);
         mRecyclerView.setLayoutManager(layoutManager);
-        mToolbar.setTitle("Order - Place an Order");
+
+        // Obtain prices from previous view
+        mToolbar.setTitle("Prices - All Prices from sellers");
+        new talkToDataBase().execute();
 
         recommendedOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mToolbar.setTitle("Order - Place an Order");
+                new talkToDataBase().execute();
                 placeOrderPopUp.setVisibility(ScrollView.VISIBLE);
                 placeOrderColumns.setVisibility(LinearLayout.VISIBLE);
                 placeOrderTable.setVisibility(LinearLayout.VISIBLE);
@@ -1123,7 +1269,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
             }
         });
-        new talkToDataBase().execute();
+
+
+
     }
 
     /* ----> Place Order Recommended Table */
@@ -1131,46 +1279,104 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                final LinkedList<String> recepitOrder = new LinkedList<String>();
                 placeOrderTable.removeAllViews();
                 // get a reference for the TableLayout
-                for (String aCurrListView : parser.allItemsFromLowStock()) {
+                System.out.println("DEXTER" + currListView.toString());
+                for (String aCurrListView : currListView) {
 
                     final TableRow row = new TableRow(MainActivity.this);
                     row.setClickable(true);
 
                     final TextView item1 = new TextView(MainActivity.this);
-                    TextView distributor1 = new TextView(MainActivity.this);
-                    TextView price1 = new TextView(MainActivity.this);
+                    final TextView distributor1 = new TextView(MainActivity.this);
+                    final TextView price1 = new TextView(MainActivity.this);
+                    TextView par = new TextView(MainActivity.this);
                     TextView curr_qty1 = new TextView(MainActivity.this);
 
+                    item1.setTextSize(12);
+                    distributor1.setTextSize(12);
+                    price1.setTextSize(12);
+                    par.setTextSize(12);
+                    curr_qty1.setTextSize(12);
+
                     String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
-                    Log.w("HERE4", String.valueOf(parser.allItemsFromLowStock().toString()));
+
                     item1.setText(strArray[0]); //ITEM
                     distributor1.setText(strArray[1]);
                     price1.setText(strArray[2]);
+                    par.setText("2 - 5");
                     curr_qty1.setText(strArray[3]);
+
+                    ArrayList<String> spinnerArray = new ArrayList<String>();
+
+                    for (int k = 0; k < 100; k++) {
+                        spinnerArray.add(String.valueOf(k));
+                    }
+
+                    Spinner spinner = new Spinner(MainActivity.this);
+                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R
+                            .layout.simple_spinner_dropdown_item, spinnerArray);
+                    spinner.setAdapter(spinnerArrayAdapter);
+
 
                     row.addView(item1);
                     row.addView(distributor1);
                     row.addView(price1);
+                    row.addView(par);
                     row.addView(curr_qty1);
+                    row.addView(spinner);
+
                     Log.w("item1", item1.getText().toString());
                     LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item1.getLayoutParams();
-                    paramsItem.setMargins(pixelToDP(20), 0, pixelToDP(0), pixelToDP(25));
+                    paramsItem.setMargins(pixelToDP(20), 0, pixelToDP(0), pixelToDP(10));
 
                     LinearLayout.LayoutParams paramsDistributor = (LinearLayout.LayoutParams) distributor1.getLayoutParams();
-                    paramsDistributor.setMargins(pixelToDP(25), 0, 10, pixelToDP(25)); // Left, Top, Right, Bottom
+                    paramsDistributor.setMargins(pixelToDP(35), 0, 10, pixelToDP(10)); // Left, Top, Right, Bottom
 
                     LinearLayout.LayoutParams paramsPrice = (LinearLayout.LayoutParams) price1.getLayoutParams();
-                    paramsPrice.setMargins(pixelToDP(80), 0, 60, pixelToDP(25)); //substitute
+                    paramsPrice.setMargins(pixelToDP(25), 0, 30, pixelToDP(10));
+
+                    LinearLayout.LayoutParams paramsPar = (LinearLayout.LayoutParams) par.getLayoutParams();
+                    paramsPar.setMargins(pixelToDP(10), 0, 10, pixelToDP(10));
 
                     LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) curr_qty1.getLayoutParams();
-                    paramsCurrentQTY.setMargins(pixelToDP(80), 0, 0, pixelToDP(25)); //substitute
+                    paramsCurrentQTY.setMargins(pixelToDP(30), 0, 0, pixelToDP(10));
+
+                    LinearLayout.LayoutParams paramsDropDown = (LinearLayout.LayoutParams) spinner.getLayoutParams();
+                    paramsDropDown.setMargins(pixelToDP(55), 0, 0, pixelToDP(10));
 
                     item1.setLayoutParams(paramsItem);
                     distributor1.setLayoutParams(paramsDistributor);
                     price1.setLayoutParams(paramsPrice);
+                    par.setLayoutParams(paramsPar);
                     curr_qty1.setLayoutParams(paramsCurrentQTY);
+                    spinner.setLayoutParams(paramsDropDown);
+
+                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                            String currSpinner = (String) parent.getItemAtPosition(position);
+
+                            if (Integer.parseInt(currSpinner) > 0) { // Add Item to final list if qty is > 0
+                                String finalStuff = "\n" + item1.getText() + " " + distributor1.getText() + " " +
+                                        ""+ price1.getText() + " " + currSpinner + "\n";
+                                recepitOrder.add(finalStuff);
+                            }
+                        }
+
+                        /**
+                         * Callback method to be invoked when the selection disappears from this
+                         * view. The selection can disappear for instance when touch is activated
+                         * or when the adapter becomes empty.
+                         *
+                         * @param parent The AdapterView that now contains no selected item.
+                         */
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
 
                     placeOrderTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout
                             .LayoutParams.WRAP_CONTENT));
@@ -1182,6 +1388,36 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                         }
                     });
                 }
+                    Button placeOrderBtn = (Button) findViewById(R.id.place_order_button);
+                    placeOrderBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("Place an Order")
+                                    .setMessage("You will be receiving an email and updating Pho Tre Bien Inventory " +
+                                                    "\n" +
+                                            recepitOrder.toString())
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            loading.setVisibility(View.VISIBLE); // Show loading circle
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    // SEND DATA TO DB HERE
+                                                }
+                                            }, 1500);
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            updatePlaceOrderView();
+                                        }
+                                    })
+                                    .setIcon(R.drawable.ic_eye)
+                                    .show();
+                        }
+                    });
+
             }
         });
     }
@@ -1202,7 +1438,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             JSONObject json = new JSONObject();
             if(mToolbar.getTitle().equals("Employee - All Employees")){
                 String URL_PHP = "http://www.narped.com/inventory/Employees.php";
-               json = jParser.makeHttpRequest(URL_PHP, "GET", params);
+                json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
 
             if(mToolbar.getTitle().equals("Restaurant - All Sections") || (mToolbar.getTitle().equals("Inventory - " +
@@ -1210,7 +1446,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 String URL_PHP = "http://www.narped.com/inventory/ItemsInventory.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
-
+            if(mToolbar.getTitle().equals("Weekly Count")){
+                String URL_PHP = "http://www.narped.com/inventory/ItemsInventory.php";
+                json = jParser.makeHttpRequest(URL_PHP, "GET", params);
+            }
             if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){
                 String URL_PHP = "http://www.narped.com/inventory/Prices.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
@@ -1231,6 +1470,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             parser.parseEmployees(JOStuff);
                             parser.parseCategory(JOStuff);
                             parser.parseInventory(JOStuff);
+                            parser.parseWeeklyCount(JOStuff);
                             parser.parsePrices(JOStuff);
                         }
                     }
@@ -1252,16 +1492,24 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 updateSectionsView();
             }
             if(mToolbar.getTitle().equals("Inventory - All Inventory")){
+                Log.w("2000", parser.getAllItemsFromDistributors().toString());
                 currListView = parser.getAllItemsFromDistributors();
                 updateInventoryView();
             }
+            if(mToolbar.getTitle().equals("Weekly Count")){
+                Log.w("2500", parser.getAllItemsFromWeeklyCount().toString());
+                currListView = parser.getAllItemsFromWeeklyCount();
+                updateWeeklyCount();
+            }
             if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){
-                currListView = parser.getAllItemsFromDistributors();
+                Log.w("3000", parser.getAllPrices().toString());
+                currListView = parser.getAllPrices();
                 updatePricesView();
             }
             if(mToolbar.getTitle().equals("Order - Place an Order")){
-                Log.w("HERE2", parser.allItemsFromLowStock().toString());
-                currListView = parser.allItemsFromLowStock();
+                Log.w("3500", parser.getAllPrices().toString());
+                Log.w("4000", String.valueOf(parser.parseRecommended(parser.allItemsFromLowStock(), parser.getAllPrices())));
+                currListView = parser.parseRecommended(parser.allItemsFromLowStock(), parser.getAllPrices());
                 updatePlaceOrderView();
             }
             super.onPostExecute(aVoid);

@@ -61,9 +61,9 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/food_item_selected_pop_up" android:layout_marginTop="80dp" android:layout_marginLeft="20dp"
+            android:id="@+id/food_item_selected_pop_up" android:layout_marginTop="170dp" android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp" android:background="@drawable/white_box"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="80dp">
         <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -79,6 +79,7 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:id="@+id/holder"
                 android:fitsSystemWindows="true">
             <RelativeLayout
                     android:layout_width="wrap_content"
@@ -92,34 +93,48 @@
                         android:ems="10"
                         android:id="@+id/titleClicked" android:gravity="center"
                         android:layout_marginTop="70dp"
-                        android:textSize="36sp"
+                        android:textSize="40sp"
                         android:textColor="@color/material_drawer_dark_background" android:fontFamily="sans-serif-smallcaps"
                         android:textAlignment="center"/>
+                <ImageView
+                        android:id="@+id/imageIcon"
+                        android:contentDescription="@string/food_item_enlarged"
+                        android:layout_below="@id/titleClicked"
+                        android:layout_width="250dp"
+                        android:scaleType="fitXY" android:layout_marginStart="20dp" android:layout_marginEnd="20dp"
+                        android:layout_marginTop="50dp" android:layout_marginBottom="20dp"
+                        android:layout_centerHorizontal="true" android:layout_height="250dp"/>
                 <TextView
                         android:text="@string/textview"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@id/titleClicked"
+                        android:layout_below="@id/imageIcon"
                         android:id="@+id/details"
-                        android:textSize="16sp" android:fontFamily="sans-serif-smallcaps"
-                        android:textAlignment="center"
-                        android:textColor="@color/material_drawer_dark_selected" android:layout_marginTop="20dp"
-                        android:layout_marginStart="20dp" android:layout_marginEnd="20dp"/>
-                <ImageView
-                        android:id="@+id/imageIcon"
-                        android:contentDescription="@string/food_item_enlarged" android:layout_height="match_parent"
-                        android:layout_below="@id/details"
-                        android:layout_width="match_parent" android:layout_marginLeft="20dp"/>
+                        android:textSize="18sp" android:fontFamily="sans-serif-smallcaps"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/md_blue_grey_900" android:layout_marginTop="20dp"
+                        android:layout_marginStart="35dp" android:layout_marginEnd="35dp"
+                        android:textStyle="normal|italic"/>
 
-
+                <TextView
+                        android:text="7.99"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/details" android:id="@+id/textViewPrice"
+                        android:textStyle="normal|italic" android:textAlignment="textEnd" android:textSize="28sp"
+                        android:layout_marginTop="30dp" android:layout_marginEnd="45dp"
+                        android:fontFamily="sans-serif" android:textColor="@color/material_drawer_dark_selected"/>
                 <Button
                         android:text="@string/user_add_item"
-                        android:layout_width="200dp"
-                        android:layout_below="@id/imageIcon"
-                        android:layout_height="200dp"
+                        android:layout_width="wrap_content"
+                        android:layout_below="@id/textViewPrice"
+                        android:layout_height="wrap_content"
                         android:id="@+id/user_add_item"
-                        android:backgroundTint="@color/md_light_green_600"
-                        android:textColor="@color/material_drawer_background"/>
+                        android:backgroundTint="?attr/colorAccent"
+                        android:textColor="@color/material_drawer_background"
+                        android:layout_alignParentRight="false" android:layout_marginStart="60dp"
+                        android:layout_marginTop="30dp"/>
+
             </RelativeLayout>
         </ScrollView>
     </RelativeLayout>
@@ -343,7 +358,7 @@
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
                     android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
             <TextView
-                    android:text="@string/need_to_order"
+                    android:text="@string/max_qty"
                     android:textColor="@color/md_white_1000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/Need" android:layout_weight="1"
@@ -476,18 +491,6 @@
                                   android:fontFamily="sans-serif-smallcaps"/>
                     </android.support.design.widget.TextInputLayout>
 
-                    <!-- Comments Label -->
-                    <android.support.design.widget.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp">
-                        <EditText android:id="@+id/prices"
-                                  android:layout_width="match_parent"
-                                  android:layout_height="wrap_content"
-                                  android:hint="@string/prices" android:inputType="numberDecimal"
-                                  android:fontFamily="sans-serif-smallcaps"/>
-                    </android.support.design.widget.TextInputLayout>
                     <!--  Section Label -->
                     <android.support.design.widget.TextInputLayout
                             android:layout_width="match_parent"
@@ -538,6 +541,106 @@
             </ScrollView>
         </RelativeLayout>
     </RelativeLayout>
+
+
+
+
+
+
+
+
+    <!-- WEEKLY COUNT -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:context=".MainActivity" android:id="@+id/weekly_count_tab" android:layout_marginTop="80dp"
+                    android:layout_marginStart="20dp" android:layout_marginEnd="20dp">
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/weekly_columns">
+            <!-- ITEM ID -->
+            <TextView
+                    android:text="@string/item_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/weekly_Item_id" android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                    android:textAlignment="center" android:textColorHint="@color/md_white_1000"
+                    android:textColor="@color/md_white_1000"
+                    android:textColorHighlight="@color/md_white_1000" android:textCursorDrawable="@color/md_white_1000"
+                    android:fontFamily="sans-serif-smallcaps"/>
+            <!-- ITEM TITLE -->
+            <TextView
+                    android:text="@string/item_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/weekly_Item" android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                    android:textAlignment="center" android:textColorHint="@color/md_white_1000"
+                    android:textColor="@color/md_white_1000"
+                    android:textColorHighlight="@color/md_white_1000" android:textCursorDrawable="@color/md_white_1000"
+                    android:fontFamily="sans-serif-smallcaps"/>
+            <!-- CATEGORY TITLE -->
+            <TextView
+                    android:text="@string/category"
+                    android:textColor="@color/md_white_1000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/weekly_category" android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+            <!-- COUNT TITLE -->
+            <TextView
+                    android:text="@string/weekly_count"
+                    android:textColor="@color/md_white_1000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/count" android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+        </LinearLayout>
+        <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:fitsSystemWindows="true"
+                android:layout_above="@+id/weekly_count_buttons"
+                android:background="@drawable/white_box" android:layout_marginTop="30dp">
+            <!--Scrollable content here-->
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:layout_marginTop="20dp"
+                        android:id="@+id/weekly_table" android:contextClickable="true">
+                </TableLayout>
+                <!-- Dynamically fill table here -->
+            </LinearLayout>
+        </ScrollView>
+        <LinearLayout
+                android:id="@+id/weekly_count_buttons"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:layout_alignParentBottom="true">
+
+            <!-- Save Button -->
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save"
+                    android:id="@+id/save_button"
+                    android:backgroundTint="@android:color/holo_blue_light"
+                    android:textColor="@color/material_drawer_background" tools:ignore="ButtonStyle"
+                    android:fontFamily="sans-serif-smallcaps"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
 
 
 
@@ -603,12 +706,6 @@
                         android:layout_height="match_parent" android:layout_marginTop="20dp"
                         android:id="@+id/prices_table" android:contextClickable="true">
                 </TableLayout>
-                <ProgressBar
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:indeterminate="true"
-                        android:id="@+id/loadingCircleForPrices"
-                        android:layout_marginStart="100dp" android:layout_marginTop="170dp"/>
                 <!-- Dynamically fill table here -->
             </LinearLayout>
         </ScrollView>
@@ -622,13 +719,6 @@
                 android:layout_alignParentBottom="true">
 
             <!-- Remove Button -->
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/remove_item"
-                    android:backgroundTint="@android:color/holo_red_light"
-                    android:textColor="@color/material_drawer_background" tools:ignore="ButtonStyle"
-                    android:fontFamily="sans-serif-smallcaps"/>
 
             <!-- Add Button -->
             <Button
@@ -696,8 +786,8 @@
                         <EditText android:id="@+id/price_per_qty"
                                   android:layout_width="match_parent"
                                   android:layout_height="wrap_content"
-                                  android:hint="@string/current_qty" android:inputType="number"
-                                  android:fontFamily="sans-serif-smallcaps"/>
+                                  android:hint="@string/price_per_qty"
+                                  android:fontFamily="sans-serif-smallcaps" android:inputType="numberDecimal"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <!-- Distributor Label -->
@@ -748,7 +838,7 @@
 
 
 
-
+    <!-- PLACE ORDER -->
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:id="@+id/place_order_tab" android:layout_marginEnd="20dp"
@@ -817,24 +907,6 @@
                 android:fitsSystemWindows="true">
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
@@ -866,15 +938,16 @@
                             android:textAlignment="textStart" android:layout_marginStart="25dp"
                             android:textColorHighlight="?android:attr/colorControlNormal" android:textColor="@color/primary_dark"
                             android:textColorHint="?android:attr/colorControlNormal"
-                            android:fontFamily="sans-serif-smallcaps"/>
+                            android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"/>
                     <TextView
-                            android:text="@string/place_oder_distributor"
+                            android:text="@string/place_oder_dist"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" android:id="@+id/place_order_Distributor"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
                             android:textAlignment="textStart" android:textColor="@color/primary_dark"
-                            android:fontFamily="sans-serif-smallcaps"/>
+                            android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
+                            android:layout_marginStart="40dp"/>
                     <TextView
                             android:text="@string/place_order_price"
                             android:layout_width="wrap_content"
@@ -882,15 +955,33 @@
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
                             android:textAlignment="textStart" android:textColor="@color/primary_dark"
-                            android:fontFamily="sans-serif-smallcaps"/>
+                            android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
+                            android:layout_marginStart="50dp"/>
                     <TextView
-                            android:text="@string/place_order_qty"
+                            android:text="@string/place_order_par"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" android:id="@+id/place_order_Qty"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
                             android:textAlignment="textStart" android:textColor="@color/primary_dark"
-                            android:fontFamily="sans-serif-smallcaps"/>
+                            android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
+                            android:layout_marginStart="5dp"/>
+                    <TextView
+                            android:text="@string/place_order_recommended"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:id="@+id/place_order_recommend"
+                            android:layout_weight="1"
+                            android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                            android:textAlignment="textStart" android:textColor="@color/primary_dark"
+                            android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"/>
+                    <TextView
+                            android:text="@string/place_order_dropdown_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:id="@+id/place_order_order"
+                            android:layout_weight="1"
+                            android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                            android:textAlignment="textStart" android:textColor="@color/primary_dark"
+                            android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"/>
 
                 </LinearLayout>
 
@@ -903,10 +994,10 @@
                 <Button
                         android:text="@string/place_order"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:id="@+id/button"
+                        android:layout_height="wrap_content" android:id="@+id/place_order_button"
                         android:background="@color/md_amber_400"
                         android:layout_marginStart="40dp" android:layout_marginEnd="40dp"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="10dp" android:layout_marginBottom="20dp"/>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
