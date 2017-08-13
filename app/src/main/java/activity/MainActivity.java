@@ -22,10 +22,7 @@ import android.widget.*;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import communication.InventoryRequest;
-import communication.LoginRequest;
-import communication.PriceRequest;
-import communication.RegisterRequest;
+import communication.*;
 import inc.pheude.inventory.R;
 import model.Parser;
 import org.apache.http.NameValuePair;
@@ -33,9 +30,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -57,27 +54,28 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     private LinearLayout placeOrderColumns;
     private LinearLayout inventoryColumns;
-    private LinearLayout weeklyCountColumns;
+    private LinearLayout inventoryCountColumns;
     private LinearLayout pricesColumns;
-
-
+    private LinearLayout activeOrdersColumns;
 
     private TableLayout employeesTable;
     private TableLayout sectionsTable;
     private TableLayout inventoryTable;
-    private TableLayout weeklyCountTable;
+    private TableLayout inventoryCountTable;
     private TableLayout pricesTable;
     private TableLayout placeOrderTable;
+    private TableLayout activeOrdersTable;
 
     private RelativeLayout swipeRefresh;
 
     private LinearLayout menuView;
-    private RelativeLayout inventoryView;
-    private RelativeLayout weeklyCountView;
-    private RelativeLayout placeOrderView;
     private RelativeLayout employeesView;
     private RelativeLayout sectionsView;
+    private RelativeLayout inventoryView;
+    private RelativeLayout inventoryCountView;
     private RelativeLayout pricesView;
+    private RelativeLayout placeOrderView;
+    private RelativeLayout activeOrdersView;
 
     private RelativeLayout addItem;
     private RelativeLayout addPrice;
@@ -242,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 employeesView.setVisibility(RelativeLayout.GONE);
                 sectionsView.setVisibility(RelativeLayout.GONE);
                 inventoryView.setVisibility(RelativeLayout.GONE);
-                weeklyCountView.setVisibility(RelativeLayout.GONE);
+                inventoryCountView.setVisibility(RelativeLayout.GONE);
                 pricesView.setVisibility(RelativeLayout.GONE);
                 placeOrderView.setVisibility(RelativeLayout.GONE);
 
@@ -253,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 menuView.setVisibility(LinearLayout.GONE);
                 sectionsView.setVisibility(RelativeLayout.GONE);
                 inventoryView.setVisibility(RelativeLayout.GONE);
-                weeklyCountView.setVisibility(RelativeLayout.GONE);
+                inventoryCountView.setVisibility(RelativeLayout.GONE);
                 pricesView.setVisibility(RelativeLayout.GONE);
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
@@ -266,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 menuView.setVisibility(LinearLayout.GONE);
                 employeesView.setVisibility(RelativeLayout.GONE);
                 inventoryView.setVisibility(RelativeLayout.GONE);
-                weeklyCountView.setVisibility(RelativeLayout.GONE);
+                inventoryCountView.setVisibility(RelativeLayout.GONE);
                 pricesView.setVisibility(RelativeLayout.GONE);
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
@@ -278,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 menuView.setVisibility(LinearLayout.GONE);
                 employeesView.setVisibility(RelativeLayout.GONE);
                 pricesView.setVisibility(RelativeLayout.GONE);
-                weeklyCountView.setVisibility(RelativeLayout.GONE);
+                inventoryCountView.setVisibility(RelativeLayout.GONE);
                 sectionsView.setVisibility(RelativeLayout.GONE);
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
@@ -286,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 drawerFragment.closeDrawers();
                 launchInventoryView();
                 break;
-            case 4:  // Weekly Count
+            case 4:  // Inventory Count
                 menuView.setVisibility(LinearLayout.GONE);
                 inventoryView.setVisibility(RelativeLayout.GONE);
                 employeesView.setVisibility(RelativeLayout.GONE);
@@ -300,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             case 5:  // View Prices
                 menuView.setVisibility(LinearLayout.GONE);
                 employeesView.setVisibility(RelativeLayout.GONE);
-                weeklyCountView.setVisibility(RelativeLayout.GONE);
+                inventoryCountView.setVisibility(RelativeLayout.GONE);
                 inventoryView.setVisibility(RelativeLayout.GONE);
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
@@ -313,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
                 menuView.setVisibility(LinearLayout.GONE);
                 employeesView.setVisibility(RelativeLayout.GONE);
-                weeklyCountView.setVisibility(RelativeLayout.GONE);
+                inventoryCountView.setVisibility(RelativeLayout.GONE);
                 sectionsView.setVisibility(LinearLayout.GONE);
                 inventoryView.setVisibility(RelativeLayout.GONE);
                 pricesView.setVisibility(RelativeLayout.GONE);
@@ -322,7 +320,23 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 drawerFragment.closeDrawers();
                 launchPlaceOrderView();
                 break;
-            case 7:  // Log Out
+
+            case 7: // Active Orders
+                mToolbar.setTitle("Active Orders");
+                activeOrdersView.setVisibility(RelativeLayout.VISIBLE);
+
+                menuView.setVisibility(LinearLayout.GONE);
+                employeesView.setVisibility(RelativeLayout.GONE);
+                inventoryCountView.setVisibility(RelativeLayout.GONE);
+                sectionsView.setVisibility(LinearLayout.GONE);
+                inventoryView.setVisibility(RelativeLayout.GONE);
+                pricesView.setVisibility(RelativeLayout.GONE);
+                placeOrderPopUp.setVisibility(RelativeLayout.GONE);
+
+                drawerFragment.closeDrawers();
+                launchActiveOrders();
+                break;
+            case 8:  // Log Out
                 Log.w("Log out ", "Logging out");
                 restartActivity();
                 break;
@@ -504,9 +518,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         employeesView = (RelativeLayout) findViewById(R.id.employees_tab);
         sectionsView = (RelativeLayout) findViewById(R.id.sections_tab);
         inventoryView = (RelativeLayout) findViewById(R.id.inventory_tab);
-        weeklyCountView = (RelativeLayout) findViewById(R.id.weekly_count_tab);
+        inventoryCountView = (RelativeLayout) findViewById(R.id.weekly_count_tab);
         pricesView = (RelativeLayout) findViewById(R.id.prices_tab);
         placeOrderView = (RelativeLayout) findViewById(R.id.place_order_tab);
+        activeOrdersView = (RelativeLayout) findViewById(R.id.active_orders_tab);
+
         loading = (ProgressBar) findViewById(R.id.loadingCircle);
 
         titleClicked = (TextView) findViewById(R.id.titleClicked);
@@ -515,31 +531,39 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         menuGridView = (GridView) findViewById(R.id.grid_view);
 
+        menuView = (LinearLayout) findViewById(R.id.menu_view);
         inventoryColumns = (LinearLayout) findViewById(R.id.inventory_columns);
-        weeklyCountColumns =  (LinearLayout) findViewById(R.id.weekly_columns);
+        inventoryCountColumns =  (LinearLayout) findViewById(R.id.weekly_columns);
         pricesColumns =  (LinearLayout) findViewById(R.id.prices_columns);
         placeOrderColumns = (LinearLayout) findViewById(R.id.place_order_columns);
-        menuView = (LinearLayout) findViewById(R.id.menu_view);
+        activeOrdersColumns = (LinearLayout) findViewById(R.id.active_orders_columns);
 
         /* Tables */
         employeesTable = (TableLayout) findViewById(R.id.employee_table);
         sectionsTable = (TableLayout) findViewById(R.id.section_table);
         inventoryTable = (TableLayout) findViewById(R.id.inventory_table);
-        weeklyCountTable = (TableLayout) findViewById(R.id.weekly_table);
+        inventoryCountTable = (TableLayout) findViewById(R.id.weekly_table);
         pricesTable =  (TableLayout) findViewById(R.id.prices_table);
         placeOrderTable = (TableLayout) findViewById(R.id.place_order_table);
+        activeOrdersTable = (TableLayout) findViewById(R.id.active_orders_table);
 
         /* Hide Layouts */
         swipeRefresh.setVisibility(RelativeLayout.GONE);
-        foodItemPopUp.setVisibility(RelativeLayout.GONE);
+
         loading.setVisibility(View.GONE);
+
         placeOrderPopUp.setVisibility(RelativeLayout.GONE);
+        foodItemPopUp.setVisibility(RelativeLayout.GONE);
+
         employeesView.setVisibility(RelativeLayout.GONE);
         sectionsView.setVisibility(RelativeLayout.GONE);
         inventoryView.setVisibility(RelativeLayout.GONE);
-        weeklyCountView.setVisibility(RelativeLayout.GONE);
+        inventoryCountView.setVisibility(RelativeLayout.GONE);
         pricesView.setVisibility(RelativeLayout.GONE);
         placeOrderView.setVisibility(RelativeLayout.GONE);
+        activeOrdersView.setVisibility(RelativeLayout.GONE);
+
+
         addItem.setVisibility(RelativeLayout.GONE);
         addPrice.setVisibility(RelativeLayout.GONE);
 
@@ -936,9 +960,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         menuGridView.setVisibility(RelativeLayout.INVISIBLE);
         addItem.setVisibility(RelativeLayout.INVISIBLE);
 
-        weeklyCountColumns.setVisibility(LinearLayout.VISIBLE);
-        weeklyCountTable.setVisibility(LinearLayout.VISIBLE);
-        weeklyCountView.setVisibility(RelativeLayout.VISIBLE);
+        inventoryCountColumns.setVisibility(LinearLayout.VISIBLE);
+        inventoryCountTable.setVisibility(LinearLayout.VISIBLE);
+        inventoryCountView.setVisibility(RelativeLayout.VISIBLE);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_recyclerview);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -984,7 +1008,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             @Override
             public void run() {
 
-                weeklyCountTable.removeAllViews();
+                inventoryCountTable.removeAllViews();
                 int rowCounter = 0;
                 // get a reference for the TableLayout
                 for (String aCurrListView : currListView) {
@@ -1026,7 +1050,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     category1.setLayoutParams(paramsCategory);
                     count.setLayoutParams(paramsCurrentQTY);
 
-                    weeklyCountTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT));
+                    inventoryCountTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT));
 
                     row.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -1359,8 +1383,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             String currSpinner = (String) parent.getItemAtPosition(position);
 
                             if (Integer.parseInt(currSpinner) > 0) { // Add Item to final list if qty is > 0
-                                String finalStuff = "\n" + item1.getText() + " " + distributor1.getText() + " " +
-                                        ""+ price1.getText() + " " + currSpinner + "\n";
+                                String finalStuff = item1.getText() + " " + distributor1.getText() + " " + price1.getText() + " " + currSpinner;
                                 recepitOrder.add(finalStuff);
                             }
                         }
@@ -1403,7 +1426,74 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                             new Handler().postDelayed(new Runnable() {
                                                 @Override
                                                 public void run() {
+
+                                                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                                        @Override
+                                                        public void onResponse(String response) {
+                                                            try {
+                                                                JSONObject jsonResponse = new JSONObject(response);
+                                                                boolean success = jsonResponse.getBoolean("success");
+                                                                if (success) {
+                                                                    toast("Success sending order!", 10000000);
+                                                                } else {
+                                                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                                                    toast("Failed, please try again.", 5000);
+                                                                    builder.setMessage("Adding Item Failed").setNegativeButton("Retry", null).create()
+                                                                            .show();
+                                                                }
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                        }
+                                                    };
+
+                                                    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                                    Date date = new Date();
+                                                    final String currDate = dateFormat.format(date);
+                                                    int receipt_number = 423;
+                                                    for(int t = 0; t < recepitOrder.size(); t++) {
+
+                                                        String strArray[] = recepitOrder.get(t).replace("[", "").replace("]", "").replace(",", "").split(" ");
+                                                        final String item = strArray[0];
+                                                        final String distributor = strArray[1];
+                                                        final String price = strArray[2];
+                                                        final String qty = strArray[3];
+
+                                                        System.out.println("item1 " + item);
+                                                        System.out.println("distributor1 " + distributor);
+                                                        System.out.println("price1 " + price);
+                                                        System.out.println("qty " + qty);
+                                                        System.out.println("place_order_time " + currDate);
+                                                        System.out.println("receipt_number " + receipt_number);
+
+                                                        OrderRequest orderRequest = new OrderRequest(item,
+                                                                distributor, price, qty, currDate, receipt_number,
+                                                                responseListener);
+                                                        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                                                        queue.add(orderRequest);
+
+                                                    }
+
+                                                    /*
                                                     // SEND DATA TO DB HERE
+                                                    final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                                    emailIntent.setType("text/plain");
+                                                    emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,  "serveroverloadofficial@gmail.com");
+                                                    emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Hello There");
+                                                    emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Add Message here");
+
+
+                                                    emailIntent.setType("message/rfc822");
+
+                                                    try {
+                                                        startActivity(Intent.createChooser(emailIntent,
+                                                                "Send email using..."));
+                                                    } catch (android.content.ActivityNotFoundException ex) {
+                                                        Toast.makeText(MainActivity.this,
+                                                                "No email clients installed.",
+                                                                Toast.LENGTH_SHORT).show();
+                                                    }
+                                                    */
                                                 }
                                             }, 1500);
                                         }
@@ -1422,6 +1512,93 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         });
     }
 
+
+/* Active Orders View **/
+    private void launchActiveOrders(){
+        menuGridView.setVisibility(RelativeLayout.INVISIBLE);
+        addItem.setVisibility(RelativeLayout.INVISIBLE);
+
+        activeOrdersColumns.setVisibility(LinearLayout.VISIBLE);
+        activeOrdersTable.setVisibility(LinearLayout.VISIBLE);
+        activeOrdersView.setVisibility(RelativeLayout.VISIBLE);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_recyclerview);
+
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        mToolbar.setTitle("Active Orders");
+        new talkToDataBase().execute();
+
+        showLoadingCircle();
+
+    }
+    /* ----> Active Order Table */
+    private void updateActiveOrdersView(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                activeOrdersTable.removeAllViews();
+
+                // iterate number of unique order numbers
+                for (String aCurrListView : parser.getAllActiveOrders()) {
+
+                    final TableRow row = new TableRow(MainActivity.this);
+                    row.setClickable(true);
+
+                    final TextView ticketNumber = new TextView(MainActivity.this);
+                    TextView orderDate = new TextView(MainActivity.this);
+                    TextView status = new TextView(MainActivity.this);
+                    TextView total = new TextView(MainActivity.this);
+
+                    String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
+                    System.out.println("ACTIVE ORDERS " + Arrays.toString(strArray));
+                    System.out.println("    ITEM " + strArray[0]);
+                    System.out.println("    DATE " + strArray[1]);
+                    System.out.println("    STATUS " + strArray[2]);
+                    System.out.println("    TOTAL " + strArray[3]);
+
+                    ticketNumber.setText(strArray[0]); //ITEM
+                    orderDate.setText(strArray[1]); // ORDER DATE
+                    status.setText(strArray[2]); // STATUS
+                    total.setText(strArray[3]); // TOTAL
+
+                    row.addView(ticketNumber);
+                    row.addView(orderDate);
+                    row.addView(status);
+                    row.addView(total);
+
+                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) ticketNumber.getLayoutParams();
+                    paramsItem.setMargins(pixelToDP(20), 0, pixelToDP(0), pixelToDP(25));
+
+                    LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) orderDate.getLayoutParams();
+                    paramsCategory.setMargins(pixelToDP(15), 0, 10, pixelToDP(25)); // Left, Top, Right, Bottom
+
+                    LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) status.getLayoutParams();
+                    paramsCurrentQTY.setMargins(pixelToDP(50), 0, 60, pixelToDP(25)); //substitute
+
+                    LinearLayout.LayoutParams paramsMaxQTY = (LinearLayout.LayoutParams) total.getLayoutParams();
+                    paramsMaxQTY.setMargins(pixelToDP(80), 0, 0, pixelToDP(25)); //substitute
+
+                    ticketNumber.setLayoutParams(paramsItem);
+                    orderDate.setLayoutParams(paramsCategory);
+                    status.setLayoutParams(paramsCurrentQTY);
+                    total.setLayoutParams(paramsMaxQTY);
+
+                    activeOrdersTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout
+                            .LayoutParams.WRAP_CONTENT));
+                    //loading.setVisibility(View.GONE); // Hide loading circle
+
+                    row.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            Log.w("Name of Item Selected", String.valueOf(ticketNumber.getText()));
+                        }
+                    });
+                }
+            }
+        });
+    }
 /* Get Data From Database */
     private class talkToDataBase extends AsyncTask<Void, Void, Void> {
 
@@ -1440,8 +1617,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 String URL_PHP = "http://www.narped.com/inventory/Employees.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
-
-            if(mToolbar.getTitle().equals("Restaurant - All Sections") || (mToolbar.getTitle().equals("Inventory - " +
+            if(mToolbar.getTitle().equals("Restaurant - All Sections") || (mToolbar.getTitle().equals("Inventory" +
+                    " - " +
                     "All Inventory") || (mToolbar.getTitle().equals("Order - Place an Order")))){
                 String URL_PHP = "http://www.narped.com/inventory/ItemsInventory.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
@@ -1454,24 +1631,26 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 String URL_PHP = "http://www.narped.com/inventory/Prices.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
-
+            if(mToolbar.getTitle().equals("Active Orders")){
+                String URL_PHP = "http://www.narped.com/inventory/ActiveOrders.php";
+                json = jParser.makeHttpRequest(URL_PHP, "GET", params);
+            }
             try {
                 /* Checking for SUCCESS TAG */
                 int success = json.getInt(TAG_SUCCESS);
                 if (success == 1) {
                     JSONArray JAStuff = json.getJSONArray(TAG_STUFF);
-
                     /* CHECK THE NUMBER OF RECORDS **/
                     int intStuff = JAStuff.length();
-
                     if (intStuff != 0) {
                         for (int i = 0; i < JAStuff.length(); i++) {
                             JSONObject JOStuff = JAStuff.getJSONObject(i);
                             parser.parseEmployees(JOStuff);
-                            parser.parseCategory(JOStuff);
                             parser.parseInventory(JOStuff);
                             parser.parseWeeklyCount(JOStuff);
+                            parser.parseCategory(JOStuff);
                             parser.parsePrices(JOStuff);
+                            parser.parseActiveOrders(JOStuff);
                         }
                     }
                 }
@@ -1511,6 +1690,12 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 Log.w("4000", String.valueOf(parser.parseRecommended(parser.allItemsFromLowStock(), parser.getAllPrices())));
                 currListView = parser.parseRecommended(parser.allItemsFromLowStock(), parser.getAllPrices());
                 updatePlaceOrderView();
+            }
+            if(mToolbar.getTitle().equals("Active Orders")){
+                System.out.println("SUNDAY3");
+                Log.w("4500", parser.getAllActiveOrders().toString());
+                currListView =parser.getAllActiveOrders();
+                updateActiveOrdersView();
             }
             super.onPostExecute(aVoid);
         }
@@ -1561,4 +1746,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         final float scale = this.getResources().getDisplayMetrics().density;
         return (int) ((pixel * scale) + 0.5f);
     }
+
+
 }

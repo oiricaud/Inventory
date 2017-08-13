@@ -56,6 +56,9 @@ public class Parser {
     private LinkedList<String> pcCoscoPriceList = new LinkedList<>();
     private LinkedList<String> pcFoodOfKingPriceList = new LinkedList<>();
 
+/* Active Orders */
+    private LinkedList<String> phoTreBienActiveOrders = new LinkedList<>();
+    private int numOfOrders;
     public Parser(){
 
     }
@@ -242,48 +245,44 @@ public class Parser {
 
 /* PARSE PRICES */
     public void parsePrices(JSONObject jsonObject){
-    try {
-        String currentRow = String.valueOf(jsonObject);
-        String item = String.valueOf(jsonObject.get("item"));
-        String pricePerQty = String.valueOf(jsonObject.get("pricePerQty"));
-        String seller = String.valueOf(jsonObject.get("seller"));
+            try {
+                String currentRow = String.valueOf(jsonObject);
+                String item = String.valueOf(jsonObject.get("item"));
+                String pricePerQty = String.valueOf(jsonObject.get("pricePerQty"));
+                String seller = String.valueOf(jsonObject.get("seller"));
 
-        Log.w("parsePrices", currentRow);
+                Log.w("parsePrices", currentRow);
 
-        Log.w("item", item);
-        Log.w("pricePerQty", pricePerQty);
-        Log.w("seller", seller);
-
-
-
-            /* If you remove the next 4 lines of code then it will mess up the table in the inventory view */
-        item = item.replace(' ', '-');
-        pricePerQty = pricePerQty.replace(' ', '-');
-        seller = seller.replace(' ', '-');
-
-        if (seller.equalsIgnoreCase("Lams")) {
-            addPriceToLams(item + " " + pricePerQty + " " + seller);
-        } else if (seller.equalsIgnoreCase("Sams")) {
-            addPriceToSams(item + " " + pricePerQty + " " + seller);
-        } else if (seller.equalsIgnoreCase("Taiwan-Trading")) {
-            addPriceToTaiwanTrading(item + " " + pricePerQty + " " + seller);
-        } else if (seller.equalsIgnoreCase("Restaurant-Depot")) {
-            addPriceToRestaurantDepot(item + " " + pricePerQty + " " + seller);
-        } else if (seller.equalsIgnoreCase("Shamrock")) {
-            addPriceToShamrock(item + " " + pricePerQty + " " + seller);
-        } else if (seller.equalsIgnoreCase("Cosco")) {
-            addPriceToCosco(item + " " + pricePerQty + " " + seller);
-        } else if (seller.equalsIgnoreCase("Food-King")) {
-            addPriceToFoodKing(item + " " + pricePerQty + " " + seller);
-    }
+                Log.w("item", item);
+                Log.w("pricePerQty", pricePerQty);
+                Log.w("seller", seller);
 
 
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }
+
+                    /* If you remove the next 4 lines of code then it will mess up the table in the inventory view */
+                item = item.replace(' ', '-');
+                pricePerQty = pricePerQty.replace(' ', '-');
+                seller = seller.replace(' ', '-');
+
+                if (seller.equalsIgnoreCase("Lams")) {
+                    addPriceToLams(item + " " + pricePerQty + " " + seller);
+                } else if (seller.equalsIgnoreCase("Sams")) {
+                    addPriceToSams(item + " " + pricePerQty + " " + seller);
+                } else if (seller.equalsIgnoreCase("Taiwan-Trading")) {
+                    addPriceToTaiwanTrading(item + " " + pricePerQty + " " + seller);
+                } else if (seller.equalsIgnoreCase("Restaurant-Depot")) {
+                    addPriceToRestaurantDepot(item + " " + pricePerQty + " " + seller);
+                } else if (seller.equalsIgnoreCase("Shamrock")) {
+                    addPriceToShamrock(item + " " + pricePerQty + " " + seller);
+                } else if (seller.equalsIgnoreCase("Cosco")) {
+                    addPriceToCosco(item + " " + pricePerQty + " " + seller);
+                } else if (seller.equalsIgnoreCase("Food-King")) {
+                    addPriceToFoodKing(item + " " + pricePerQty + " " + seller);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 }
-
-
 
 /* PARSE - RECOMMENDED */
     public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedList<String> prices){
@@ -370,7 +369,57 @@ public class Parser {
         return temp;
     }
 
+/* Parse Active Orders */
+    public void parseActiveOrders(JSONObject jsonObject){
+        int countNumberOfOrders = 0;
+        try {
+            LinkedList<String> tempCounter = new LinkedList<>();
+            String currentRow = String.valueOf(jsonObject);
+            String item = String.valueOf(jsonObject.get("item"));
+            String distributor = String.valueOf(jsonObject.get("distributor"));
+            String price = String.valueOf(jsonObject.get("price"));
+            String qty = String.valueOf(jsonObject.get("qty"));
+            String place_order_time = String.valueOf(jsonObject.get("place_order_time"));
+            String ticket_number = String.valueOf(jsonObject.get("ticket_number"));
+            String status = String.valueOf(jsonObject.get("order_status"));
+            String who_placed_order = String.valueOf(jsonObject.get("who_placed_order"));
 
+            Log.w("parseActiveOrders", currentRow);
+
+            Log.w("item", item);
+            Log.w("distributor", distributor);
+            Log.w("price", price);
+            Log.w("qty", qty);
+            Log.w("place_order_time", place_order_time);
+            Log.w("ticket_number", ticket_number);
+            Log.w("order_status", status);
+            Log.w("who_placed_order", who_placed_order);
+
+
+            /* If you remove the next 4 lines of code then it will mess up the table in the inventory view */
+            item = item.replace(' ', '-');
+            distributor = distributor.replace(' ', '-');
+            price = price.replace(' ', '-');
+            qty = qty.replace(' ', '-');
+            place_order_time = place_order_time.replace(' ', '-');
+            ticket_number = ticket_number.replace(' ', '-');
+            status = status.replace(' ', '-');
+            who_placed_order = who_placed_order.replace(' ', '-');
+
+            if(!tempCounter.contains(ticket_number)){
+                countNumberOfOrders++;
+                tempCounter.add(ticket_number);
+            }
+            System.out.println("SUNDAY1"  + who_placed_order);
+            if (who_placed_order.equalsIgnoreCase("Pho-Tre-Bien")) {
+                addOrderToActiveOrders(ticket_number + " " + place_order_time + " " + status + " " + item + " " +
+                        qty + " " + status);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        setNumberOfOrders(countNumberOfOrders);
+    }
 
 /* GETTERS AND SETTERS FOR EMPLOYEES */
     public LinkedList<String> getEmployeeFrontOfHouse() {
@@ -825,5 +874,24 @@ public LinkedList<String> getFoodOfKingItemListItemList() {
         concatenateLists.addAll(pcFoodOfKingPriceList);
 
         return concatenateLists;
+    }
+
+/* GETTERS AND SETTERS FOR ACTIVE ORDERS */
+    private void addOrderToActiveOrders(String item){
+        System.out.println("SUNDAY"  + phoTreBienActiveOrders.toString());
+        if (!phoTreBienActiveOrders.contains(item)) {
+            phoTreBienActiveOrders.add(item);
+        }
+    }
+    public LinkedList<String> getAllActiveOrders(){
+        LinkedList<String> concatenateLists = new LinkedList<>();
+        concatenateLists.addAll(phoTreBienActiveOrders);
+        return concatenateLists;
+    }
+    private void setNumberOfOrders(int n){
+        this.numOfOrders = n;
+    }
+    public int getNumberOfOrders(){
+        return numOfOrders;
     }
 }

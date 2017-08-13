@@ -17,6 +17,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" tools:ignore="UselessParent">
+            <!-- TOOLBAR -->
             <include
                     android:scrollbars="none"
                     android:id="@+id/toolbar"
@@ -56,7 +57,7 @@
 
     </LinearLayout>
 
-
+<!-- MENU -->
     <RelativeLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -163,7 +164,7 @@
     </RelativeLayout>
 
 
-    <!-- Employee Tab Items -->
+    <!-- EMPLOYEES -->
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent"
@@ -246,7 +247,7 @@
 
 
 
-    <!-- Employee Sections Tab Items -->
+    <!-- SECTIONS -->
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent"
@@ -321,7 +322,7 @@
     </RelativeLayout>
 
 
-    <!-- Inventory Tab Items -->
+    <!-- INVENTORY -->
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent"
@@ -543,13 +544,7 @@
     </RelativeLayout>
 
 
-
-
-
-
-
-
-    <!-- WEEKLY COUNT -->
+    <!-- INVENTORY COUNT -->
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent"
@@ -641,19 +636,7 @@
     </RelativeLayout>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- Prices Tab Items -->
+    <!-- VIEW PRICES -->
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent"
@@ -829,15 +812,6 @@
     </RelativeLayout>
 
 
-
-
-
-
-
-
-
-
-
     <!-- PLACE ORDER -->
     <RelativeLayout
             android:layout_width="match_parent"
@@ -878,12 +852,10 @@
                         android:textColor="@color/accent" android:fontFamily="sans-serif-smallcaps"
                         android:textSize="30sp"/>
             </LinearLayout>
-
-
         </ScrollView>
-
     </RelativeLayout>
 
+    <!-- RECOMMENDED ORDERS -->
     <RelativeLayout
             android:id="@+id/pop_up"
             android:layout_marginStart="40dp" android:layout_marginEnd="40dp" android:layout_marginTop="130dp"
@@ -899,13 +871,11 @@
                 app:backgroundTint="@android:color/holo_red_light" android:layout_marginEnd="10dp"
                 android:layout_marginTop="10dp" tools:ignore="RelativeOverlap"/>
 
-
         <ScrollView
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:fitsSystemWindows="true">
-
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -982,7 +952,6 @@
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
                             android:textAlignment="textStart" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"/>
-
                 </LinearLayout>
 
                 <TableLayout
@@ -1001,6 +970,168 @@
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
+
+    <!-- ACTIVE ORDERS -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:context=".MainActivity" android:id="@+id/active_orders_tab" android:layout_marginTop="80dp"
+                    android:layout_marginStart="20dp" android:layout_marginEnd="20dp">
+        <!-- COLUMNS -->
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/active_orders_columns">
+            <TextView
+                    android:text="@string/active_orders_ticket_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/active_orders_ticket_number"
+                    android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                    android:textAlignment="center" android:textColorHint="@color/md_white_1000"
+                    android:textColor="@color/md_white_1000"
+                    android:textColorHighlight="@color/md_white_1000" android:textCursorDrawable="@color/md_white_1000"
+                    android:fontFamily="sans-serif-smallcaps"/>
+            <TextView
+                    android:text="@string/active_orders_date"
+                    android:textColor="@color/md_white_1000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/active_orders_date" android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+            <TextView
+                    android:text="@string/active_orders_status"
+                    android:textColor="@color/md_white_1000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/active_orders_status" android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+            <TextView
+                    android:text="@string/active_orders_total"
+                    android:textColor="@color/md_white_1000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/active_orders_total" android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+        </LinearLayout>
+
+        <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:fitsSystemWindows="true"
+                android:background="@drawable/white_box" android:layout_marginTop="30dp">
+            <!-- ACTIVE ORDER TICKET NUMBER TABLE -->
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:layout_marginTop="20dp"
+                        android:id="@+id/active_orders_table" android:contextClickable="true">
+                </TableLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- POP UP -->
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MainActivity" android:id="@+id/active_orders_pop_up" android:layout_marginTop="80dp"
+                android:layout_marginBottom="110dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" android:background="@drawable/black_box">
+            <!-- CLOSE POP UP BUTTON -->
+            <android.support.design.widget.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    app:fabSize="mini" app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+                    android:id="@+id/active_orders_close_pop_up"
+                    android:layout_alignParentTop="true" android:layout_alignParentEnd="true"
+                    app:backgroundTint="@android:color/holo_red_light" android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp" tools:ignore="RelativeOverlap"/>
+            <ScrollView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:fitsSystemWindows="true">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                    <!-- TICKET #  -->
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/ticket_number"
+                            android:ems="10"
+                            android:id="@+id/ticket_number" android:gravity="center"
+                            android:layout_marginTop="70dp"
+                            android:textSize="24sp"
+                            android:textColor="@color/material_drawer_dark_background" android:fontFamily="sans-serif-smallcaps"
+                            android:textAlignment="center"/>
+
+                    <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/current_orders_columns" android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp" android:layout_marginTop="30dp">
+                        <!-- ITEM -->
+                        <TextView
+                                android:text="@string/current_orders_item"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:id="@+id/current_orders_item"
+                                android:layout_weight="1"
+                                android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                                android:textAlignment="textStart" android:layout_marginStart="25dp"
+                                android:textColorHighlight="?android:attr/colorControlNormal" android:textColor="@color/primary_dark"
+                                android:textColorHint="?android:attr/colorControlNormal"
+                                android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"/>
+                        <!-- QTY -->
+                        <TextView
+                                android:text="@string/current_orders_qty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:id="@+id/current_orders_qty"
+                                android:layout_weight="1"
+                                android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                                android:textAlignment="textStart" android:textColor="@color/primary_dark"
+                                android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
+                                android:layout_marginStart="40dp"/>
+                        <!-- PRICE -->
+                        <TextView
+                                android:text="@string/current_orders_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:id="@+id/current_orders_price"
+                                android:layout_weight="1"
+                                android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                                android:textAlignment="textStart" android:textColor="@color/primary_dark"
+                                android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
+                                android:layout_marginStart="50dp"/>
+                    </LinearLayout>
+                    <!-- DYNAMIC TABLE FOR CURRENT ORDER -->
+                    <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" android:layout_marginTop="20dp"
+                            android:id="@+id/current_orders_table" android:layout_marginStart="15dp"
+                            android:layout_marginEnd="15dp">
+                    </TableLayout>
+                    <Button
+                            android:text="@string/current_orders_confirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:id="@+id/current_orders_confirm"
+                            android:background="@color/md_amber_400"
+                            android:layout_marginStart="40dp" android:layout_marginEnd="40dp"
+                            android:layout_marginTop="10dp" android:layout_marginBottom="20dp"/>
+                </LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
+    </RelativeLayout>
+
     <FrameLayout
             android:id="@+id/container_body"
             android:layout_width="fill_parent"

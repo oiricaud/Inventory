@@ -24,6 +24,7 @@
         <item>@string/nav_item_weekly_count</item>
         <item>@string/nav_item_view_prices</item>
         <item>@string/nav_item_send_order</item>
+        <item>@string/nav_item_active_orders</item>
         <item>@string/nav_item_logout</item>
     </string-array>
 
@@ -131,13 +132,14 @@
     <string name="place_order_par">Par</string>
     <string name="place_order_recommended">Rcmd</string>
     <string name="place_oder_dist">Dist</string>
-    <string-array name="errand_names">
-        <item>Do Laundry for Jim, $5</item>
-        <item>Walk pet for Erin, $10</item>
-        <item>BabySit for Adriana, $20</item>
-        <item>Carwash for Mike, $20</item>
-        <item>Pick up Oscar, $10</item>
-        <item>Pick up Groceries for Adela, $20</item>
-        <item>Pick up Fast Food for Josh, $3</item>
-    </string-array>
+    <string name="nav_item_active_orders">Active Orders</string>
+    <string name="active_orders_ticket_number">Ticket Number</string>
+    <string name="active_orders_status">Status</string>
+    <string name="active_orders_date">Order Date</string>
+    <string name="active_orders_total">Total</string>
+    <string name="ticket_number">000</string>
+    <string name="current_orders_item">Item</string>
+    <string name="current_orders_qty">Qty</string>
+    <string name="current_orders_price">Price</string>
+    <string name="current_orders_confirm">Confirm</string>
 </resources>
