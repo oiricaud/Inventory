@@ -28,7 +28,7 @@ public class InventoryRequest extends StringRequest {
      * @param listener    The listener listens to the responses from the user.
      */
 
-    public InventoryRequest(String item, String curr_qty, String max_qty, String category, String distributor, Response.Listener<String> listener) {
+    public InventoryRequest(String item, String curr_qty, String max_qty, String category, String last_time_updated, Response.Listener<String> listener) {
         super(Request.Method.POST, REGISTER_REQUEST_URL, listener, null);
         params = new HashMap<>();
 
@@ -36,14 +36,14 @@ public class InventoryRequest extends StringRequest {
         System.out.println("curr_qty" + curr_qty);
         System.out.println("max_qty" + max_qty);
         System.out.println("category" + category);
-        System.out.println("distributor" + distributor);
+        System.out.println("last_time_updated" + last_time_updated);
 
 
         params.put("item", item);
         params.put("curr_qty", curr_qty);
         params.put("max_qty", max_qty);
         params.put("category", category);
-        params.put("distributor", distributor);
+        params.put("last_time_updated", last_time_updated);
     }
 
     @Override

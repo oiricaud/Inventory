@@ -990,7 +990,7 @@
                     android:layout_height="wrap_content" android:id="@+id/active_orders_ticket_number"
                     android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="center" android:textColorHint="@color/md_white_1000"
+                    android:textAlignment="textStart" android:textColorHint="@color/md_white_1000"
                     android:textColor="@color/md_white_1000"
                     android:textColorHighlight="@color/md_white_1000" android:textCursorDrawable="@color/md_white_1000"
                     android:fontFamily="sans-serif-smallcaps"/>
@@ -1000,21 +1000,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/active_orders_date" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+                    android:textAlignment="textStart" android:fontFamily="sans-serif-smallcaps"/>
             <TextView
                     android:text="@string/active_orders_status"
                     android:textColor="@color/md_white_1000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/active_orders_status" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+                    android:textAlignment="textStart" android:fontFamily="sans-serif-smallcaps"/>
             <TextView
                     android:text="@string/active_orders_total"
                     android:textColor="@color/md_white_1000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/active_orders_total" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+                    android:textAlignment="textStart" android:fontFamily="sans-serif-smallcaps"/>
         </LinearLayout>
 
         <ScrollView

@@ -38,6 +38,7 @@ public class Parser {
     private LinkedList<String> ivCoscoItemList = new LinkedList<>();
     private LinkedList<String> ivFoodOfKingItemList = new LinkedList<>();
 
+    private LinkedList<String> updateInventoryList = new LinkedList<>();
 /* Weekly Count */
     private LinkedList<String> wcLamsItemList = new LinkedList<>();
     private LinkedList<String> wcSamsItemList = new LinkedList<>();
@@ -59,6 +60,10 @@ public class Parser {
 /* Active Orders */
     private LinkedList<String> phoTreBienActiveOrders = new LinkedList<>();
     private int numOfOrders;
+    private int countNumberOfOrders = 0;
+    private LinkedList<String> tempCounter = new LinkedList<>();
+
+
     public Parser(){
 
     }
@@ -102,33 +107,33 @@ public class Parser {
         }
     }
 
-/* PARSE CATEGORIES */
-    public void parseCategory(JSONObject jsonObject) {
+/* PARSE SECTIONS */
+    public void parseSections(JSONObject jsonObject) {
 
         try {
             String nameOfItem = String.valueOf(jsonObject.get("item"));
-            String distributor = String.valueOf(jsonObject.get("distributor"));
+            String last_time_updated = String.valueOf(jsonObject.get("last_time_updated"));
             String category = String.valueOf(jsonObject.get("category"));
             String curr_qty = String.valueOf(jsonObject.get("curr_qty"));
             String max_qty = String.valueOf(jsonObject.get("max_qty"));
             //Log.w("lowStockRow", lowStockRow);
 
             Log.w("nameOfItem", nameOfItem);
-            Log.w("distributor", distributor);
+            Log.w("last_time_updated", last_time_updated);
 
             /* If you remove the next 4 lines of code then it will mess up the table in the inventory view */
             nameOfItem = nameOfItem.replace(' ', '-');
-            distributor = distributor.replace(' ', '-');
+            last_time_updated = last_time_updated.replace(' ', '-');
             category = category.replace(' ', '-');
 
             if (category.equalsIgnoreCase("Front-Of-House")) {
-                addItemToFrontOfHouse(nameOfItem + " " + category + " " + distributor);
+                addItemToFrontOfHouse(nameOfItem + " " + category + " " + last_time_updated);
             } else if (category.equalsIgnoreCase("Back-Of-House")) {
-                addItemToBackOfHouse(nameOfItem + " " + category + " " + distributor);
+                addItemToBackOfHouse(nameOfItem + " " + category + " " + last_time_updated);
             }  else if (category.equalsIgnoreCase("Kitchen")) {
-                addItemToKitchen(nameOfItem + " " +  category + " " + distributor);
+                addItemToKitchen(nameOfItem + " " +  category + " " + last_time_updated);
             } else if (category.equalsIgnoreCase("Bar")) {
-                addItemToBar(nameOfItem + " " +  category + " " + distributor);
+                addItemToBar(nameOfItem + " " +  category + " " + last_time_updated);
             }
 
         } catch (JSONException e) {
@@ -140,54 +145,63 @@ public class Parser {
     public void parseInventory(JSONObject jsonObject) {
 
         try {
+            String id = String.valueOf(jsonObject.get("id"));
             String item = String.valueOf(jsonObject.get("item"));
             String category = String.valueOf(jsonObject.get("category"));
             String curr_qty = String.valueOf(jsonObject.get("curr_qty"));
             String max_qty = String.valueOf(jsonObject.get("max_qty"));
-            String distributor = String.valueOf(jsonObject.get("distributor"));
+            String last_time_updated = String.valueOf(jsonObject.get("last_time_updated"));
 
             double convertCurrQty = Double.parseDouble(curr_qty.toString());
             double convertMaxQty = Double.parseDouble(max_qty.toString());
             double ratio = convertCurrQty / convertMaxQty;
+
             System.out.println("parseInventory");
-            System.out.println("category " + category);
-            System.out.println("convertCurrQty " + convertCurrQty);
-            System.out.println("convertMaxQty " + convertMaxQty);
-            System.out.println("ratio " + ratio);
+            System.out.println("    id " + id);
+            System.out.println("    item " + item);
+            System.out.println("    category " + category);
+            System.out.println("    curr_qty " + curr_qty);
+            System.out.println("    max_qty " + max_qty);
+            System.out.println("    last_time_updated " + last_time_updated);
+
+            System.out.println("    convertCurrQty " + convertCurrQty);
+            System.out.println("    convertMaxQty " + convertMaxQty);
+            System.out.println("    ratio " + ratio);
 
             item = item.replace(' ', '-');
             category = category.replace(' ', '-');
             curr_qty = curr_qty.replace(' ', '-');
             max_qty = max_qty.replace(' ', '-');
-            distributor = distributor.replace(' ', '-');
+            last_time_updated = last_time_updated.replace(' ', '-');
 
             items.add(item);
             items.add(category);
             items.add(curr_qty);
             items.add(max_qty);
-            items.add(distributor);
+            items.add(last_time_updated);
             setItems(items);
-
-            if (distributor.equalsIgnoreCase("Lams")) {
+            /*
+            if (last_time_updated.equalsIgnoreCase("Lams")) {
                 addItemToLamsList(item + " " + category + " " + curr_qty + " " + max_qty);
-            } else if (distributor.equalsIgnoreCase("Sams")) {
+            } else if (last_time_updated.equalsIgnoreCase("Sams")) {
                 addItemToSamsList(item + " " + category + " " + curr_qty + " " + max_qty);
-            }  else if (distributor.equalsIgnoreCase("Taiwan-Trading")){
+            }  else if (last_time_updated.equalsIgnoreCase("Taiwan-Trading")){
                 addItemToTaiwanTradingItemList(item + " " + category + " " + curr_qty + " " + max_qty);
-            } else if (distributor.equalsIgnoreCase("Restaurant-Depot")){
+            } else if (last_time_updated.equalsIgnoreCase("Restaurant-Depot")){
                 addItemToRestaurantDepotItemList(item + " " + category + " " + curr_qty + " " + max_qty);
-            } else if (distributor.equalsIgnoreCase("Shamrock")) {
+            } else if (last_time_updated.equalsIgnoreCase("Shamrock")) {
                 addItemToShamrockItemList(item + " " + category + " " + curr_qty + " " + max_qty);
-            } else if (distributor.equalsIgnoreCase("Cosco")){
+            } else if (last_time_updated.equalsIgnoreCase("Cosco")){
                 addItemToCoscoItemList(item + " " + category + " " + curr_qty + " " + max_qty);
-            } else if (distributor.equalsIgnoreCase("Food-King")){
+            } else if (last_time_updated.equalsIgnoreCase("Food-King")){
                 addItemToFoodOfKingItemList(item + " " + category + " " + curr_qty + " " + max_qty);
             }
+            */
 
             if((ratio) <= .2){ // Low Stock
                 // Negate the ratio value
                 int negateRatio = (int) (convertMaxQty - convertCurrQty);
-                setLowStockItems(item + " " + distributor + " " + negateRatio);
+                setLowStockItems(item + " " + last_time_updated + " " + negateRatio);
             }
 
         } catch (JSONException e) {
@@ -196,14 +210,14 @@ public class Parser {
     }
 
 /* PARSE WEEKLY COUNT */
-    public void parseWeeklyCount(JSONObject jsonObject) {
+    public void parseInventoryCount(JSONObject jsonObject) {
 
     try {
         String item = String.valueOf(jsonObject.get("item"));
         String category = String.valueOf(jsonObject.get("category"));
         String curr_qty = String.valueOf(jsonObject.get("curr_qty"));
         String max_qty = String.valueOf(jsonObject.get("max_qty"));
-        String distributor = String.valueOf(jsonObject.get("distributor"));
+        String last_time_updated = String.valueOf(jsonObject.get("last_time_updated"));
 
         System.out.println("parseInventory");
         System.out.println("category " + category);
@@ -212,28 +226,28 @@ public class Parser {
         category = category.replace(' ', '-');
         curr_qty = curr_qty.replace(' ', '-');
         max_qty = max_qty.replace(' ', '-');
-        distributor = distributor.replace(' ', '-');
+        last_time_updated = last_time_updated.replace(' ', '-');
 
         countItems.add(item);
         countItems.add(category);
         countItems.add(curr_qty);
         countItems.add(max_qty);
-        countItems.add(distributor);
+        countItems.add(last_time_updated);
         setWeeklyCount(countItems);
 
-        if (distributor.equalsIgnoreCase("Lams")) {
+        if (last_time_updated.equalsIgnoreCase("Lams")) {
             addItemToLamsListWC(item + " " + category + " " + curr_qty);
-        } else if (distributor.equalsIgnoreCase("Sams")) {
+        } else if (last_time_updated.equalsIgnoreCase("Sams")) {
             addItemToSamsListWC(item + " " + category + " " + curr_qty);
-        }  else if (distributor.equalsIgnoreCase("Taiwan-Trading")){
+        }  else if (last_time_updated.equalsIgnoreCase("Taiwan-Trading")){
             addItemToTaiwanTradingItemListWC(item + " " + category + " " + curr_qty);
-        } else if (distributor.equalsIgnoreCase("Restaurant-Depot")){
+        } else if (last_time_updated.equalsIgnoreCase("Restaurant-Depot")){
             addItemToRestaurantDepotItemListWC(item + " " + category + " " + curr_qty);
-        } else if (distributor.equalsIgnoreCase("Shamrock")) {
+        } else if (last_time_updated.equalsIgnoreCase("Shamrock")) {
             addItemToShamrockItemListWC(item + " " + category + " " + curr_qty);
-        } else if (distributor.equalsIgnoreCase("Cosco")){
+        } else if (last_time_updated.equalsIgnoreCase("Cosco")){
             addItemToCoscoItemListWC(item + " " + category + " " + curr_qty);
-        } else if (distributor.equalsIgnoreCase("Food-King")){
+        } else if (last_time_updated.equalsIgnoreCase("Food-King")){
             addItemToFoodOfKingItemListWC(item + " " + category + " " + curr_qty);
         }
 
@@ -371,9 +385,8 @@ public class Parser {
 
 /* Parse Active Orders */
     public void parseActiveOrders(JSONObject jsonObject){
-        int countNumberOfOrders = 0;
+
         try {
-            LinkedList<String> tempCounter = new LinkedList<>();
             String currentRow = String.valueOf(jsonObject);
             String item = String.valueOf(jsonObject.get("item"));
             String distributor = String.valueOf(jsonObject.get("distributor"));
@@ -395,8 +408,6 @@ public class Parser {
             Log.w("order_status", status);
             Log.w("who_placed_order", who_placed_order);
 
-
-            /* If you remove the next 4 lines of code then it will mess up the table in the inventory view */
             item = item.replace(' ', '-');
             distributor = distributor.replace(' ', '-');
             price = price.replace(' ', '-');
@@ -406,14 +417,11 @@ public class Parser {
             status = status.replace(' ', '-');
             who_placed_order = who_placed_order.replace(' ', '-');
 
-            if(!tempCounter.contains(ticket_number)){
+            if (who_placed_order.equalsIgnoreCase("Pho-Tre-Bien") && !tempCounter.contains(ticket_number)) {
                 countNumberOfOrders++;
                 tempCounter.add(ticket_number);
-            }
-            System.out.println("SUNDAY1"  + who_placed_order);
-            if (who_placed_order.equalsIgnoreCase("Pho-Tre-Bien")) {
-                addOrderToActiveOrders(ticket_number + " " + place_order_time + " " + status + " " + item + " " +
-                        qty + " " + status);
+                double total = 49.99;
+                addOrderToActiveOrders(ticket_number + " " + place_order_time + " " + status + " " + total + " " );
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -583,7 +591,7 @@ public class Parser {
 
 
 
-/* GETTERS AND SETTERS FOR INVENTORY / DISTRIBUTORS */
+/* GETTERS AND SETTERS FOR INVENTORY */
     /* Food Of King */
 public LinkedList<String> getFoodOfKingItemListItemList() {
     if(ivFoodOfKingItemList.isEmpty()){
@@ -679,6 +687,18 @@ public LinkedList<String> getFoodOfKingItemListItemList() {
     public void addItemToLamsList(String item) {
         if(!ivLamsItemList.contains(item)){ // If the list does not contain the item then don't add it
             ivLamsItemList.add(item);
+        }
+    }
+    /* UPDATE INVENTORY HERE */
+    public LinkedList<String> getUpdatedInventoryList() {
+        if(updateInventoryList.isEmpty()){
+            System.out.println("updateInventoryList is empty");
+        }
+        return updateInventoryList;
+    }
+    public void addItemToUpdateInventoryList(String item) {
+        if(!updateInventoryList.contains(item)){ // If the list does not contain the item then don't add it
+            updateInventoryList.add(item);
         }
     }
 
