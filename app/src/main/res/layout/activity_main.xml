@@ -357,14 +357,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/stock" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+                    android:fontFamily="sans-serif-smallcaps"/>
             <TextView
-                    android:text="@string/max_qty"
+                    android:text="@string/time_stamp"
                     android:textColor="@color/md_white_1000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/Need" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+                    android:textAlignment="textStart" android:fontFamily="sans-serif-smallcaps"/>
         </LinearLayout>
         <ScrollView
                 android:layout_width="fill_parent"

@@ -12,7 +12,7 @@ import java.util.LinkedList;
  */
 /* This class allows you to parse json objects */
 public class Parser {
-    private LinkedList<String> items = new LinkedList<>();
+   // private LinkedList<String> items = new LinkedList<>();
     private LinkedList<String> countItems = new LinkedList<>();
     private LinkedList<String> lowStockItems = new LinkedList<>();
 
@@ -30,23 +30,10 @@ public class Parser {
     private LinkedList<String> catBar = new LinkedList<>();
 
 /* Inventory - Distributors */
-    private LinkedList<String> ivLamsItemList = new LinkedList<>();
-    private LinkedList<String> ivSamsItemList = new LinkedList<>();
-    private LinkedList<String> ivTaiwanTradingItemList = new LinkedList<>();
-    private LinkedList<String> ivRestaurantDepotItemList = new LinkedList<>();
-    private LinkedList<String> ivShamrockItemList = new LinkedList<>();
-    private LinkedList<String> ivCoscoItemList = new LinkedList<>();
-    private LinkedList<String> ivFoodOfKingItemList = new LinkedList<>();
+    private LinkedList<String> inventoryTable = new LinkedList<>();
 
-    private LinkedList<String> updateInventoryList = new LinkedList<>();
 /* Weekly Count */
-    private LinkedList<String> wcLamsItemList = new LinkedList<>();
-    private LinkedList<String> wcSamsItemList = new LinkedList<>();
-    private LinkedList<String> wcTaiwanTradingItemList = new LinkedList<>();
-    private LinkedList<String> wcRestaurantDepotItemList = new LinkedList<>();
-    private LinkedList<String> wcShamrockItemList = new LinkedList<>();
-    private LinkedList<String> wcCoscoItemList = new LinkedList<>();
-    private LinkedList<String> wcFoodOfKingItemList = new LinkedList<>();
+    private LinkedList<String> weeklyCountTable = new LinkedList<>();
 
 /* Prices */
     private LinkedList<String> pcLamsPriceList = new LinkedList<>();
@@ -152,8 +139,8 @@ public class Parser {
             String max_qty = String.valueOf(jsonObject.get("max_qty"));
             String last_time_updated = String.valueOf(jsonObject.get("last_time_updated"));
 
-            double convertCurrQty = Double.parseDouble(curr_qty.toString());
-            double convertMaxQty = Double.parseDouble(max_qty.toString());
+            double convertCurrQty = Double.parseDouble(curr_qty);
+            double convertMaxQty = Double.parseDouble(max_qty);
             double ratio = convertCurrQty / convertMaxQty;
 
             System.out.println("parseInventory");
@@ -174,29 +161,7 @@ public class Parser {
             max_qty = max_qty.replace(' ', '-');
             last_time_updated = last_time_updated.replace(' ', '-');
 
-            items.add(item);
-            items.add(category);
-            items.add(curr_qty);
-            items.add(max_qty);
-            items.add(last_time_updated);
-            setItems(items);
-            /*
-            if (last_time_updated.equalsIgnoreCase("Lams")) {
-                addItemToLamsList(item + " " + category + " " + curr_qty + " " + max_qty);
-            } else if (last_time_updated.equalsIgnoreCase("Sams")) {
-                addItemToSamsList(item + " " + category + " " + curr_qty + " " + max_qty);
-            }  else if (last_time_updated.equalsIgnoreCase("Taiwan-Trading")){
-                addItemToTaiwanTradingItemList(item + " " + category + " " + curr_qty + " " + max_qty);
-            } else if (last_time_updated.equalsIgnoreCase("Restaurant-Depot")){
-                addItemToRestaurantDepotItemList(item + " " + category + " " + curr_qty + " " + max_qty);
-            } else if (last_time_updated.equalsIgnoreCase("Shamrock")) {
-                addItemToShamrockItemList(item + " " + category + " " + curr_qty + " " + max_qty);
-            } else if (last_time_updated.equalsIgnoreCase("Cosco")){
-                addItemToCoscoItemList(item + " " + category + " " + curr_qty + " " + max_qty);
-            } else if (last_time_updated.equalsIgnoreCase("Food-King")){
-                addItemToFoodOfKingItemList(item + " " + category + " " + curr_qty + " " + max_qty);
-            }
-            */
+            addItemToInventoryTable(id, item, category, curr_qty, max_qty, last_time_updated);
 
             if((ratio) <= .2){ // Low Stock
                 // Negate the ratio value
@@ -211,50 +176,44 @@ public class Parser {
 
 /* PARSE WEEKLY COUNT */
     public void parseInventoryCount(JSONObject jsonObject) {
+        try {
+            if(!inventoryTable.isEmpty()){
+                inventoryTable.clear();
+            }
+            String id = String.valueOf(jsonObject.get("id"));
+            String item = String.valueOf(jsonObject.get("item"));
+            String category = String.valueOf(jsonObject.get("category"));
+            String curr_qty = String.valueOf(jsonObject.get("curr_qty"));
+            String max_qty = String.valueOf(jsonObject.get("max_qty"));
+            String last_time_updated = String.valueOf(jsonObject.get("last_time_updated"));
 
-    try {
-        String item = String.valueOf(jsonObject.get("item"));
-        String category = String.valueOf(jsonObject.get("category"));
-        String curr_qty = String.valueOf(jsonObject.get("curr_qty"));
-        String max_qty = String.valueOf(jsonObject.get("max_qty"));
-        String last_time_updated = String.valueOf(jsonObject.get("last_time_updated"));
+            double convertCurrQty = Double.parseDouble(curr_qty);
+            double convertMaxQty = Double.parseDouble(max_qty);
+            double ratio = convertCurrQty / convertMaxQty;
 
-        System.out.println("parseInventory");
-        System.out.println("category " + category);
+            System.out.println("parseInventoryCount");
+            System.out.println("    id " + id);
+            System.out.println("    item " + item);
+            System.out.println("    category " + category);
+            System.out.println("    curr_qty " + curr_qty);
+            System.out.println("    max_qty " + max_qty);
+            System.out.println("    last_time_updated " + last_time_updated);
 
-        item = item.replace(' ', '-');
-        category = category.replace(' ', '-');
-        curr_qty = curr_qty.replace(' ', '-');
-        max_qty = max_qty.replace(' ', '-');
-        last_time_updated = last_time_updated.replace(' ', '-');
+            System.out.println("    convertCurrQty " + convertCurrQty);
+            System.out.println("    convertMaxQty " + convertMaxQty);
+            System.out.println("    ratio " + ratio);
 
-        countItems.add(item);
-        countItems.add(category);
-        countItems.add(curr_qty);
-        countItems.add(max_qty);
-        countItems.add(last_time_updated);
-        setWeeklyCount(countItems);
+            item = item.replace(' ', '-');
+            category = category.replace(' ', '-');
+            curr_qty = curr_qty.replace(' ', '-');
+            max_qty = max_qty.replace(' ', '-');
+            last_time_updated = last_time_updated.replace(' ', '-');
 
-        if (last_time_updated.equalsIgnoreCase("Lams")) {
-            addItemToLamsListWC(item + " " + category + " " + curr_qty);
-        } else if (last_time_updated.equalsIgnoreCase("Sams")) {
-            addItemToSamsListWC(item + " " + category + " " + curr_qty);
-        }  else if (last_time_updated.equalsIgnoreCase("Taiwan-Trading")){
-            addItemToTaiwanTradingItemListWC(item + " " + category + " " + curr_qty);
-        } else if (last_time_updated.equalsIgnoreCase("Restaurant-Depot")){
-            addItemToRestaurantDepotItemListWC(item + " " + category + " " + curr_qty);
-        } else if (last_time_updated.equalsIgnoreCase("Shamrock")) {
-            addItemToShamrockItemListWC(item + " " + category + " " + curr_qty);
-        } else if (last_time_updated.equalsIgnoreCase("Cosco")){
-            addItemToCoscoItemListWC(item + " " + category + " " + curr_qty);
-        } else if (last_time_updated.equalsIgnoreCase("Food-King")){
-            addItemToFoodOfKingItemListWC(item + " " + category + " " + curr_qty);
+            addItemToInventoryCountTable(id, item, category, curr_qty, max_qty, last_time_updated);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }
 }
 
 /* PARSE PRICES */
@@ -267,11 +226,9 @@ public class Parser {
 
                 Log.w("parsePrices", currentRow);
 
-                Log.w("item", item);
-                Log.w("pricePerQty", pricePerQty);
-                Log.w("seller", seller);
-
-
+                Log.w("     item", item);
+                Log.w("     pricePerQty", pricePerQty);
+                Log.w("     seller", seller);
 
                     /* If you remove the next 4 lines of code then it will mess up the table in the inventory view */
                 item = item.replace(' ', '-');
@@ -297,6 +254,7 @@ public class Parser {
             e.printStackTrace();
         }
 }
+
 
 /* PARSE - RECOMMENDED */
     public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedList<String> prices){
@@ -382,6 +340,7 @@ public class Parser {
 
         return temp;
     }
+
 
 /* Parse Active Orders */
     public void parseActiveOrders(JSONObject jsonObject){
@@ -503,7 +462,6 @@ public class Parser {
 
 
 
-
 /* GETTERS AND SETTERS FOR SECTIONS/CATEGORIES */
     public LinkedList<String> getFrontOfHouse() {
         if(catFrontOfHouse.isEmpty()){
@@ -568,13 +526,6 @@ public class Parser {
         return concatenateLists;
     }
 
-
-
-/* GETTERS AND SETTERS FOR ITEMS */
-    private void setItems(LinkedList<String> items) {
-        this.items = items;
-    }
-
     private void setLowStockItems(String row) {
         if(!lowStockItems.contains(row)){ // If the list does not contain the item then don't add it
             lowStockItems.add(row);
@@ -585,265 +536,122 @@ public class Parser {
         return lowStockItems;
     }
 
-    public LinkedList<String> allItems() {
-        return items;
-    }
-
-
-
 /* GETTERS AND SETTERS FOR INVENTORY */
-    /* Food Of King */
-public LinkedList<String> getFoodOfKingItemListItemList() {
-    if(ivFoodOfKingItemList.isEmpty()){
-        System.out.println("Food Of King List is empty");
-    }
-    return ivFoodOfKingItemList;
-}
-
-    public void addItemToFoodOfKingItemList(String item) {
-        if(!ivFoodOfKingItemList.contains(item)){ // If the list does not contain the item then don't add it
-            ivFoodOfKingItemList.add(item);
+    private void addItemToInventoryTable(String id, String item, String category, String curr_qty,
+                                                      String max_qty, String last_time_updated){
+        if(!inventoryTable.contains(id + " " + item + " " + category + " " + curr_qty + " " + max_qty + " " +
+                last_time_updated)){
+            inventoryTable.add(id + " " + item + " " + category + " " + curr_qty + " " + max_qty + " " +
+                    last_time_updated);
         }
     }
 
-    /* Cosco */
-    public LinkedList<String> getCoscoItemsList() {
-        if(ivCoscoItemList.isEmpty()){
-            System.out.println("Shamrock List is empty");
+    public LinkedList<String> getInventoryTable() {
+        System.out.println("    weeklyCountTable4" + weeklyCountTable.toString());
+        if(!weeklyCountTable.isEmpty()){
+
         }
-        return ivCoscoItemList;
+        return inventoryTable;
+    }
+    public LinkedList<String> getWeeklyTable() {
+        System.out.println("    weeklyCountTable4" + weeklyCountTable.toString());
+        return weeklyCountTable;
     }
 
-    public void addItemToCoscoItemList(String item) {
-        if(!ivCoscoItemList.contains(item)){ // If the list does not contain the item then don't add it
-            ivCoscoItemList.add(item);
-        }
+    private void setInventoryTable(LinkedList<String> temp){
+        this.inventoryTable = temp;
     }
-
-    /* Shamrock */
-    public LinkedList<String> getShamrockItemsList() {
-        if(ivShamrockItemList.isEmpty()){
-            System.out.println("Shamrock List is empty");
-        }
-        return ivShamrockItemList;
-    }
-
-    public void addItemToShamrockItemList(String item) {
-        if(!ivShamrockItemList.contains(item)){ // If the list does not contain the item then don't add it
-            ivShamrockItemList.add(item);
-        }
-    }
-
-    /* Restaurant Depot */
-    public LinkedList<String> getRestaurantDepotItemsList() {
-        if(ivRestaurantDepotItemList.isEmpty()){
-            System.out.println("Taiwan Trading Item List is empty");
-        }
-        return ivRestaurantDepotItemList;
-    }
-
-    public void addItemToRestaurantDepotItemList(String item) {
-        if(!ivRestaurantDepotItemList.contains(item)){ // If the list does not contain the item then don't add it
-            ivRestaurantDepotItemList.add(item);
-        }
-    }
-
-    /* Taiwan Trading */
-    public LinkedList<String> getTaiwanTradingItemsList() {
-        if(ivTaiwanTradingItemList.isEmpty()){
-            System.out.println("Taiwan Trading Item List is empty");
-        }
-        return ivTaiwanTradingItemList;
-    }
-
-    public void addItemToTaiwanTradingItemList(String item) {
-        if(!ivTaiwanTradingItemList.contains(item)){ // If the list does not contain the item then don't add it
-            ivTaiwanTradingItemList.add(item);
-        }
-    }
-
-    /* SAMS */
-    public LinkedList<String> getSamsItemsList() {
-        if(ivSamsItemList.isEmpty()){
-            System.out.println("Sams Item List is empty");
-        }
-        return ivSamsItemList;
-    }
-
-    public void addItemToSamsList(String item) {
-        if(!ivSamsItemList.contains(item)){ // If the list does not contain the item then don't add it
-            ivSamsItemList.add(item);
-        }
-    }
-
-    /* LAMS */
-    public LinkedList<String> getLamsItemsList() {
-        if(ivLamsItemList.isEmpty()){
-            System.out.println("Lams Item List is empty");
-        }
-        return ivLamsItemList;
-    }
-
-    public void addItemToLamsList(String item) {
-        if(!ivLamsItemList.contains(item)){ // If the list does not contain the item then don't add it
-            ivLamsItemList.add(item);
-        }
-    }
-    /* UPDATE INVENTORY HERE */
-    public LinkedList<String> getUpdatedInventoryList() {
-        if(updateInventoryList.isEmpty()){
-            System.out.println("updateInventoryList is empty");
-        }
-        return updateInventoryList;
-    }
-    public void addItemToUpdateInventoryList(String item) {
-        if(!updateInventoryList.contains(item)){ // If the list does not contain the item then don't add it
-            updateInventoryList.add(item);
-        }
-    }
-
-    public LinkedList<String> getAllItemsFromDistributors() {
-        LinkedList<String> concatenateLists = new LinkedList<>();
-
-        concatenateLists.addAll(ivLamsItemList);
-        concatenateLists.addAll(ivSamsItemList);
-        concatenateLists.addAll(ivTaiwanTradingItemList);
-        concatenateLists.addAll(ivRestaurantDepotItemList);
-        concatenateLists.addAll(ivShamrockItemList);
-        concatenateLists.addAll(ivCoscoItemList);
-        concatenateLists.addAll(ivFoodOfKingItemList);
-
-        return concatenateLists;
-    }
-
-    public LinkedList<String> getItemsFromSection(String someSection){
-        LinkedList<String> tempList = new LinkedList<>();
-        for(int i = 0; i < getAllItems().size(); i++) {
-            if(getAllItems().get(i).equalsIgnoreCase(someSection)) {
-                tempList.add(getAllItems().get(i));
-            }
-        }
-        return tempList;
-    }
-
 
 
 /* GETTERS AND SETTERS FOR WEEKLY COUNT */
+    public void addItemToInventoryCountTable(String id, String item, String category, String curr_qty,
+                                         String max_qty, String last_time_updated) {
 
-    public LinkedList<String> getFoodOfKingItemListItemListWC() {
-        if(wcFoodOfKingItemList.isEmpty()){
-            System.out.println("Food Of King List is empty");
+        System.out.println("addItemToInventoryCountTable");
+        System.out.println("    weeklyCountTable" + weeklyCountTable.toString());
+        System.out.println("    inventoryTable" + inventoryTable.toString());
+        System.out.println("    id " + id);
+        System.out.println("    item " + item);
+        System.out.println("    category " + category);
+        System.out.println("    curr_qty " + curr_qty);
+        System.out.println("    max_qty " + max_qty);
+        System.out.println("    time " + last_time_updated);
+
+        if (!weeklyCountTable.contains(id + " " + item + " " + category + " " + curr_qty + " " + max_qty)) {
+            System.out.println("WEEKLY COUNT TABLE DOES NOT CONTAIN ITEM " + item + " therefore add " + item);
+            weeklyCountTable.add(id + " " + item + " " + category + " " + curr_qty + " " + max_qty);
+            System.out.println("    weeklyCountTable" + weeklyCountTable.toString());
         }
-        return wcFoodOfKingItemList;
-    }
 
-    public void addItemToFoodOfKingItemListWC(String item) {
-        if(!wcFoodOfKingItemList.contains(item)){ // If the list does not contain the item then don't add it
-            wcFoodOfKingItemList.add(item);
+        // The ITEM is already on list, perhaps we should just  update the fields.
+        /*
+        else {
+            System.out.println("TABLE IS NOT EMPTY --> " + item);
+
+                for(int t = 0; t < weeklyCountTable.size(); t++){
+                    System.out.println("Weekly Count Table " + weeklyCountTable.get(t));
+                    String[] currRow = inventoryTable.get(t).replace("[", "").replace("]", "").replace(",", "").split
+                            (" ");
+
+                    String idCurrRow  = currRow[0];
+                    String itemCurrRow  = currRow[1];
+                    String catCurrRow  = currRow[2];
+                    String curr_qtyCurrRow  = currRow[3];
+                    String max_qtyCurrRow  = currRow[4];
+
+                    System.out.println("        itemCurrRow " + itemCurrRow);
+                    System.out.println("        catCurrRow " + catCurrRow);
+                    System.out.println("        curr_qtyCurrRow " + curr_qtyCurrRow);
+                    System.out.println("        max_qtyCurrRow " + max_qtyCurrRow);
+
+
+                    if(id.equals(idCurrRow)){ // We found the qty we need to update
+                        System.out.println("We found the qty we need to update");
+                        System.out.println("    currentTable2" + weeklyCountTable.toString());
+                        System.out.println("    t = " + t);
+                        weeklyCountTable.remove(t);
+                        String newRow = id + " " + item + " " + catCurrRow
+                                + " " + curr_qty + " " + max_qtyCurrRow + " " + last_time_updated;
+                        weeklyCountTable.add(newRow);
+                        System.out.println("    currentTable3" + weeklyCountTable.toString());
+                    }
+                }
+            System.out.println("    currentTable4" + weeklyCountTable.toString());
+            System.out.println("    currentTable9" + inventoryTable.toString());
+            setInventoryTable(weeklyCountTable);
+            System.out.println("    currentTable10" + inventoryTable.toString());
         }
-    }
+        */
 
-    /* Cosco */
-    public LinkedList<String> getCoscoItemsListWC() {
-        if(wcCoscoItemList.isEmpty()){
-            System.out.println("Shamrock List is empty");
         }
-        return wcCoscoItemList;
-    }
 
-    public void addItemToCoscoItemListWC(String item) {
-        if(!wcCoscoItemList.contains(item)){ // If the list does not contain the item then don't add it
-            wcCoscoItemList.add(item);
+    public void updateInventoryCount(String id, String item, String cat, String curr_qty, String max_qty, String
+            copyTime){
+        for(int i = 0 ; i < weeklyCountTable.size(); i++){
+            System.out.println("Weekly Count Table " + weeklyCountTable.get(i));
+            String[] currRow = weeklyCountTable.get(i).replace("[", "").replace("]", "").replace(",", "").split
+                    (" ");
+
+            String idCurrRow  = currRow[0];
+            String itemCurrRow  = currRow[1];
+            String catCurrRow  = currRow[2];
+            String curr_qtyCurrRow  = currRow[3];
+            String max_qtyCurrRow  = currRow[4];
+
+            if(id.equals(idCurrRow)) { // We found the qty we need to update
+                System.out.println("We found the qty we need to update");
+                weeklyCountTable.remove(i);
+                String newRow = id + " " + item + " " + cat + " " + curr_qty + " " + max_qty;
+                weeklyCountTable.add(newRow);
+            }
         }
+
+
+    }
+    public LinkedList<String> getWeeklyCountTable(){
+        return weeklyCountTable;
     }
 
-    /* Shamrock */
-    public LinkedList<String> getShamrockItemsListWC() {
-        if(wcShamrockItemList.isEmpty()){
-            System.out.println("Shamrock List is empty");
-        }
-        return wcShamrockItemList;
-    }
-
-    public void addItemToShamrockItemListWC(String item) {
-        if(!wcShamrockItemList.contains(item)){ // If the list does not contain the item then don't add it
-            wcShamrockItemList.add(item);
-        }
-    }
-
-    /* Restaurant Depot */
-    public LinkedList<String> getRestaurantDepotItemsListWC() {
-        if(wcRestaurantDepotItemList.isEmpty()){
-            System.out.println("Taiwan Trading Item List is empty");
-        }
-        return wcRestaurantDepotItemList;
-    }
-
-    public void addItemToRestaurantDepotItemListWC(String item) {
-        if(!wcRestaurantDepotItemList.contains(item)){ // If the list does not contain the item then don't add it
-            wcRestaurantDepotItemList.add(item);
-        }
-    }
-
-    /* Taiwan Trading */
-    public LinkedList<String> getTaiwanTradingItemsListWC() {
-        if(wcTaiwanTradingItemList.isEmpty()){
-            System.out.println("Taiwan Trading Item List is empty");
-        }
-        return wcTaiwanTradingItemList;
-    }
-
-    public void addItemToTaiwanTradingItemListWC(String item) {
-        if(!wcTaiwanTradingItemList.contains(item)){ // If the list does not contain the item then don't add it
-            wcTaiwanTradingItemList.add(item);
-        }
-    }
-
-    /* SAMS */
-    public LinkedList<String> getSamsItemsListWC() {
-        if(wcSamsItemList.isEmpty()){
-            System.out.println("Sams Item List is empty");
-        }
-        return wcSamsItemList;
-    }
-
-    public void addItemToSamsListWC(String item) {
-        if(!wcSamsItemList.contains(item)){ // If the list does not contain the item then don't add it
-            wcSamsItemList.add(item);
-        }
-    }
-
-    /* LAMS */
-    public LinkedList<String> getLamsItemsListWC() {
-        if(wcLamsItemList.isEmpty()){
-            System.out.println("Lams Item List is empty");
-        }
-        return wcLamsItemList;
-    }
-
-    public void addItemToLamsListWC(String item) {
-        if(!wcLamsItemList.contains(item)){ // If the list does not contain the item then don't add it
-            wcLamsItemList.add(item);
-        }
-    }
-
-
-    private void setWeeklyCount(LinkedList<String> countItems) {
-    this.countItems = countItems;
-}
-    public LinkedList<String> getAllItemsFromWeeklyCount() {
-        LinkedList<String> concatenateLists = new LinkedList<>();
-
-        concatenateLists.addAll(wcLamsItemList);
-        concatenateLists.addAll(wcSamsItemList);
-        concatenateLists.addAll(wcTaiwanTradingItemList);
-        concatenateLists.addAll(wcRestaurantDepotItemList);
-        concatenateLists.addAll(wcShamrockItemList);
-        concatenateLists.addAll(wcCoscoItemList);
-        concatenateLists.addAll(wcFoodOfKingItemList);
-
-        return concatenateLists;
-    }
 
 
 /* GETTERS AND SETTERS FOR PRICES */

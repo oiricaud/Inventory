@@ -448,48 +448,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             updateSectionsView();
         }
 
-/* INVENTORY DROP DOWN */
-        if (item.getTitle().equals("Lams")) {
-            mToolbar.setTitle("Inventory - Lams Items");
-            currListView = parser.getLamsItemsList();
-            updateInventoryView();
-        }
-        if (item.getTitle().equals("Sams")) {
-            mToolbar.setTitle("Inventory - Sams Items");
-            currListView = parser.getSamsItemsList();
-            updateInventoryView();
-        }
-        if (item.getTitle().equals("Taiwan Trading")) {
-            mToolbar.setTitle("Inventory - Taiwan Trading Items");
-            currListView = parser.getTaiwanTradingItemsList();
-            updateInventoryView();
-        }
-        if (item.getTitle().equals("Restaurant Depot")) {
-            mToolbar.setTitle("Inventory - Restaurant Depot Items");
-            currListView = parser.getRestaurantDepotItemsList();
-            updateInventoryView();
-        }
-        if (item.getTitle().equals("Shamrock")) {
-            mToolbar.setTitle("Inventory - Shamrock Items");
-            currListView = parser.getShamrockItemsList();
-            updateInventoryView();
-        }
-        if (item.getTitle().equals("Cosco")){
-            mToolbar.setTitle("Inventory - Cosco Items");
-            currListView = parser.getCoscoItemsList();
-            updateInventoryView();
-        }
-        if (item.getTitle().equals("Food King")) {
-            mToolbar.setTitle("Inventory - Food Of King Items");
-            currListView = parser.getFoodOfKingItemListItemList();
-            updateInventoryView();
-        }
-        if (item.getTitle().equals("All Items")) {
-            mToolbar.setTitle("Inventory - All Items");
-            currListView = parser.getAllItemsFromDistributors();
-            updateInventoryView();
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -825,46 +783,61 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     final TableRow row = new TableRow(MainActivity.this);
                     row.setClickable(true);
 
-                    final TextView item1 = new TextView(MainActivity.this);
-                    TextView category1 = new TextView(MainActivity.this);
-                    TextView curr_qty1 = new TextView(MainActivity.this);
-                    TextView max_qty1 = new TextView(MainActivity.this);
+                    final TextView item = new TextView(MainActivity.this);
+                    TextView category = new TextView(MainActivity.this);
+                    TextView curr_qty = new TextView(MainActivity.this);
+                    TextView max_qty = new TextView(MainActivity.this);
+                    TextView time_stamp = new TextView(MainActivity.this);
 
                     String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
 
-                    item1.setText(strArray[0]); //ITEM
-                    category1.setText(strArray[1]);
-                    curr_qty1.setText(strArray[2]);
-                    max_qty1.setText(strArray[3]);
+                    item.setText(strArray[1]);     // ITEM
+                    category.setText(strArray[2]); // CATEGORY
+                    curr_qty.setText(strArray[3]); // CURR_QTY
+                    max_qty.setText(strArray[4]);  // MAX_QTY
+                    time_stamp.setText(strArray[5]);  // TIME_STAMP
 
-                    row.addView(item1);
-                    row.addView(category1);
-                    row.addView(curr_qty1);
-                    row.addView(max_qty1);
+                    System.out.println("In updateInventoryMethod " + Arrays.toString(strArray));
+                    System.out.println("    id: " + strArray[0]);
+                    System.out.println("    item: " + strArray[1]);
+                    System.out.println("    category: " + strArray[2]);
+                    System.out.println("    curr_qty: " + strArray[3]);
+                    System.out.println("    max_qty: " + strArray[4]);
+                    System.out.println("    time_stamp: " + strArray[5]);
 
-                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item1.getLayoutParams();
-                    paramsItem.setMargins(pixelToDP(20), 0, pixelToDP(0), pixelToDP(25));
+                    row.addView(item);
+                    row.addView(category);
+                    row.addView(curr_qty);
+                    //row.addView(max_qty);
+                    row.addView(time_stamp);
 
-                    LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) category1.getLayoutParams();
-                    paramsCategory.setMargins(pixelToDP(15), 0, 10, pixelToDP(25)); // Left, Top, Right, Bottom
+                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item.getLayoutParams();
+                    paramsItem.setMargins(30, 0, 30, 25);
 
-                    LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) curr_qty1.getLayoutParams();
-                    paramsCurrentQTY.setMargins(pixelToDP(50), 0, 60, pixelToDP(25)); //substitute
+                    LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) category.getLayoutParams();
+                    paramsCategory.setMargins(30, 0, 30, 25); // Left, Top, Right, Bottom
 
-                    LinearLayout.LayoutParams paramsMaxQTY = (LinearLayout.LayoutParams) max_qty1.getLayoutParams();
-                    paramsMaxQTY.setMargins(pixelToDP(80), 0, 0, pixelToDP(25)); //substitute
+                    LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) curr_qty.getLayoutParams();
+                    paramsCurrentQTY.setMargins(65, 0, 30, 25);
 
-                    item1.setLayoutParams(paramsItem);
-                    category1.setLayoutParams(paramsCategory);
-                    curr_qty1.setLayoutParams(paramsCurrentQTY);
-                    max_qty1.setLayoutParams(paramsMaxQTY);
+                    //LinearLayout.LayoutParams paramsMaxQTY = (LinearLayout.LayoutParams) max_qty.getLayoutParams();
+                    //paramsMaxQTY.setMargins(pixelToDP(80), 0, 0, pixelToDP(25)); //substitute
+
+                    LinearLayout.LayoutParams paramsTimeStamp = (LinearLayout.LayoutParams) time_stamp.getLayoutParams();
+                    paramsTimeStamp.setMargins(30, 0, 30, 25);
+
+
+                    item.setLayoutParams(paramsItem);
+                    category.setLayoutParams(paramsCategory);
+                    curr_qty.setLayoutParams(paramsCurrentQTY);
+                    //max_qty.setLayoutParams(paramsMaxQTY);
+                    time_stamp.setLayoutParams(paramsTimeStamp);
 
                     inventoryTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT));
-                    //loading.setVisibility(View.GONE); // Hide loading circle
 
                     row.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
-                            Log.w("Name of Item Selected", String.valueOf(item1.getText()));
+                            Log.w("Name of Item Selected", String.valueOf(item.getText()));
                         }
                     });
                 }
@@ -882,20 +855,16 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         mToolbar.setTitle("Add Item to Inventory ");
         /* Prepare data */
         String[] sections = {"Select Section", "Front of house", "Kitchen", "Back of house", "Bar"};
-        String[] distributors = {"Select Vendor", "Lams", "Sams", "Taiwan Trading", "Restaurant Depot",
-                "Shamrock", "Cosco", "Food King"};
+
 
         final EditText etItem = (EditText) findViewById(R.id.food_item);
         final EditText etCurrentQty = (EditText) findViewById(R.id.current_qty);
         final EditText etMaxQty = (EditText) findViewById(R.id.max_qty);
         final Spinner etSections = (Spinner) findViewById(R.id.et_section);
-        final Spinner etDistributor = (Spinner) findViewById(R.id.distributor);
+
 
         ArrayAdapter<String> adapterForSections = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sections);
         etSections.setAdapter(adapterForSections);
-
-        ArrayAdapter<String> adapterForDistributors = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, distributors);
-        etDistributor.setAdapter(adapterForDistributors);
 
         final Button btn_addItem = (Button) findViewById(R.id.btn_add_item);
         final TextView view_items = (TextView) findViewById(R.id.view_items);
@@ -996,29 +965,27 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                 "to proceed?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                               // loading.setVisibility(View.VISIBLE); // Show loading circle
-
-                                    Thread thread = new Thread() {
-                                        public void run() {
-                                            Looper.prepare();
-
-                                            final Handler handler = new Handler();
-                                            handler.postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    // Do Work
-                                                    for(int t = 0; t < parser.getUpdatedInventoryList().size(); t++){
-                                                        updateInventory(parser.getUpdatedInventoryList().get(t));
-                                                    }
-
-                                                    handler.removeCallbacks(this);
-                                                    Looper.myLooper().quit();
+                                Thread thread = new Thread() {
+                                    public void run() {
+                                        Looper.prepare();
+                                        final Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                // UPDATE INVENTORY TABLE HERE TO DATABASE
+                                                for(int t = 0; t < parser.getWeeklyTable().size(); t++){
+                                                    System.out.println("Get updated inventory list " + parser.getWeeklyTable().get(t));
+                                                    updateInventory(parser.getWeeklyTable().get(t));
                                                 }
-                                            }, 400);
-                                            Looper.loop();
-                                        }
-                                    };
-                                    thread.start();
+
+                                                handler.removeCallbacks(this);
+                                                Looper.myLooper().quit();
+                                            }
+                                        }, 400);
+                                        Looper.loop();
+                                    }
+                                };
+                                thread.start();
 
                             }
                         })
@@ -1034,81 +1001,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         showLoadingCircle();
     }
 
-
-    /* Save Data */
-    private void updateInventory(String list) {
-        String strArray[] = list.replace("[", "").replace("]", "").replace(",", "").split(" ");
-        String id = strArray[0];
-        String item = strArray[1];
-        String category = strArray[2];
-        String curr_qty = strArray[3];
-
-        System.out.println("Update Inventory " + id + " " + item + " " + category + " " + curr_qty);
-        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-
-        nameValuePairs.add(new BasicNameValuePair("id", id));
-        nameValuePairs.add(new BasicNameValuePair("item", item));
-        nameValuePairs.add(new BasicNameValuePair("category", category));
-        nameValuePairs.add(new BasicNameValuePair("curr_qty", curr_qty));
-
-        try
-        {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://www.narped.com/inventory/UpdateInventory.php");
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
-            is = entity.getContent();
-            Log.e("pass 1", "connection success ");
-        }
-        catch(Exception e)
-        {
-            Log.e("Fail 1", e.toString());
-            Toast.makeText(getApplicationContext(), "Invalid IP Address",
-                    Toast.LENGTH_LONG).show();
-        }
-
-        try
-        {
-            BufferedReader reader = new BufferedReader
-                    (new InputStreamReader(is,"iso-8859-1"),8);
-            StringBuilder sb = new StringBuilder();
-            while ((line = reader.readLine()) != null)
-            {
-                sb.append(line + "\n");
-            }
-            is.close();
-            result = sb.toString();
-            Log.e("pass 2", "connection success ");
-        }
-        catch(Exception e)
-        {
-            Log.e("Fail 2", e.toString());
-        }
-
-        try
-        {
-            JSONObject json_data = new JSONObject(result);
-            code=(json_data.getInt("code"));
-
-            if(code==1)
-            {
-                Toast.makeText(getBaseContext(), "Update Successfully",
-                        Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                Toast.makeText(getBaseContext(), "Sorry, Try Again",
-                        Toast.LENGTH_LONG).show();
-            }
-        }
-        catch(Exception e)
-        {
-            Log.e("Fail 3", e.toString());
-        }
-    }
-
-
     /* ----> Weekly Count Table */
     private void updateWeeklyCount() {
 
@@ -1117,16 +1009,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             public void run() {
 
                 inventoryCountTable.removeAllViews();
-                int rowCounter = 1;
-                // get a reference for the TableLayout
-                for (String aCurrListView : currListView) {
 
+                for (String aCurrListView : currListView) {
+                    System.out.println("updateWeeklyCount() " + currListView.toString());
                     final TableRow row = new TableRow(MainActivity.this);
                     row.setClickable(true);
 
-                    final TextView counter = new TextView(MainActivity.this);
-                    final TextView item1 = new TextView(MainActivity.this);
-                    final TextView category1 = new TextView(MainActivity.this);
+                    final TextView id = new TextView(MainActivity.this);
+                    final TextView item = new TextView(MainActivity.this);
+                    final TextView category = new TextView(MainActivity.this);
                     ArrayList<String> spinnerArray = new ArrayList<String>();
 
                     for (int k = 0; k < 100; k++) {
@@ -1137,32 +1028,37 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             .layout.simple_spinner_dropdown_item, spinnerArray);
                     spinner.setAdapter(spinnerArrayAdapter);
 
-                    String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
+                    final String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
+                    System.out.println("in the update weekly method " + Arrays.toString(strArray));
+                    //counter.setText(String.valueOf(rowCounter));
 
-                    counter.setText(String.valueOf(rowCounter));
-                    item1.setText(strArray[0]); //ITEM
-                    category1.setText(strArray[1]);
+                    id.setText(strArray[0]);         //ID
+                    item.setText(strArray[1]);     // ITEM
+                    category.setText(strArray[2]);         // CAT
+                    //category1.setText(strArray[3]);     // CURR_QTY
+                    //category1.setText(strArray[4]);     // MAX_QTY
+                    //category1.setText(strArray[5]);     // TIME
 
-                    row.addView(counter);
-                    row.addView(item1);
-                    row.addView(category1);
+                    row.addView(id);
+                    row.addView(item);
+                    row.addView(category);
                     row.addView(spinner);
 
-                    LinearLayout.LayoutParams paramsCounter = (LinearLayout.LayoutParams) counter.getLayoutParams();
+                    LinearLayout.LayoutParams paramsCounter = (LinearLayout.LayoutParams) id.getLayoutParams();
                     paramsCounter.setMargins(pixelToDP(50), 0, pixelToDP(0), pixelToDP(25));
 
-                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item1.getLayoutParams();
-                    paramsItem.setMargins(pixelToDP(70), 0, 10, pixelToDP(25));
+                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item.getLayoutParams();
+                    paramsItem.setMargins(pixelToDP(80), 0, 10, pixelToDP(25));
 
-                    LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) category1.getLayoutParams();
-                    paramsCategory.setMargins(pixelToDP(40), 0, 60, pixelToDP(25)); // Left, Top, Right, Bottom
+                    LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) category.getLayoutParams();
+                    paramsCategory.setMargins(pixelToDP(60), 0, 60, pixelToDP(25)); // Left, Top, Right, Bottom
 
                     LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) spinner.getLayoutParams();
-                    paramsCurrentQTY.setMargins(pixelToDP(10), 0, 0, pixelToDP(25)); //substitute
+                    paramsCurrentQTY.setMargins(pixelToDP(20), 0, 0, pixelToDP(25)); //substitute
 
-                    counter.setLayoutParams(paramsCounter);
-                    item1.setLayoutParams(paramsItem);
-                    category1.setLayoutParams(paramsCategory);
+                    id.setLayoutParams(paramsCounter);
+                    item.setLayoutParams(paramsItem);
+                    category.setLayoutParams(paramsCategory);
                     spinner.setLayoutParams(paramsCurrentQTY);
 
                     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -1171,9 +1067,28 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             String currSpinner = (String) parent.getItemAtPosition(position);
 
                             if (Integer.parseInt(currSpinner) > 0) { // Add Item to final list if qty is > 0
-                                String finalStuff = counter.getText() + " " + item1.getText() + " " + category1.getText() + " " + currSpinner;
-                                System.out.println("What do we need to update? " + finalStuff);
-                                parser.addItemToUpdateInventoryList(finalStuff);
+                                System.out.println("in the spinner function " + Arrays.toString(strArray));
+                                DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                                Date date = new Date();
+                                final String currDate = dateFormat.format(date);
+
+                                String copyId = strArray[0];
+                                String copyItem = (String) item.getText();
+                                String copyCategory = (String) category.getText();
+                                String copyCurrQty = currSpinner;
+                                String copyMaxQty = strArray[4];
+                                String copyTime = currDate;
+
+                                System.out.println("    Spinner ");
+                                System.out.println("            id " + copyId);
+                                System.out.println("            item " + copyItem);
+                                System.out.println("            category " + copyCategory);
+                                System.out.println("            curr_qty " + copyCurrQty);
+                                System.out.println("            max_qty " + copyMaxQty);
+                                System.out.println("            time " + copyTime);
+
+                                parser.updateInventoryCount(copyId, copyItem, copyCategory, copyCurrQty, copyMaxQty,
+                                        copyTime);
                             }
                         }
 
@@ -1192,16 +1107,94 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
                     inventoryCountTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT));
 
-
                     row.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
-                            Log.w("Name of Item Selected", String.valueOf(item1.getText()));
+                            Log.w("Name of Item Selected", String.valueOf(item.getText()));
                         }
                     });
-                    rowCounter++;
                 }
             }
         });
+    }
+
+    /* Save Data to db */
+    private void updateInventory(String list) {
+        String strArray[] = list.replace("[", "").replace("]", "").replace(",", "").split(" ");
+        String id = strArray[0];
+        String item = strArray[1];
+        String category = strArray[2];
+        String curr_qty = strArray[3];
+        String max_qty = strArray[4];
+
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date date = new Date();
+        String last_time_updated = dateFormat.format(date);
+
+        System.out.println("Update Inventory ");
+        System.out.println("                Sid " + id);
+        System.out.println("                Sitem " + item);
+        System.out.println("                Scategory " + category);
+        System.out.println("                Scurr_qty " + curr_qty);
+        System.out.println("                Smax_qty " + max_qty);
+        System.out.println("                Slast_time_updated " + last_time_updated);
+
+        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+        nameValuePairs.add(new BasicNameValuePair("id", id));
+        nameValuePairs.add(new BasicNameValuePair("item", item));
+        nameValuePairs.add(new BasicNameValuePair("category", category));
+        nameValuePairs.add(new BasicNameValuePair("curr_qty", curr_qty));
+        nameValuePairs.add(new BasicNameValuePair("max_qty", max_qty));
+        nameValuePairs.add(new BasicNameValuePair("last_time_updated", last_time_updated));
+
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost("http://www.narped.com/inventory/UpdateInventory.php");
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity entity = response.getEntity();
+            is = entity.getContent();
+            Log.e("pass 1", "connection success ");
+        }
+        catch(Exception e) {
+            Log.e("Fail 1", e.toString());
+            Toast.makeText(getApplicationContext(), "Invalid IP Address",
+                    Toast.LENGTH_LONG).show();
+        }
+
+        try {
+            BufferedReader reader = new BufferedReader
+                    (new InputStreamReader(is,"iso-8859-1"),8);
+            StringBuilder sb = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            is.close();
+            result = sb.toString();
+            Log.e("pass 2", "connection success ");
+        }
+        catch(Exception e) {
+            Log.e("Fail 2", e.toString());
+        }
+
+        try {
+            JSONObject json_data = new JSONObject(result);
+            code=(json_data.getInt("code"));
+
+            if(code==1) {
+                Toast.makeText(getBaseContext(), "Update Successfully",
+                        Toast.LENGTH_SHORT).show();
+                //updateWeeklyCount();
+                //updateWeeklyCount(); updateInventoryView();
+            }
+            else {
+                Toast.makeText(getBaseContext(), "Sorry, Try Again",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+        catch(Exception e) {
+            Log.e("Fail 3", e.toString());
+        }
     }
 
 /* Prices View **/
@@ -1767,6 +1760,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             }
         });
     }
+
 /* Get Data From Database */
     private class talkToDataBase extends AsyncTask<Void, Void, Void> {
 
@@ -1785,8 +1779,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 String URL_PHP = "http://www.narped.com/inventory/Employees.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
-            if(mToolbar.getTitle().equals("Restaurant - All Sections") || (mToolbar.getTitle().equals("Inventory" +
-                    " - " +
+            if(mToolbar.getTitle().equals("Restaurant - All Sections") || (mToolbar.getTitle().equals("Inventory - " +
                     "All Inventory") || (mToolbar.getTitle().equals("Order - Place an Order")))){
                 String URL_PHP = "http://www.narped.com/inventory/ItemsInventory.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
@@ -1813,12 +1806,21 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     if (intStuff != 0) {
                         for (int i = 0; i < JAStuff.length(); i++) {
                             JSONObject JOStuff = JAStuff.getJSONObject(i);
-                            parser.parseEmployees(JOStuff);
-                            parser.parseSections(JOStuff);
-                            parser.parseInventory(JOStuff);
-                            parser.parseInventoryCount(JOStuff);
-                            parser.parsePrices(JOStuff);
-                            parser.parseActiveOrders(JOStuff);
+
+                            if(mToolbar.getTitle().equals("Employee - All Employees")){
+                                parser.parseEmployees(JOStuff);
+                            }
+                            else if(mToolbar.getTitle().equals("Inventory - All Inventory")){
+                                parser.parseInventory(JOStuff);
+                            }
+                            else if(mToolbar.getTitle().equals("Weekly Count")){
+                                parser.parseInventoryCount(JOStuff);
+                            }
+                            else {
+                                parser.parseSections(JOStuff);
+                                parser.parsePrices(JOStuff);
+                                parser.parseActiveOrders(JOStuff);
+                            }
                         }
                     }
                 }
@@ -1839,13 +1841,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 updateSectionsView();
             }
             if(mToolbar.getTitle().equals("Inventory - All Inventory")){
-                Log.w("2000", parser.getAllItemsFromDistributors().toString());
-                currListView = parser.getAllItemsFromDistributors();
+                Log.w("2000", parser.getInventoryTable().toString());
+                currListView = parser.getInventoryTable();
                 updateInventoryView();
             }
             if(mToolbar.getTitle().equals("Weekly Count")){
-                Log.w("2500", parser.getAllItemsFromWeeklyCount().toString());
-                currListView = parser.getAllItemsFromWeeklyCount();
+                Log.w("2500", parser.getWeeklyCountTable().toString());
+                currListView = parser.getWeeklyCountTable();
                 updateWeeklyCount();
             }
             if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){
