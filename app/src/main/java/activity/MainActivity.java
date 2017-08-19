@@ -92,8 +92,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private RelativeLayout placeOrderPopUp;
     private RelativeLayout activeOrdersPopUp;
     private TextView titleClicked;
-    private ProgressBar loading;
-
+    private LinearLayout loading;
     private InputStream is=null;
     private String result=null;
     private String line=null;
@@ -105,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loading = (ProgressBar) findViewById(R.id.loadingCircle);
-        loading.setVisibility(View.GONE); // Hide loading
+        loading = (LinearLayout) findViewById(R.id.layout_progressbar);
+        loading.setVisibility(View.GONE);
         TextView createAccount = (TextView) findViewById(R.id.link_signup);
         Button login = (Button) findViewById(R.id.btn_login);
         // If user decides to create an account, change view
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         final EditText etPassword = (EditText) findViewById(R.id.input_password);
         final String username = etUserName.getText().toString();
         final String password = etPassword.getText().toString();
-        showLoadingCircle();
+        loading.setVisibility(View.VISIBLE);
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -152,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                         launchHomeView();
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        loading.setVisibility(View.GONE);
+                        //hideLoadingCircle();
                         toast("Failed, please try again", 5000);
                         builder.setMessage("Incorrect Username or Password try again").setNegativeButton("Retry", null).create().show();
                     }
@@ -485,6 +484,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         final ImageView imageIcon = (ImageView) findViewById(R.id.imageIcon);
         final Button confirm = (Button) findViewById(R.id.user_add_item);
 
+        loading = (LinearLayout) findViewById(R.id.layout_progressbar);
+
+
         swipeRefresh = (RelativeLayout) findViewById(R.id.swipe_refresh);
 
         /* Pop Ups */
@@ -500,7 +502,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         placeOrderView = (RelativeLayout) findViewById(R.id.place_order_tab);
         activeOrdersView = (RelativeLayout) findViewById(R.id.active_orders_tab);
 
-        loading = (ProgressBar) findViewById(R.id.loadingCircle);
 
         titleClicked = (TextView) findViewById(R.id.titleClicked);
         addItem = (RelativeLayout) findViewById(R.id.add_item_view);
@@ -527,8 +528,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         /* Hide Layouts */
         swipeRefresh.setVisibility(RelativeLayout.GONE);
 
-        loading.setVisibility(View.GONE);
-
         placeOrderPopUp.setVisibility(RelativeLayout.GONE);
         activeOrdersPopUp.setVisibility(RelativeLayout.GONE);
         foodItemPopUp.setVisibility(RelativeLayout.GONE);
@@ -545,6 +544,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         addItem.setVisibility(RelativeLayout.GONE);
         addPrice.setVisibility(RelativeLayout.GONE);
 
+        loading.setVisibility(View.GONE);
         /* Tool Bar */
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -599,8 +599,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
 /* Employee View **/
     private void launchEmployeesView() {
+
         menuGridView.setVisibility(RelativeLayout.INVISIBLE);
         addItem.setVisibility(RelativeLayout.INVISIBLE);
+        loading = (LinearLayout) findViewById(R.id.layout_progressbar);
+
+        loading.setVisibility(View.VISIBLE);
+        loading.setZ(10);
 
         inventoryColumns.setVisibility(LinearLayout.VISIBLE);
         employeesTable.setVisibility(LinearLayout.VISIBLE);
@@ -614,7 +619,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         mToolbar.setTitle("Employee - All Employees");
 
         new talkToDataBase().execute();
-        showLoadingCircle();
     }
 
     /* ----> Employee Table */
@@ -660,7 +664,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
                     employeesTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout
                             .LayoutParams.WRAP_CONTENT));
-                    loading.setVisibility(View.GONE); // Hide loading circle
+                    //hideLoadingCircle();
 
                     row.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -676,6 +680,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
 /* Sections View **/
     private void launchSectionsView() {
+        loading = (LinearLayout) findViewById(R.id.layout_progressbar);
+
+        loading.setVisibility(View.VISIBLE);
+        loading.setZ(10);
+
         menuGridView.setVisibility(RelativeLayout.INVISIBLE);
         addItem.setVisibility(RelativeLayout.INVISIBLE);
 
@@ -691,7 +700,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         mToolbar.setTitle("Restaurant - All Sections");
 
         new talkToDataBase().execute();
-        showLoadingCircle();
     }
 
     /* ----> Sections Table */
@@ -733,7 +741,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
                     sectionsTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout
                             .LayoutParams.WRAP_CONTENT));
-                    loading.setVisibility(View.GONE); // Hide loading circle
+                    //hideLoadingCircle();
 
                     row.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -749,6 +757,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
 /* Inventory View **/
     private void launchInventoryView() {
+        loading = (LinearLayout) findViewById(R.id.layout_progressbar);
+
+        loading.setVisibility(View.VISIBLE);
+        loading.setZ(10);
+
         menuGridView.setVisibility(RelativeLayout.INVISIBLE);
         addItem.setVisibility(RelativeLayout.INVISIBLE);
 
@@ -762,9 +775,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         mRecyclerView.setLayoutManager(layoutManager);
 
         mToolbar.setTitle("Inventory - All Inventory");
+
         new talkToDataBase().execute();
 
-        showLoadingCircle();
 
         Button plusButton = (Button) findViewById(R.id.plus_button);
         plusButton.setOnClickListener(new View.OnClickListener() {
@@ -911,6 +924,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
                 Date date = new Date();
                 final String last_time_updated = dateFormat.format(date);
+                loading = (LinearLayout) findViewById(R.id.layout_progressbar);
+
+                loading.setVisibility(View.VISIBLE);
+                loading.setZ(10);
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -920,12 +937,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {
                                 toast("Success adding item", 10000000);
+                                loading.setVisibility(View.INVISIBLE);
                                 launchInventoryView();
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                                 toast("Failed, please try again, perhaps item is already added?", 5000);
                                 builder.setMessage("Adding Item Failed").setNegativeButton("Retry", null).create()
                                         .show();
+                                loading.setVisibility(View.INVISIBLE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -951,6 +970,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
 /* Weekly Count View **/
     private void launchWeeklyCountView() {
+
+        loading = (LinearLayout) findViewById(R.id.layout_progressbar);
+        loading.setVisibility(View.VISIBLE);
+        loading.setZ(10);
+
         menuGridView.setVisibility(RelativeLayout.INVISIBLE);
         addItem.setVisibility(RelativeLayout.INVISIBLE);
 
@@ -962,7 +986,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         mToolbar.setTitle("Weekly Count");
+
         new talkToDataBase().execute();
+
 
         Button saveBtn = (Button) findViewById(R.id.save_button);
         saveBtn.setOnClickListener(new View.OnClickListener() {
@@ -974,6 +1000,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                 "to proceed?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+
+                                loading = (LinearLayout) findViewById(R.id.layout_progressbar);
+
+                                loading.setVisibility(View.VISIBLE);
+                                loading.setZ(10);
                                 Thread thread = new Thread() {
                                     public void run() {
                                         Looper.prepare();
@@ -1209,6 +1240,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
 /* Prices View **/
     private void launchPricesView() {
+        loading = (LinearLayout) findViewById(R.id.layout_progressbar);
+
+        loading.setVisibility(View.VISIBLE);
+        loading.setZ(10);
+
         menuGridView.setVisibility(RelativeLayout.INVISIBLE);
         addPrice.setVisibility(RelativeLayout.INVISIBLE);
 
@@ -1225,7 +1261,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         mToolbar.setTitle("Prices - All Prices from sellers");
         new talkToDataBase().execute();
 
-        showLoadingCircle();
 
         Button plusButton = (Button) findViewById(R.id.plus_button_for_prices);
         plusButton.setOnClickListener(new View.OnClickListener() {
@@ -1282,7 +1317,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
                     pricesTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT,
                             DrawerLayout.LayoutParams.WRAP_CONTENT));
-                    loading.setVisibility(View.GONE); // Hide loading circle
+                    //hideLoadingCircle();
 
                     row.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -1347,7 +1382,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                         .setMessage("You will be adding an item to a vendor. Are you sure you want to proceed?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                loading.setVisibility(View.VISIBLE); // Show loading circle
+                               // showLoadingCircle();
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -1420,7 +1455,12 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             @Override
             public void onClick(View v) {
                 mToolbar.setTitle("Order - Place an Order");
+                loading = (LinearLayout) findViewById(R.id.layout_progressbar);
+
+                loading.setVisibility(View.VISIBLE);
+                loading.setZ(109);
                 new talkToDataBase().execute();
+
                 placeOrderPopUp.setVisibility(ScrollView.VISIBLE);
 
                 placeOrderColumns.setVisibility(LinearLayout.VISIBLE);
@@ -1548,7 +1588,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
                     placeOrderTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout
                             .LayoutParams.WRAP_CONTENT));
-                    loading.setVisibility(View.GONE); // Hide loading circle
+                    //hideLoadingCircle();
 
                     row.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -1567,7 +1607,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                             recepitOrder.toString())
                                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            loading.setVisibility(View.VISIBLE); // Show loading circle
+                                           // showLoadingCircle();
                                             new Handler().postDelayed(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -1661,6 +1701,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
 /* Active Orders View **/
     private void launchActiveOrders(){
+        loading = (LinearLayout) findViewById(R.id.layout_progressbar);
+
+        loading.setVisibility(View.VISIBLE);
+        loading.setZ(10);
+
         menuGridView.setVisibility(RelativeLayout.INVISIBLE);
         addItem.setVisibility(RelativeLayout.INVISIBLE);
 
@@ -1676,7 +1721,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         mToolbar.setTitle("Active Orders");
         new talkToDataBase().execute();
         // activeOrdersPopUp.setVisibility(ScrollView.VISIBLE);
-        showLoadingCircle();
+        //showLoadingCircle();
 
     }
     /* ----> Active Order Table */
@@ -1749,7 +1794,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
                     activeOrdersTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout
                             .LayoutParams.WRAP_CONTENT));
-                    //loading.setVisibility(View.GONE); // Hide loading circle
 
                     row.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -1825,33 +1869,25 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             JSONObject JOStuff = JAStuff.getJSONObject(i);
 
                             if(mToolbar.getTitle().equals("Employee - All Employees")){
-                                System.out.println("Hello1");
                                 parser.parseEmployees(JOStuff);
                             }
                             else if(mToolbar.getTitle().equals("Restaurant - All Sections")){
-                                System.out.println("Hello2");
                                 parser.parseSections(JOStuff);
                             }
                             else if(mToolbar.getTitle().equals("Inventory - All Inventory")){
-                                System.out.println("Hello3");
                                 parser.parseInventory(JOStuff);
                                 parser.parseSections(JOStuff);
                             }
                             else if(mToolbar.getTitle().equals("Weekly Count")){
-                                System.out.println("Hello4");
                                 parser.parseInventoryCount(JOStuff);
                             }
                             else if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){
-                                System.out.println("Hello5");
                                 parser.parsePrices(JOStuff);
                             }
                             else if(mToolbar.getTitle().equals("Order - Place an Order")){
-                                System.out.println("Hello6");
                                 parser.parseInventory(JOStuff);
-                               // parser.parseActiveOrders(JOStuff);
                             }
                             if(mToolbar.getTitle().equals("Active Orders")){
-                                System.out.println("Hello7");
                                 parser.parseActiveOrders(JOStuff);
                             }
                         }
@@ -1860,6 +1896,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             return null;
         }
 
@@ -1867,25 +1904,30 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         protected void onPostExecute(Void aVoid) {
             if(mToolbar.getTitle().equals("Employee - All Employees")){
                 currListView = parser.getAllEmployee();
+                loading.setVisibility(View.INVISIBLE);
                 updateEmployeesView();
             }
             else if(mToolbar.getTitle().equals("Restaurant - All Sections")){
                 currListView = parser.getAllItems();
+                loading.setVisibility(View.INVISIBLE);
                 updateSectionsView();
             }
             else if(mToolbar.getTitle().equals("Inventory - All Inventory")){
                 Log.w("2000", parser.getInventoryTable().toString());
                 currListView = parser.getInventoryTable();
+                loading.setVisibility(View.INVISIBLE);
                 updateInventoryView();
             }
             else if(mToolbar.getTitle().equals("Weekly Count")){
                 Log.w("2500", parser.getWeeklyCountTable().toString());
                 currListView = parser.getWeeklyCountTable();
+                loading.setVisibility(View.INVISIBLE);
                 updateWeeklyCount();
             }
             else if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){
                 Log.w("3000", parser.getAllPrices().toString());
                 currListView = parser.getAllPrices();
+                loading.setVisibility(View.INVISIBLE);
                 updatePricesView();
             }
             else if(mToolbar.getTitle().equals("Order - Place an Order")){
@@ -1893,7 +1935,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 LinkedList<String> prices = new LinkedList<>();
                 LinkedList<String> lowStock = new LinkedList<>();
                 LinkedList<String> recommended = new LinkedList<>();
-                LinkedList<String> recommendedWithNoDuplicates = new LinkedList<>();
 
                 prices.addAll(parser.getAllPrices());
                 lowStock.addAll(parser.allItemsFromLowStock());
@@ -1903,15 +1944,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 Log.w("3700 Low Stock--> ", lowStock.toString());
 
                 final LinkedList<String> finalRecommended = recommended;
-                final LinkedList<String> finalRecommended1 = recommended;
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         Log.w("3800 Recommended--> ", finalRecommended.toString());
                         //showLoadingCircle();
                         System.out.println(("3900 removeDuplicates--> "+ parser.removeDuplicates(finalRecommended)));
-                        currListView = finalRecommended1;
+                        currListView = finalRecommended;
                         updatePlaceOrderView();
+                        loading.setVisibility(View.INVISIBLE);
                     }
                 }, 5000);
             }
@@ -1919,6 +1960,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             else if(mToolbar.getTitle().equals("Active Orders")){
                 System.out.println("SUNDAY3");
                 Log.w("4500", parser.getAllActiveOrders().toString());
+                loading.setVisibility(View.INVISIBLE);
                 currListView =parser.getAllActiveOrders();
                 updateActiveOrdersView();
             }
@@ -1927,16 +1969,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
 
-/* Show Loading Circle View */
-    private void showLoadingCircle() {
-        loading.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loading.setVisibility(View.GONE); // Hide loading circle
-            }
-        }, 2500);
-    }
 
 /* Restart Activity */
     private void restartActivity() {
