@@ -384,7 +384,71 @@ public class Parser {
 
     public LinkedList<String> removeDuplicates(LinkedList<String> duplicateList) {
         Log.w("removeDuplicates()", "bo");
-        System.out.println("temp0"  + duplicateList.toString());
+        System.out.println("duplicateList.toString() "  + duplicateList.toString());
+        LinkedList<String> finalList = new LinkedList<>();
+        LinkedList<String> copy = new LinkedList<>();
+        copy = duplicateList;
+
+        for(int i = 0; i < duplicateList.size(); i++){
+            String curr = duplicateList.get(i);
+            System.out.println("curr " + curr + " i = " + i);
+            String[] splitCurr = curr.split(" ");
+
+            String currItem = splitCurr[0];
+            String currSeller = splitCurr[1];
+            String currPrice = splitCurr[2];
+
+            System.out.println("        currItem = " + currItem + " , currSeller = " + currSeller + " , " +
+                    "currPrice = " + currPrice);
+
+            for(int j = i+1; j < duplicateList.size(); j++){
+                String currNext = duplicateList.get(j);
+                System.out.println("    currNext " + currNext + " j = " + j);
+
+                String[] splitCurrNext = currNext.split(" ");
+                String currNextItem = splitCurrNext[0];
+                String currNextSeller = splitCurrNext[1];
+                String currNextPrice = splitCurrNext[2];
+
+                System.out.println("        currNextItem = " + currNextItem + " , currNextSeller = " + currNextSeller + " , " +
+                        "currNextPrice = " + currNextPrice);
+
+                if(currItem.equalsIgnoreCase(currNextItem)){
+                    System.out.println("    curr == currNext");
+
+                    double a = Double.parseDouble(currPrice);
+                    double b = Double.parseDouble(currNextPrice);
+
+                    // distributor a sells cheaper than distributor b
+                    // {apples 1.99, apples 2.99, apples, .99}
+                    // First iteration copy = {apples 1.99, apples, .99} , remove [apples 2.99] 1th location
+                    // Second iteration finalList = {apples .99} , remove [apples 1.99] 0th location
+                    if(currItem.equalsIgnoreCase(currNextItem) && (a < b)){
+                        System.out.println("    Distributor A sells cheaper than Distributor B. ");
+                        // remove b
+                        System.out.println("        Before removal the copy list is " + copy.toString());
+                        System.out.println("            Remove current.next element = " + currNext);
+                        copy.remove(currNext);
+                        System.out.println("                After removal the copy list is " + copy.toString());
+                    }
+                    // {apples 2.99, apples 1.99, apples, .99}
+                    // First iteration finalList = {apples 1.99} , remove [apples 2.99] 0th location
+                    // Second iteration finalList = {apples .99} , remove [apples 1.99] 1th location
+                    else if(currItem.equalsIgnoreCase(currNextItem) && (b < a)){
+                        System.out.println("    Distributor B sells cheaper than Distributor A. ");
+                        System.out.println("        Before removal the copy list is " + copy.toString());
+                        System.out.println("            Remove current element = " + curr);
+                        copy.remove(curr);
+                        System.out.println("                After removal the copy list is " + copy.toString());
+                    }
+                }
+                else{
+                    System.out.println("curr != currNext");
+
+                }
+            }
+        }
+
         /*
         LinkedList<String> copy = new LinkedList<>();
         copy = duplicateList;
@@ -440,9 +504,9 @@ public class Parser {
                 }
             }
         } */
-        System.out.println(" okay ");
-        System.out.println(" duplicateList " + duplicateList.toString());
-        return duplicateList;
+        System.out.println("duplicateList.toString() "  + duplicateList.toString());
+        System.out.println(" copy " + copy.toString());
+        return copy;
     }
     // If an item is sold in multiple market/distributors then get the cheapest one
         /*
