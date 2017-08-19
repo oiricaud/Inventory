@@ -19,13 +19,19 @@
                 android:contentDescription="Pho Tre Bien Logo"/>
 
 
-        <!-- Email Label -->
-        <ProgressBar
+        <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:indeterminate="true"
-                android:id="@+id/loadingCircle"
-                android:foregroundGravity="center"/>
+                android:layout_height="match_parent" android:id="@+id/layout_progressbar">
+            <ProgressBar
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:indeterminate="true"
+                    android:id="@+id/loadingCircle"
+                    android:layout_marginTop="150dp"/>
+        </LinearLayout>
+
+        <!-- User ID Label -->
         <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_marginTop="15dp"

@@ -53,7 +53,7 @@ public class Parser {
     public Parser(){
 
     }
-    
+
 /* PARSE EMPLOYEES */
     public void parseEmployees(JSONObject jsonObject){
         try {

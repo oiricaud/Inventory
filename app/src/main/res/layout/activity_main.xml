@@ -56,8 +56,18 @@
 
 
     </LinearLayout>
-
-<!-- MENU -->
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/layout_progressbar" android:layout_marginTop="80dp">
+        <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:indeterminate="true"
+                android:id="@+id/loadingCircle"
+        />
+    </LinearLayout>
+    <!-- MENU -->
     <RelativeLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -382,12 +392,7 @@
                         android:layout_height="match_parent" android:layout_marginTop="20dp"
                         android:id="@+id/inventory_table" android:contextClickable="true">
                 </TableLayout>
-                <ProgressBar
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:indeterminate="true"
-                        android:id="@+id/loadingCircle"
-                        android:layout_marginStart="100dp" android:layout_marginTop="170dp"/>
+
                 <!-- Dynamically fill table here -->
             </LinearLayout>
         </ScrollView>
