@@ -136,6 +136,7 @@ public class Parser {
             String item = String.valueOf(jsonObject.get("item"));
             String category = String.valueOf(jsonObject.get("category"));
             String curr_qty = String.valueOf(jsonObject.get("curr_qty"));
+            String min_qty = String.valueOf(jsonObject.get("min_qty"));
             String max_qty = String.valueOf(jsonObject.get("max_qty"));
             String last_time_updated = String.valueOf(jsonObject.get("last_time_updated"));
 
@@ -148,6 +149,7 @@ public class Parser {
             System.out.println("    item " + item);
             System.out.println("    category " + category);
             System.out.println("    curr_qty " + curr_qty);
+            System.out.println("    min_qty " + min_qty);
             System.out.println("    max_qty " + max_qty);
             System.out.println("    last_time_updated " + last_time_updated);
 
@@ -166,12 +168,14 @@ public class Parser {
             if((ratio) <= .2){ // Low Stock
                 // Negate the ratio value
                 int negateRatio = (int) (convertMaxQty - convertCurrQty);
-                setLowStockItems(item + " " + last_time_updated + " " + negateRatio);
+                setLowStockItems(item + " " + category + " " + curr_qty + " " + min_qty + " " + max_qty + " " +
+                        last_time_updated + " " + negateRatio);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        System.out.println("setLowStockItems1 " + lowStockItems.toString());
     }
 
 /* PARSE WEEKLY COUNT */
@@ -255,43 +259,39 @@ public class Parser {
         }
 }
 
-
-/* PARSE - RECOMMENDED */
-    public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedList<String> prices){
+    public LinkedList<String> parseRecommendedTwo(LinkedList<String> lowStock, LinkedList<String> prices){
         LinkedList<String> copy = new LinkedList<String>();
 
         LinkedList<String> temp = new LinkedList<>();
         for(int i = 0; i < lowStock.size(); i++) {
             String currRowLowStock = lowStock.get(i);
             String lowStockBreak[] = currRowLowStock.split(" ");
-            /*
+
             System.out.println("lowStockBreak[0]" + lowStockBreak[0]); // Item
             System.out.println("lowStockBreak[1]" + lowStockBreak[1]); // Price
             System.out.println("lowStockBreak[2]" + lowStockBreak[2]); // qty
-            */
+
 
             for(int j = 0; j < prices.size(); j++){
                 String currRowPrice = prices.get(j);
                 String priceBreak[] = currRowPrice.split(" ");
-                /*
+
                 System.out.println("    priceBreak[0]" + priceBreak[0]); // Item
                 System.out.println("    priceBreak[1]" + priceBreak[1]); // Price
                 System.out.println("    priceBreak[2]" + priceBreak[2]); // Distributor
-                */
+
                 // From the inventory table we found an item that is sold by a distributor
-                if(!temp.contains(lowStockBreak[0])){ //
+                if(!copy.contains(lowStockBreak[0])){ //
                     System.out.println("We already added this item " + lowStockBreak[0]);
-                   // temp.add(temp.get(j));
+                    // temp.add(temp.get(j));
                 }
                 if(lowStockBreak[0].equalsIgnoreCase(priceBreak[0])){
-                    temp.add(lowStockBreak[0] + " " +  priceBreak[2] + " " + priceBreak[1]  + " " + lowStockBreak[2]);
+                    copy.add(lowStockBreak[0] + " " +  priceBreak[2] + " " + priceBreak[1]  + " " + lowStockBreak[2]);
                 }
-
-
             }
 
             // If an item is sold in multiple market/distributors then get the cheapest one
-            if(lowStockBreak[0].contains(temp.toString())){
+            if(lowStockBreak[0].contains(copy.toString())){
                 System.out.println("We found a multiple item that is sold by multiple distributors");
             }
         }
@@ -301,16 +301,16 @@ public class Parser {
         // If an item is sold in multiple market/distributors then get the cheapest one
 
 
-        for(int k = 0; k < temp.size(); k++){
-            String currRow = temp.get(k);
+        for(int k = 0; k < copy.size(); k++){
+            String currRow = copy.get(k);
             String[] breakString = currRow.split(" ");
 
             System.out.println("currRow[item] =  " + breakString[0]); // Item
             System.out.println("currRow[seller] = " + breakString[1]); // Seller
             System.out.println("currRow[price] = " + breakString[2]); // Price
 
-            for(int l = 1; l < temp.size(); l++){
-                String nextRow = temp.get(l);
+            for(int l = 1; l < copy.size(); l++){
+                String nextRow = copy.get(l);
 
                 String[] breakSecondString = nextRow.split(" ");
                 System.out.println("    nextRow[item] = " + breakSecondString[0]); // Item
@@ -329,20 +329,172 @@ public class Parser {
 
                 if(a.equalsIgnoreCase(b)){ // A == B
                     if(c < d){
-                        temp.remove(l);
+                        copy.remove(l);
                     }
                     if(c > d){
-                        temp.remove(l-1);
+                        copy.remove(l-1);
                     }
                 }
             }
         }
+        return copy;
+    }
+/* PARSE - RECOMMENDED */
+    public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedList<String> prices){
+        System.out.println("parseRecommended() ");
+        System.out.println("setLowStockItems2 " + lowStockItems.toString());
+        System.out.println("        pricesList " + prices.toString());
+        System.out.println("        lowStockList " + lowStock.toString());
+        LinkedList<String> temp = new LinkedList<>();
 
+        for(int i = 0; i < lowStock.size(); i++) {
+            String currRowLowStock = lowStock.get(i);
+            String lowStockList[] = currRowLowStock.split(" ");
+
+            System.out.println("lowStockList[0]" + lowStockList[0]); // item
+            System.out.println("    lowStockList[1]" + lowStockList[1]); // category
+            System.out.println("        lowStockList[2]" + lowStockList[2]); // curr_qty
+            System.out.println("            lowStockList[3]" + lowStockList[3]); // min_qty
+            System.out.println("                lowStockList[4]" + lowStockList[4]); // max_qty
+            System.out.println("                    lowStockList[5]" + lowStockList[5]); // last_time_updated
+            System.out.println("                        lowStockList[6]" + lowStockList[6]); // negateRatio
+
+            for(int j = 0; j < prices.size(); j++){
+                String currRowPrice = prices.get(j);
+                String priceList[] = currRowPrice.split(" ");
+
+                System.out.println("    priceList[0]" + priceList[0]); // Item
+                System.out.println("        priceList[1]" + priceList[1]); // Price
+                System.out.println("            priceList[2]" + priceList[2]); // Distributor
+
+                System.out.println("        pricesList " + prices.toString());
+                System.out.println("        lowStockList " + lowStock.toString());
+                if(lowStockList[0].equalsIgnoreCase(priceList[0])){
+                    System.out.println(" Yes! We found a price for item " + lowStockList[0] + " price of " + priceList[1]);
+                    temp.add(priceList[0] + " " +  priceList[2] + " " + priceList[1]  + " " + priceList[2]);
+                }
+                else{
+                    System.out.println("No");
+                }
+            }
+        }
+        //removeDuplicates(temp);
         return temp;
     }
 
+    public LinkedList<String> removeDuplicates(LinkedList<String> duplicateList) {
+        Log.w("removeDuplicates()", "bo");
+        System.out.println("temp0"  + duplicateList.toString());
+        /*
+        LinkedList<String> copy = new LinkedList<>();
+        copy = duplicateList;
+        for(int k = 0; k < duplicateList.size(); k++) {
+            String currRow = duplicateList.get(k);
+            String[] breakString = currRow.split(" ");
+            System.out.println("                    temp1 = " + currRow);
+            System.out.println("                    k = " + k);
+            //System.out.println("currRow[item] =  " + breakString[0]); // Item
+            //System.out.println("currRow[seller] = " + breakString[1]); // Seller
+            //System.out.println("currRow[price] = " + breakString[2]); // Price
 
-/* Parse Active Orders */
+            for (int l = 1; l < duplicateList.size(); l++) {
+                String nextRow = duplicateList.get(l);
+                System.out.println("                    temp2 = " + nextRow);
+                System.out.println("                     l = " + l);
+                String[] breakSecondString = nextRow.split(" ");
+
+                //System.out.println("    nextRow[item] = " + breakSecondString[0]); // Item
+                //System.out.println("    nextRow[seller] = " + breakSecondString[1]); // Seller
+                //System.out.println("    nextRow[price] =" + breakSecondString[2]); // Price
+
+                String a = breakString[0];
+                String b = breakSecondString[0];
+
+                System.out.println("        A = " + a);
+                System.out.println("        B = " + b);
+
+
+                if (a.equalsIgnoreCase(b)) { // A == B
+
+                    double c = Double.parseDouble(breakString[2]);
+                    double d = Double.parseDouble(breakSecondString[2]);
+                    System.out.println("                C = " + c);
+                    System.out.println("                D = " + d);
+
+                    if (c < d) {
+                        System.out.println("                    C < D ");
+                        System.out.println("                        temp3 = " + duplicateList.toString());
+                        System.out.println("                            temp.remove(l) = " + duplicateList.get(l));
+                        //copy.add(breakString[0] + " " + breakSecondString[1] + " " + c + " " + "d");
+                        //duplicateList.remove(l);
+                        System.out.println("                    temp4 = " + duplicateList.toString());
+                    }
+                    if (c > d) {
+                        System.out.println("                    C > D ");
+                        System.out.println("                        temp5 = " + duplicateList.toString());
+                        System.out.println("                            temp.remove(l-1) = " + duplicateList.get(l-1));
+                        //copy.add(breakString[0] + " " + breakSecondString[1] + " " + d + " " + "d");
+                        //duplicateList.remove(l-1);
+                        System.out.println("                    temp6 = " + duplicateList.toString());
+                    }
+                }
+            }
+        } */
+        System.out.println(" okay ");
+        System.out.println(" duplicateList " + duplicateList.toString());
+        return duplicateList;
+    }
+    // If an item is sold in multiple market/distributors then get the cheapest one
+        /*
+        for(int k = 0; k < temp.size(); k++){
+            String currRow = temp.get(k);
+            String[] breakString = currRow.split(" ");
+
+            System.out.println("currRow[item] =  " + breakString[0]); // Item
+            System.out.println("currRow[seller] = " + breakString[1]); // Seller
+            System.out.println("currRow[price] = " + breakString[2]); // Price
+
+            for(int l = 1; l < temp.size(); l++){
+                String nextRow = temp.get(l);
+                System.out.println("                    temp1 = " + temp.toString());
+                String[] breakSecondString = nextRow.split(" ");
+                System.out.println("    nextRow[item] = " + breakSecondString[0]); // Item
+                System.out.println("    nextRow[seller] = " + breakSecondString[1]); // Seller
+                System.out.println("    nextRow[price] =" + breakSecondString[2]); // Price
+
+                String a = breakString[0];
+                String b = breakSecondString[0];
+
+                System.out.println("        A = " + a);
+                System.out.println("        B = " + b);
+                double c = Double.parseDouble(breakString[2]);
+                double d = Double.parseDouble(breakSecondString[2]);
+                System.out.println("                C = " + c);
+                System.out.println("                D = " + d);
+
+                if(a.equalsIgnoreCase(b)){ // A == B
+                    if(c < d){
+                        System.out.println("                    C < D ");
+                        System.out.println("                    temp2 = " + temp.toString());
+                        temp.remove(l);
+                        System.out.println("                    temp.remove(l) = " + temp.toString());
+                    }
+                    if(c > d){
+                        System.out.println("                    C > D ");
+                        System.out.println("                    temp3 = " + temp.toString());
+                        temp.remove(l-1);
+                        System.out.println("                    temp.remove(l-1) = " + temp.toString());
+                    }
+                }
+            }
+        }
+        */
+
+
+
+
+
+    /* Parse Active Orders */
     public void parseActiveOrders(JSONObject jsonObject){
 
         try {
@@ -582,48 +734,7 @@ public class Parser {
             weeklyCountTable.add(id + " " + item + " " + category + " " + curr_qty + " " + max_qty);
             System.out.println("    weeklyCountTable" + weeklyCountTable.toString());
         }
-
-        // The ITEM is already on list, perhaps we should just  update the fields.
-        /*
-        else {
-            System.out.println("TABLE IS NOT EMPTY --> " + item);
-
-                for(int t = 0; t < weeklyCountTable.size(); t++){
-                    System.out.println("Weekly Count Table " + weeklyCountTable.get(t));
-                    String[] currRow = inventoryTable.get(t).replace("[", "").replace("]", "").replace(",", "").split
-                            (" ");
-
-                    String idCurrRow  = currRow[0];
-                    String itemCurrRow  = currRow[1];
-                    String catCurrRow  = currRow[2];
-                    String curr_qtyCurrRow  = currRow[3];
-                    String max_qtyCurrRow  = currRow[4];
-
-                    System.out.println("        itemCurrRow " + itemCurrRow);
-                    System.out.println("        catCurrRow " + catCurrRow);
-                    System.out.println("        curr_qtyCurrRow " + curr_qtyCurrRow);
-                    System.out.println("        max_qtyCurrRow " + max_qtyCurrRow);
-
-
-                    if(id.equals(idCurrRow)){ // We found the qty we need to update
-                        System.out.println("We found the qty we need to update");
-                        System.out.println("    currentTable2" + weeklyCountTable.toString());
-                        System.out.println("    t = " + t);
-                        weeklyCountTable.remove(t);
-                        String newRow = id + " " + item + " " + catCurrRow
-                                + " " + curr_qty + " " + max_qtyCurrRow + " " + last_time_updated;
-                        weeklyCountTable.add(newRow);
-                        System.out.println("    currentTable3" + weeklyCountTable.toString());
-                    }
-                }
-            System.out.println("    currentTable4" + weeklyCountTable.toString());
-            System.out.println("    currentTable9" + inventoryTable.toString());
-            setInventoryTable(weeklyCountTable);
-            System.out.println("    currentTable10" + inventoryTable.toString());
-        }
-        */
-
-        }
+    }
 
     public void updateInventoryCount(String id, String item, String cat, String curr_qty, String max_qty, String
             copyTime){

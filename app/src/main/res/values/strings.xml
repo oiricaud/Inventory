@@ -143,4 +143,5 @@
     <string name="current_orders_price">Price</string>
     <string name="current_orders_confirm">Confirm</string>
     <string name="time_stamp">Time Stamp</string>
+    <string name="min_qty">MIN QTY</string>
 </resources>

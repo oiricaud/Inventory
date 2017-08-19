@@ -479,6 +479,19 @@
                                   android:fontFamily="sans-serif-smallcaps"/>
                     </android.support.design.widget.TextInputLayout>
 
+                    <!-- Min QTY Label -->
+                    <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp">
+                        <EditText android:id="@+id/min_qty"
+                                  android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:hint="@string/min_qty" android:inputType="number"
+                                  android:fontFamily="sans-serif-smallcaps"/>
+                    </android.support.design.widget.TextInputLayout>
+
                     <!-- Max QTY Label -->
                     <android.support.design.widget.TextInputLayout
                             android:layout_width="match_parent"

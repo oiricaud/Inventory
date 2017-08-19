@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 inventoryCountView.setVisibility(RelativeLayout.GONE);
                 pricesView.setVisibility(RelativeLayout.GONE);
                 placeOrderView.setVisibility(RelativeLayout.GONE);
-
+                activeOrdersView.setVisibility(RelativeLayout.INVISIBLE);
                 drawerFragment.closeDrawers();
                 launchHomeView();
                 break;
@@ -269,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
                 activeOrdersPopUp.setVisibility(RelativeLayout.GONE);
+                activeOrdersView.setVisibility(RelativeLayout.INVISIBLE);
                 drawerFragment.closeDrawers();
                 launchEmployeesView();
                 break;
@@ -282,6 +283,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
                 activeOrdersPopUp.setVisibility(RelativeLayout.GONE);
+                activeOrdersView.setVisibility(RelativeLayout.INVISIBLE);
                 drawerFragment.closeDrawers();
                 launchSectionsView();
                 break;
@@ -294,6 +296,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
                 activeOrdersPopUp.setVisibility(RelativeLayout.GONE);
+                activeOrdersView.setVisibility(RelativeLayout.INVISIBLE);
                 drawerFragment.closeDrawers();
                 launchInventoryView();
                 break;
@@ -305,6 +308,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
                 activeOrdersPopUp.setVisibility(RelativeLayout.GONE);
+                activeOrdersView.setVisibility(RelativeLayout.INVISIBLE);
                 drawerFragment.closeDrawers();
                 launchWeeklyCountView();
                 break;
@@ -316,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 placeOrderView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
                 activeOrdersPopUp.setVisibility(RelativeLayout.GONE);
+                activeOrdersView.setVisibility(RelativeLayout.INVISIBLE);
                 drawerFragment.closeDrawers();
                 launchPricesView();
                 break;
@@ -330,6 +335,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 pricesView.setVisibility(RelativeLayout.GONE);
                 placeOrderPopUp.setVisibility(RelativeLayout.GONE);
                 activeOrdersPopUp.setVisibility(RelativeLayout.GONE);
+                activeOrdersView.setVisibility(RelativeLayout.INVISIBLE);
                 drawerFragment.closeDrawers();
                 launchPlaceOrderView();
                 break;
@@ -812,19 +818,19 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     row.addView(time_stamp);
 
                     LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item.getLayoutParams();
-                    paramsItem.setMargins(30, 0, 30, 25);
+                    paramsItem.setMargins(30, 0, 20, 25);
 
                     LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) category.getLayoutParams();
-                    paramsCategory.setMargins(30, 0, 30, 25); // Left, Top, Right, Bottom
+                    paramsCategory.setMargins(10, 0, 20, 25); // Left, Top, Right, Bottom
 
                     LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) curr_qty.getLayoutParams();
-                    paramsCurrentQTY.setMargins(65, 0, 30, 25);
+                    paramsCurrentQTY.setMargins(35, 0, 20, 25);
 
                     //LinearLayout.LayoutParams paramsMaxQTY = (LinearLayout.LayoutParams) max_qty.getLayoutParams();
                     //paramsMaxQTY.setMargins(pixelToDP(80), 0, 0, pixelToDP(25)); //substitute
 
                     LinearLayout.LayoutParams paramsTimeStamp = (LinearLayout.LayoutParams) time_stamp.getLayoutParams();
-                    paramsTimeStamp.setMargins(30, 0, 30, 25);
+                    paramsTimeStamp.setMargins(65, 0, 20, 25);
 
 
                     item.setLayoutParams(paramsItem);
@@ -859,6 +865,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         final EditText etItem = (EditText) findViewById(R.id.food_item);
         final EditText etCurrentQty = (EditText) findViewById(R.id.current_qty);
+        final EditText etMinQty = (EditText) findViewById(R.id.min_qty);
         final EditText etMaxQty = (EditText) findViewById(R.id.max_qty);
         final Spinner etSections = (Spinner) findViewById(R.id.et_section);
 
@@ -872,6 +879,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         /* Clear Form */
         etItem.setText("");
         etCurrentQty.setText("");
+        etMinQty.setText("");
         etMaxQty.setText("");
 
         /* Close Dialog  */
@@ -897,6 +905,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             public void onClick(View v) {
                 final String item = etItem.getText().toString();
                 final String currentQty = etCurrentQty.getText().toString();
+                final String minQty = etMinQty.getText().toString();
                 final String maxQty = etMaxQty.getText().toString();
                 final String category = etSections.getSelectedItem().toString();
                 DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -925,7 +934,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 };
 
                 // The next 3 lines calls the @see RegisterRequest class.
-                InventoryRequest inventoryRequest = new InventoryRequest(item, currentQty, maxQty, category,
+                InventoryRequest inventoryRequest = new InventoryRequest(item, currentQty, minQty, maxQty, category,
                         last_time_updated, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
                 queue.add(inventoryRequest);
@@ -986,6 +995,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                     }
                                 };
                                 thread.start();
+                                toast("SUCCESS UPDATING INVENTORY", 10000);
 
                             }
                         })
@@ -998,7 +1008,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                         .show();
             }
         });
-        showLoadingCircle();
+
     }
 
     /* ----> Weekly Count Table */
@@ -1610,14 +1620,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
                                                     }
 
-                                                    /*
                                                     // SEND DATA TO DB HERE
                                                     final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                                                     emailIntent.setType("text/plain");
-                                                    emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,  "serveroverloadofficial@gmail.com");
-                                                    emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Hello There");
-                                                    emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Add Message here");
-
+                                                    emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,  "ptbexpress@gmail.com");
+                                                    emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+                                                            "RECEIPT #" + receipt_number);
+                                                    emailIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+                                                            currListView.toString());
 
                                                     emailIntent.setType("message/rfc822");
 
@@ -1629,7 +1639,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                                                 "No email clients installed.",
                                                                 Toast.LENGTH_SHORT).show();
                                                     }
-                                                    */
+
                                                 }
                                             }, 1500);
                                         }
@@ -1779,20 +1789,27 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 String URL_PHP = "http://www.narped.com/inventory/Employees.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
-            if(mToolbar.getTitle().equals("Restaurant - All Sections") || (mToolbar.getTitle().equals("Inventory - " +
-                    "All Inventory") || (mToolbar.getTitle().equals("Order - Place an Order")))){
+            else if(mToolbar.getTitle().equals("Restaurant - All Sections")){
                 String URL_PHP = "http://www.narped.com/inventory/ItemsInventory.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
-            if(mToolbar.getTitle().equals("Weekly Count")){
+            else if(mToolbar.getTitle().equals("Inventory - " + "All Inventory")){
                 String URL_PHP = "http://www.narped.com/inventory/ItemsInventory.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
-            if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){
+            else if (mToolbar.getTitle().equals("Order - Place an Order")){
+                String URL_PHP = "http://www.narped.com/inventory/ItemsInventory.php";
+                json = jParser.makeHttpRequest(URL_PHP, "GET", params);
+            }
+            else if(mToolbar.getTitle().equals("Weekly Count")){
+                String URL_PHP = "http://www.narped.com/inventory/ItemsInventory.php";
+                json = jParser.makeHttpRequest(URL_PHP, "GET", params);
+            }
+            else if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){
                 String URL_PHP = "http://www.narped.com/inventory/Prices.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
-            if(mToolbar.getTitle().equals("Active Orders")){
+            else if(mToolbar.getTitle().equals("Active Orders")){
                 String URL_PHP = "http://www.narped.com/inventory/ActiveOrders.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
@@ -1808,17 +1825,33 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             JSONObject JOStuff = JAStuff.getJSONObject(i);
 
                             if(mToolbar.getTitle().equals("Employee - All Employees")){
+                                System.out.println("Hello1");
                                 parser.parseEmployees(JOStuff);
                             }
+                            else if(mToolbar.getTitle().equals("Restaurant - All Sections")){
+                                System.out.println("Hello2");
+                                parser.parseSections(JOStuff);
+                            }
                             else if(mToolbar.getTitle().equals("Inventory - All Inventory")){
+                                System.out.println("Hello3");
                                 parser.parseInventory(JOStuff);
+                                parser.parseSections(JOStuff);
                             }
                             else if(mToolbar.getTitle().equals("Weekly Count")){
+                                System.out.println("Hello4");
                                 parser.parseInventoryCount(JOStuff);
                             }
-                            else {
-                                parser.parseSections(JOStuff);
+                            else if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){
+                                System.out.println("Hello5");
                                 parser.parsePrices(JOStuff);
+                            }
+                            else if(mToolbar.getTitle().equals("Order - Place an Order")){
+                                System.out.println("Hello6");
+                                parser.parseInventory(JOStuff);
+                               // parser.parseActiveOrders(JOStuff);
+                            }
+                            if(mToolbar.getTitle().equals("Active Orders")){
+                                System.out.println("Hello7");
                                 parser.parseActiveOrders(JOStuff);
                             }
                         }
@@ -1836,32 +1869,54 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 currListView = parser.getAllEmployee();
                 updateEmployeesView();
             }
-            if(mToolbar.getTitle().equals("Restaurant - All Sections")){
+            else if(mToolbar.getTitle().equals("Restaurant - All Sections")){
                 currListView = parser.getAllItems();
                 updateSectionsView();
             }
-            if(mToolbar.getTitle().equals("Inventory - All Inventory")){
+            else if(mToolbar.getTitle().equals("Inventory - All Inventory")){
                 Log.w("2000", parser.getInventoryTable().toString());
                 currListView = parser.getInventoryTable();
                 updateInventoryView();
             }
-            if(mToolbar.getTitle().equals("Weekly Count")){
+            else if(mToolbar.getTitle().equals("Weekly Count")){
                 Log.w("2500", parser.getWeeklyCountTable().toString());
                 currListView = parser.getWeeklyCountTable();
                 updateWeeklyCount();
             }
-            if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){
+            else if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){
                 Log.w("3000", parser.getAllPrices().toString());
                 currListView = parser.getAllPrices();
                 updatePricesView();
             }
-            if(mToolbar.getTitle().equals("Order - Place an Order")){
-                Log.w("3500", parser.getAllPrices().toString());
-                Log.w("4000", String.valueOf(parser.parseRecommended(parser.allItemsFromLowStock(), parser.getAllPrices())));
-                currListView = parser.parseRecommended(parser.allItemsFromLowStock(), parser.getAllPrices());
-                updatePlaceOrderView();
+            else if(mToolbar.getTitle().equals("Order - Place an Order")){
+
+                LinkedList<String> prices = new LinkedList<>();
+                LinkedList<String> lowStock = new LinkedList<>();
+                LinkedList<String> recommended = new LinkedList<>();
+                LinkedList<String> recommendedWithNoDuplicates = new LinkedList<>();
+
+                prices.addAll(parser.getAllPrices());
+                lowStock.addAll(parser.allItemsFromLowStock());
+                recommended = (parser.parseRecommended(lowStock, prices));
+
+                Log.w("3500 Prices--> ", prices.toString());
+                Log.w("3700 Low Stock--> ", lowStock.toString());
+
+                final LinkedList<String> finalRecommended = recommended;
+                final LinkedList<String> finalRecommended1 = recommended;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.w("3800 Recommended--> ", finalRecommended.toString());
+                        //showLoadingCircle();
+                        System.out.println(("3900 removeDuplicates--> "+ parser.removeDuplicates(finalRecommended)));
+                        currListView = finalRecommended1;
+                        updatePlaceOrderView();
+                    }
+                }, 5000);
             }
-            if(mToolbar.getTitle().equals("Active Orders")){
+
+            else if(mToolbar.getTitle().equals("Active Orders")){
                 System.out.println("SUNDAY3");
                 Log.w("4500", parser.getAllActiveOrders().toString());
                 currListView =parser.getAllActiveOrders();
