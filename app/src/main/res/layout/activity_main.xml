@@ -873,10 +873,10 @@
     <!-- RECOMMENDED ORDERS -->
     <RelativeLayout
             android:id="@+id/pop_up"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="80dp"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:background="@drawable/black_box" android:layout_marginBottom="80dp" android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp">
+            android:background="@drawable/black_box" android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp" android:layout_marginBottom="20dp">
         <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -913,8 +913,9 @@
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/place_order_columns" android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp" android:layout_marginTop="30dp">
+                        android:id="@+id/place_order_columns"
+                        android:layout_marginTop="30dp" android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp">
                     <TextView
                             android:text="@string/place_order_item"
                             android:layout_width="wrap_content"
@@ -931,7 +932,7 @@
                             android:layout_height="wrap_content" android:id="@+id/place_order_Distributor"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="center" android:textColor="@color/primary_dark"
+                            android:textAlignment="textEnd" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
                     />
                     <TextView
@@ -940,7 +941,7 @@
                             android:layout_height="wrap_content" android:id="@+id/place_oder_Price"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="center" android:textColor="@color/primary_dark"
+                            android:textAlignment="textEnd" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
                     />
                     <TextView
@@ -949,7 +950,7 @@
                             android:layout_height="wrap_content" android:id="@+id/place_order_Qty"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="center" android:textColor="@color/primary_dark"
+                            android:textAlignment="textEnd" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
                     />
                     <TextView
@@ -958,7 +959,7 @@
                             android:layout_height="wrap_content" android:id="@+id/place_order_recommend"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="center" android:textColor="@color/primary_dark"
+                            android:textAlignment="textEnd" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"/>
                     <TextView
                             android:text="@string/place_order_dropdown_qty"
@@ -966,7 +967,7 @@
                             android:layout_height="wrap_content" android:id="@+id/place_order_order"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="center" android:textColor="@color/primary_dark"
+                            android:textAlignment="textEnd" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"/>
                 </LinearLayout>
 

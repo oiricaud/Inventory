@@ -401,6 +401,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 /** Toolbar **/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.w("MTOOLBAR GET TITLE", mToolbar.getTitle().toString());
     // Inflate the menu; this adds items to the action bar if it is present.
     if(mToolbar.getTitle().equals("Pho Tre Bien")){ // Display the settings icon
         getMenuInflater().inflate(R.menu.home_menu, menu);
@@ -419,12 +420,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         getMenuInflater().inflate(R.menu.category_menu_remove, menu); // Remove Icon
     }
     if(mToolbar.getTitle().equals("Weekly Count")){ // Display the settings icon
-        getMenuInflater().inflate(R.menu.category_menu_main, menu);
         getMenuInflater().inflate(R.menu.prices_menu, menu); // Search Icon
+        getMenuInflater().inflate(R.menu.category_menu_main, menu); // ...
     }
-    if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){ // Display the settings icon
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        getMenuInflater().inflate(R.menu.prices_menu, menu);
+    if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){
+        getMenuInflater().inflate(R.menu.prices_menu, menu); // Search Icon
+        getMenuInflater().inflate(R.menu.menu_main, menu); // ...
+        getMenuInflater().inflate(R.menu.category_menu_add, menu); // Add Icon
+        getMenuInflater().inflate(R.menu.category_menu_remove, menu); // Remove Icon
     }
     return true;
 }
@@ -1393,32 +1396,42 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     final TableRow row = new TableRow(MainActivity.this);
                     row.setClickable(true);
 
-                    final TextView item1 = new TextView(MainActivity.this);
-                    TextView pricePerQty1 = new TextView(MainActivity.this);
+                    final TextView item = new TextView(MainActivity.this);
+                    TextView pricePerQty = new TextView(MainActivity.this);
                     TextView distributor = new TextView(MainActivity.this);
 
                     String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
 
-                    item1.setText(strArray[0]); //ITEM
-                    pricePerQty1.setText(strArray[1]);
+                    item.setText(strArray[0]); //ITEM
+                    pricePerQty.setText(strArray[1]);
                     distributor.setText(strArray[2]);
 
+                    item.setTextColor(Color.BLACK);
+                    pricePerQty.setTextColor(Color.BLACK);
+                    distributor.setTextColor(Color.BLACK);
 
-                    row.addView(item1);
-                    row.addView(pricePerQty1);
+
+                    Typeface roboto = Typeface.createFromAsset(getAssets(),
+                            "font/Roboto-Light.ttf"); //use this.getAssets if you are calling from an Activity
+                    item.setTypeface(roboto);
+                    pricePerQty.setTypeface(roboto);
+                    distributor.setTypeface(roboto);
+
+                    row.addView(item);
+                    row.addView(pricePerQty);
                     row.addView(distributor);
 
-                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item1.getLayoutParams();
-                    paramsItem.setMargins(pixelToDP(50), 0, pixelToDP(0), pixelToDP(25));
+                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item.getLayoutParams();
+                    paramsItem.setMargins(25, 15 , 0, 25);
 
-                    LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) pricePerQty1.getLayoutParams();
-                    paramsCategory.setMargins(pixelToDP(100), 0, 75, pixelToDP(25)); // Left, Top, Right, Bottom
+                    LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) pricePerQty.getLayoutParams();
+                    paramsCategory.setMargins(25, 15 , 0, 25); // Left, Top, Right, Bottom
 
                     LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) distributor.getLayoutParams();
-                    paramsCurrentQTY.setMargins(pixelToDP(80), 0, 60, pixelToDP(25)); //substitute
+                    paramsCurrentQTY.setMargins(25, 15 , 0, 25); //substitute
 
-                    item1.setLayoutParams(paramsItem);
-                    pricePerQty1.setLayoutParams(paramsCategory);
+                    item.setLayoutParams(paramsItem);
+                    pricePerQty.setLayoutParams(paramsCategory);
                     distributor.setLayoutParams(paramsCurrentQTY);
 
                     pricesTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT,
@@ -1427,7 +1440,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
                     row.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
-                            Log.w("Name of Item Selected", String.valueOf(item1.getText()));
+                            Log.w("Name of Item Selected", String.valueOf(item.getText()));
                         }
                     });
                 }
@@ -1457,6 +1470,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         final Button btn_addItem = (Button) findViewById(R.id.btn_add_item_for_prices);
         final TextView view_items = (TextView) findViewById(R.id.view_prices);
+
 
         /* Clear Form */
         etItem.setText("");
@@ -1709,7 +1723,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
                     placeOrderTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout
                             .LayoutParams.WRAP_CONTENT));
-                    //hideLoadingCircle();
+
 
                     row.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -1717,6 +1731,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                         }
                     });
                 }
+
                     Button placeOrderBtn = (Button) findViewById(R.id.place_order_button);
                     placeOrderBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -2058,7 +2073,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 updatePricesView();
             }
             else if(mToolbar.getTitle().equals("Order - Place an Order")){
-
+                mToolbar.getMenu().clear();
                 LinkedList<String> prices = new LinkedList<>();
                 LinkedList<String> lowStock = new LinkedList<>();
                 LinkedList<String> recommended = new LinkedList<>();
