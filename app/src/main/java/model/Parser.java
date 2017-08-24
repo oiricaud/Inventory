@@ -51,6 +51,9 @@ public class Parser {
     private int countNumberOfOrders = 0;
     private LinkedList<String> tempCounter = new LinkedList<>();
 
+    private LinkedList<String> ticketNumber = new LinkedList<>();
+    private LinkedList<String> listOfItems = new LinkedList<>();
+
     public Parser(){
 
     }
@@ -447,12 +450,16 @@ public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedLi
             ticket_number = ticket_number.replace(' ', '-');
             status = status.replace(' ', '-');
             who_placed_order = who_placed_order.replace(' ', '-');
-
+            String activeOrderCurrentRow = ticket_number + " " + item + " " + qty + " " + price;
+            listOfItems.add(activeOrderCurrentRow);
             if (who_placed_order.equalsIgnoreCase("Pho-Tre-Bien") && !tempCounter.contains(ticket_number)) {
                 countNumberOfOrders++;
                 tempCounter.add(ticket_number);
                 double total = 49.99;
-                addOrderToActiveOrders(ticket_number + " " + place_order_time + " " + status + " " + total + " " );
+                String currList = item + " " + ticket_number + " " + place_order_time + " " + status + " " + total + " ";
+                addOrderToActiveOrders(ticket_number, currList);
+                ticketNumber.add(ticket_number);
+                //listOfItems.add(currList);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -794,11 +801,23 @@ public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedLi
     }
 
 /* GETTERS AND SETTERS FOR ACTIVE ORDERS */
-    private void addOrderToActiveOrders(String item){
+    private void addOrderToActiveOrders(String ticket_number, String item){
         System.out.println("SUNDAY"  + phoTreBienActiveOrders.toString());
         if (!phoTreBienActiveOrders.contains(item)) {
             phoTreBienActiveOrders.add(item);
         }
+    }
+    public LinkedList<String> getOrder(String ticket){
+        LinkedList<String> temp = new LinkedList<>();
+        for(int i = 0 ; i < listOfItems.size(); i++){
+            System.out.println("List of items current row "  + listOfItems.get(i));
+            if(listOfItems.get(i).contains(ticket)){
+                System.out.println("We found the item list for ticket " + ticket + " at position " + i);
+                temp.add(listOfItems.get(i));
+            }
+        }
+
+        return temp;
     }
     public LinkedList<String> getAllActiveOrders(){
         LinkedList<String> concatenateLists = new LinkedList<>();

@@ -380,7 +380,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/Need" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="textStart" android:fontFamily="sans-serif-smallcaps"/>
+                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
         </LinearLayout>
         <ScrollView
                 android:layout_width="fill_parent"
@@ -932,7 +932,7 @@
                             android:layout_height="wrap_content" android:id="@+id/place_order_Distributor"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="textEnd" android:textColor="@color/primary_dark"
+                            android:textAlignment="center" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
                     />
                     <TextView
@@ -941,7 +941,7 @@
                             android:layout_height="wrap_content" android:id="@+id/place_oder_Price"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="textEnd" android:textColor="@color/primary_dark"
+                            android:textAlignment="center" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
                     />
                     <TextView
@@ -950,7 +950,7 @@
                             android:layout_height="wrap_content" android:id="@+id/place_order_Qty"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="textEnd" android:textColor="@color/primary_dark"
+                            android:textAlignment="center" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
                     />
                     <TextView
@@ -959,7 +959,7 @@
                             android:layout_height="wrap_content" android:id="@+id/place_order_recommend"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="textEnd" android:textColor="@color/primary_dark"
+                            android:textAlignment="center" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"/>
                     <TextView
                             android:text="@string/place_order_dropdown_qty"
@@ -967,7 +967,7 @@
                             android:layout_height="wrap_content" android:id="@+id/place_order_order"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="textEnd" android:textColor="@color/primary_dark"
+                            android:textAlignment="center" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"/>
                 </LinearLayout>
 
@@ -1143,7 +1143,7 @@
                             android:id="@+id/current_orders_table" android:layout_marginStart="15dp"
                             android:layout_marginEnd="15dp"
                             android:divider="?android:attr/dividerHorizontal"
-                            android:stretchColumns="0,1,2,3"
+                            android:stretchColumns="0,1,2"
                             android:showDividers="middle" android:clickable="true">
                     </TableLayout>
                     <Button

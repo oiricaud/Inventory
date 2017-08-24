@@ -75,9 +75,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private TableLayout pricesTable;
     private TableLayout placeOrderTable;
     private TableLayout activeOrdersTable;
-
+    private TableLayout activeOrdersTablePopUp;
     private RelativeLayout swipeRefresh;
-
     private LinearLayout menuView;
     private RelativeLayout employeesView;
     private RelativeLayout sectionsView;
@@ -615,6 +614,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         pricesTable =  (TableLayout) findViewById(R.id.prices_table);
         placeOrderTable = (TableLayout) findViewById(R.id.place_order_table);
         activeOrdersTable = (TableLayout) findViewById(R.id.active_orders_table);
+        activeOrdersTablePopUp = (TableLayout) findViewById(R.id.current_orders_table);
 
         /* Hide Layouts */
         swipeRefresh.setVisibility(RelativeLayout.GONE);
@@ -740,6 +740,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     userName.setTextColor(Color.BLACK);
                     userType.setTextColor(Color.BLACK);
 
+                    nameOfEmployee.setTextSize(18);
+                    userName.setTextSize(18);
+                    userType.setTextSize(18);
+
                     Typeface roboto = Typeface.createFromAsset(getAssets(),
                             "font/Roboto-Light.ttf"); //use this.getAssets if you are calling from an Activity
                     nameOfEmployee.setTypeface(roboto);
@@ -831,6 +835,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     row.addView(item);
                     row.addView(category);
 
+                    item.setTextSize(18);
+                    category.setTextSize(18);
+
                     item.setTextColor(Color.BLACK);
                     category.setTextColor(Color.BLACK);
 
@@ -916,6 +923,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     curr_qty.setText(strArray[3]); // CURR_QTY
                     max_qty.setText(strArray[4]);  // MAX_QTY
                     time_stamp.setText(strArray[5]);  // TIME_STAMP
+
+
+                    item.setTextSize(18);
+                    category.setTextSize(18);
+                    curr_qty.setTextSize(18);
+                    max_qty.setTextSize(18);
+                    time_stamp.setTextSize(18);
 
                     item.setTextColor(Color.BLACK);
                     category.setTextColor(Color.BLACK);
@@ -1196,6 +1210,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     //category1.setText(strArray[4]);     // MAX_QTY
                     //category1.setText(strArray[5]);     // TIME
 
+
+
                     row.addView(id);
                     row.addView(item);
                     row.addView(category);
@@ -1405,6 +1421,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     item.setText(strArray[0]); //ITEM
                     pricePerQty.setText(strArray[1]);
                     distributor.setText(strArray[2]);
+
+                    item.setTextSize(18);
+                    pricePerQty.setTextSize(18);
+                    distributor.setTextSize(18);
 
                     item.setTextColor(Color.BLACK);
                     pricePerQty.setTextColor(Color.BLACK);
@@ -1848,6 +1868,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         activeOrdersColumns.setVisibility(LinearLayout.VISIBLE);
         activeOrdersTable.setVisibility(LinearLayout.VISIBLE);
+        activeOrdersTablePopUp.setVisibility(LinearLayout.VISIBLE);
         activeOrdersView.setVisibility(RelativeLayout.VISIBLE);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_main_recyclerview);
@@ -1857,8 +1878,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         mToolbar.setTitle("Active Orders");
         new talkToDataBase().execute();
-        // activeOrdersPopUp.setVisibility(ScrollView.VISIBLE);
-        //showLoadingCircle();
 
     }
     /* ----> Active Order Table */
@@ -1887,17 +1906,12 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     status.setTextSize(18);
                     total.setTextSize(18);
 
-                    String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
-                    System.out.println("ACTIVE ORDERS " + Arrays.toString(strArray));
-                    System.out.println("    ITEM " + strArray[0]);
-                    System.out.println("    DATE " + strArray[1]);
-                    System.out.println("    STATUS " + strArray[2]);
-                    System.out.println("    TOTAL " + strArray[3]);
+                    final String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
 
-                    ticketNumber.setText(strArray[0]); //ITEM
-                    orderDate.setText(strArray[1]); // ORDER DATE
-                    status.setText(strArray[2]); // STATUS
-                    total.setText(strArray[3]); // TOTAL
+                    ticketNumber.setText(strArray[1]); //ITEM
+                    orderDate.setText(strArray[2]); // ORDER DATE
+                    status.setText(strArray[3]); // STATUS
+                    total.setText(strArray[4]); // TOTAL
 
                     row.addView(ticketNumber);
                     row.addView(orderDate);
@@ -1942,6 +1956,42 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             activeOrdersPopUp.setVisibility(View.VISIBLE);
                             TextView tvTicketNumber = (TextView) findViewById(R.id.ticket_number);
                             tvTicketNumber.setText("Ticket Number: " + ticketNumber.getText());
+                            LinkedList<String> currPopUpSelected = parser.getOrder(String.valueOf(ticketNumber.getText()));
+                            System.out.println("ACTIVE ORDERS " + currPopUpSelected);
+                            activeOrdersTablePopUp.removeAllViews();
+                            for(int i = 0 ; i < currPopUpSelected.size(); i++){
+                                String aCurrListView = currPopUpSelected.get(i);
+
+                                final TableRow row = new TableRow(MainActivity.this);
+                                row.setClickable(true);
+
+                                final TextView item = new TextView(MainActivity.this);
+                                TextView qty = new TextView(MainActivity.this);
+                                TextView price = new TextView(MainActivity.this);
+
+                                final String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
+
+                                item.setText(strArray[1]);
+                                qty.setText(strArray[2]);
+                                price.setText(strArray[3]);
+
+                                row.addView(item);
+                                row.addView(qty);
+                                row.addView(price);
+
+                                LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item.getLayoutParams();
+                                paramsItem.setMargins(25, 15 , 0, 25);
+
+                                LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) qty.getLayoutParams();
+                                paramsCategory.setMargins(25, 15 , 0, 25); // Left, Top,
+                                // Right, Bottom
+
+                                LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) price.getLayoutParams();
+                                paramsCurrentQTY.setMargins(25, 15 , 0, 25);
+
+                                activeOrdersTablePopUp.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT));
+                            }
+
                             FloatingActionButton closePopUp = (FloatingActionButton) findViewById(R.id.active_orders_close_pop_up);
                             closePopUp.setOnClickListener(new View.OnClickListener() {
                                 @Override
