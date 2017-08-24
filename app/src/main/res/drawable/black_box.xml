@@ -5,7 +5,7 @@
             android:color="@color/md_black_1000"/>
 
     <!-- Optional, round your corners -->
-    <corners android:radius="2dp"/>
+    <corners android:radius="5dp"/>
 
     <!-- Optional, fill the rest of your background with a color or gradient, use transparent if you only want the border to be displayed-->
     <gradient android:startColor="@android:color/white"

@@ -3,6 +3,8 @@ package activity;
 import adapter.ImageAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.*;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
@@ -12,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private JSONParser jParser = new JSONParser();
     private String TAG_SUCCESS = "success";
     private String TAG_STUFF = "stuff";
+    final int sdk = android.os.Build.VERSION.SDK_INT;
 
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
@@ -108,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         loading.setVisibility(View.GONE);
         TextView createAccount = (TextView) findViewById(R.id.link_signup);
         Button login = (Button) findViewById(R.id.btn_login);
+        changeBackgroundColor();
+
         // If user decides to create an account, change view
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +128,37 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         });
     }
 
+    private void changeBackgroundColor() {
+        // Random number to obtain random background
+        // Usually this can be a field rather than a method variable
+        Random rand = new Random();
+
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        int randomNum = rand.nextInt((6 - 0) + 1) + 0;
+
+
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
+        if(randomNum == 0){
+            linearLayout.setBackgroundDrawable( getResources().getDrawable(R.drawable.deepsea));
+        }
+        if(randomNum == 1){
+            linearLayout.setBackgroundDrawable( getResources().getDrawable(R.drawable.dusk));
+        }
+        if(randomNum == 2){
+            linearLayout.setBackgroundDrawable( getResources().getDrawable(R.drawable.predawn));
+        }
+        if(randomNum == 3){
+            linearLayout.setBackgroundDrawable( getResources().getDrawable(R.drawable.starfall));
+        }
+        if(randomNum == 4){
+            linearLayout.setBackgroundDrawable( getResources().getDrawable(R.drawable.sunset));
+        }
+        if(randomNum == 5){
+            linearLayout.setBackgroundDrawable( getResources().getDrawable(R.drawable.velvetsun));
+        }
+    }
+
     /* User Log In */
     /**
      * This method verifies the users credentials and if they are correct, it launches the home menu.
@@ -135,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         final String username = etUserName.getText().toString();
         final String password = etPassword.getText().toString();
         loading.setVisibility(View.VISIBLE);
+
+
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -378,9 +415,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
     if(mToolbar.getTitle().equals("Inventory - All Inventory")){ // Display the settings icon
         getMenuInflater().inflate(R.menu.prices_menu, menu); // Search Icon
+        getMenuInflater().inflate(R.menu.category_menu_add, menu); // Add Icon
+        getMenuInflater().inflate(R.menu.category_menu_remove, menu); // Remove Icon
     }
     if(mToolbar.getTitle().equals("Weekly Count")){ // Display the settings icon
-        getMenuInflater().inflate(R.menu.menu_main, menu); // Dropdown Icons
+        getMenuInflater().inflate(R.menu.category_menu_main, menu);
         getMenuInflater().inflate(R.menu.prices_menu, menu); // Search Icon
     }
     if(mToolbar.getTitle().equals("Prices - All Prices from sellers")){ // Display the settings icon
@@ -425,6 +464,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             currListView = parser.getAllEmployee();
             updateEmployeesView();
         }
+/* INVENTORY DROP DOWN */
+        if (item.getTitle().equals("Add")) {
+            launchAddItemView();
+        }
+        if (item.getTitle().equals("Remove")) {
+            launchRemoveItemView();
+        }
 
 /* SECTIONS DROP DOWN */
         if (item.getTitle().equals("Front Of House")) {
@@ -451,6 +497,48 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             mToolbar.setTitle("Restaurant - All Sections");
             currListView = parser.getAllItems();
             updateSectionsView();
+        }
+
+/* Prices DROP DOWN */
+        if (item.getTitle().equals("Lams")) {
+            mToolbar.setTitle("Inventory - Lams Items");
+            currListView = parser.getLamsItemsList();
+            updatePricesView();
+        }
+        if (item.getTitle().equals("Sams")) {
+            mToolbar.setTitle("Inventory - Sams Items");
+            currListView = parser.getSamsItemsList();
+            updatePricesView();
+        }
+        if (item.getTitle().equals("Taiwan Trading")) {
+            mToolbar.setTitle("Prices - Taiwan Trading Items");
+            currListView = parser.getTaiwanTradingItemsList();
+            updatePricesView();
+        }
+        if (item.getTitle().equals("Restaurant Depot")) {
+            mToolbar.setTitle("Prices - Restaurant Depot Items");
+            currListView = parser.getRestaurantDepotItemsList();
+            updatePricesView();
+        }
+        if (item.getTitle().equals("Shamrock")) {
+            mToolbar.setTitle("Prices - Shamrock Items");
+            currListView = parser.getShamrockItemsList();
+            updatePricesView();
+        }
+        if (item.getTitle().equals("Cosco")){
+            mToolbar.setTitle("Prices - Cosco Items");
+            currListView = parser.getCoscoItemsList();
+            updatePricesView();
+        }
+        if (item.getTitle().equals("Food King")) {
+            mToolbar.setTitle("Prices - Food Of King Items");
+            currListView = parser.getFoodOfKingItemListItemList();
+            updatePricesView();
+        }
+        if (item.getTitle().equals("All Items")) {
+            mToolbar.setTitle("Prices - All Items");
+            currListView = parser.getAllPrices();
+            updatePricesView();
         }
 
         return super.onOptionsItemSelected(item);
@@ -645,18 +733,28 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     userName.setText(strArray[1]);
                     userType.setText(strArray[2]);
 
+                    nameOfEmployee.setTextColor(Color.BLACK);
+                    userName.setTextColor(Color.BLACK);
+                    userType.setTextColor(Color.BLACK);
+
+                    Typeface roboto = Typeface.createFromAsset(getAssets(),
+                            "font/Roboto-Light.ttf"); //use this.getAssets if you are calling from an Activity
+                    nameOfEmployee.setTypeface(roboto);
+                    userName.setTypeface(roboto);
+                    userType.setTypeface(roboto);
+
                     row.addView(nameOfEmployee);
                     row.addView(userName);
                     row.addView(userType);
 
                     LinearLayout.LayoutParams paramsNameOfEmployee = (LinearLayout.LayoutParams) nameOfEmployee.getLayoutParams();
-                    paramsNameOfEmployee.setMargins(pixelToDP(25), 0, pixelToDP(85), pixelToDP(25));
+                    paramsNameOfEmployee.setMargins(25, 15 , 0, 25);
 
                     LinearLayout.LayoutParams paramsUserName = (LinearLayout.LayoutParams) nameOfEmployee.getLayoutParams();
-                    paramsUserName.setMargins(pixelToDP(25), 0, pixelToDP(85), pixelToDP(25)); // Left, Top, Right, Bottom
+                    paramsUserName.setMargins(25, 15 , 0, 25); // Left, Top, Right, Bottom
 
                     LinearLayout.LayoutParams paramsUserType = (LinearLayout.LayoutParams) nameOfEmployee.getLayoutParams();
-                    paramsUserType.setMargins(pixelToDP(25), 0, pixelToDP(85), pixelToDP(25)); // Left, Top, Right, Bottom
+                    paramsUserType.setMargins(25, 15 , 0, 25); // Left, Top, Right, Bottom
 
                     nameOfEmployee.setLayoutParams(paramsNameOfEmployee);
                     userName.setLayoutParams(paramsUserName);
@@ -718,26 +816,34 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     final TableRow row = new TableRow(MainActivity.this);
                     row.setClickable(true);
 
-                    final TextView item1 = new TextView(MainActivity.this);
-                    TextView category1 = new TextView(MainActivity.this);
+                    final TextView item = new TextView(MainActivity.this);
+                    TextView category = new TextView(MainActivity.this);
 
                     String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
                     Log.w("categories", String.valueOf(currListView.toString()));
 
-                    item1.setText(strArray[0]); //ITEM
-                    category1.setText(strArray[1]); // SECTION
+                    item.setText(strArray[0]); //ITEM
+                    category.setText(strArray[1]); // SECTION
 
-                    row.addView(item1);
-                    row.addView(category1);
+                    row.addView(item);
+                    row.addView(category);
 
-                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item1.getLayoutParams();
-                    paramsItem.setMargins(pixelToDP(25), 0, pixelToDP(0), pixelToDP(25));
+                    item.setTextColor(Color.BLACK);
+                    category.setTextColor(Color.BLACK);
 
-                    LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) category1.getLayoutParams();
-                    paramsCategory.setMargins(pixelToDP(150), 0, 40, pixelToDP(25)); // Left, Top, Right, Bottom
+                    Typeface roboto = Typeface.createFromAsset(getAssets(),
+                            "font/Roboto-Light.ttf"); //use this.getAssets if you are calling from an Activity
+                    item.setTypeface(roboto);
+                    category.setTypeface(roboto);
 
-                    item1.setLayoutParams(paramsItem);
-                    category1.setLayoutParams(paramsCategory);
+                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item.getLayoutParams();
+                    paramsItem.setMargins(70, 15 , 0, 25);
+
+                    LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) category.getLayoutParams();
+                    paramsCategory.setMargins(0, 15, 0, 25); // Left, Top, Right, Bottom
+
+                    item.setLayoutParams(paramsItem);
+                    category.setLayoutParams(paramsCategory);
 
                     sectionsTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout
                             .LayoutParams.WRAP_CONTENT));
@@ -778,14 +884,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         new talkToDataBase().execute();
 
-
-        Button plusButton = (Button) findViewById(R.id.plus_button);
-        plusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchAddItemView();
-            }
-        });
     }
 
     /* ----> Inventory Table */
@@ -816,6 +914,20 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     max_qty.setText(strArray[4]);  // MAX_QTY
                     time_stamp.setText(strArray[5]);  // TIME_STAMP
 
+                    item.setTextColor(Color.BLACK);
+                    category.setTextColor(Color.BLACK);
+                    curr_qty.setTextColor(Color.BLACK);
+                    max_qty.setTextColor(Color.BLACK);
+                    time_stamp.setTextColor(Color.BLACK);
+
+                    Typeface roboto = Typeface.createFromAsset(getAssets(),
+                            "font/Roboto-Light.ttf"); //use this.getAssets if you are calling from an Activity
+                    item.setTypeface(roboto);
+                    category.setTypeface(roboto);
+                    curr_qty.setTypeface(roboto);
+                    max_qty.setTypeface(roboto);
+                    time_stamp.setTypeface(roboto);
+
                     System.out.println("In updateInventoryMethod " + Arrays.toString(strArray));
                     System.out.println("    id: " + strArray[0]);
                     System.out.println("    item: " + strArray[1]);
@@ -830,20 +942,21 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     //row.addView(max_qty);
                     row.addView(time_stamp);
 
+
                     LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item.getLayoutParams();
-                    paramsItem.setMargins(30, 0, 20, 25);
+                    paramsItem.setMargins(25, 15 , 0, 25);
 
                     LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) category.getLayoutParams();
-                    paramsCategory.setMargins(10, 0, 20, 25); // Left, Top, Right, Bottom
+                    paramsCategory.setMargins(0, 15, 0, 25); // Left, Top, Right, Bottom
 
                     LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) curr_qty.getLayoutParams();
-                    paramsCurrentQTY.setMargins(35, 0, 20, 25);
+                    paramsCurrentQTY.setMargins(0, 15, 0, 25);
 
                     //LinearLayout.LayoutParams paramsMaxQTY = (LinearLayout.LayoutParams) max_qty.getLayoutParams();
                     //paramsMaxQTY.setMargins(pixelToDP(80), 0, 0, pixelToDP(25)); //substitute
 
                     LinearLayout.LayoutParams paramsTimeStamp = (LinearLayout.LayoutParams) time_stamp.getLayoutParams();
-                    paramsTimeStamp.setMargins(65, 0, 20, 25);
+                    paramsTimeStamp.setMargins(0, 15, 0, 25);
 
 
                     item.setLayoutParams(paramsItem);
@@ -851,6 +964,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     curr_qty.setLayoutParams(paramsCurrentQTY);
                     //max_qty.setLayoutParams(paramsMaxQTY);
                     time_stamp.setLayoutParams(paramsTimeStamp);
+
 
                     inventoryTable.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT));
 
@@ -1071,7 +1185,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
                     final String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
                     System.out.println("in the update weekly method " + Arrays.toString(strArray));
-                    //counter.setText(String.valueOf(rowCounter));
 
                     id.setText(strArray[0]);         //ID
                     item.setText(strArray[1]);     // ITEM
@@ -1085,22 +1198,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     row.addView(category);
                     row.addView(spinner);
 
-                    LinearLayout.LayoutParams paramsCounter = (LinearLayout.LayoutParams) id.getLayoutParams();
-                    paramsCounter.setMargins(pixelToDP(50), 0, pixelToDP(0), pixelToDP(25));
+                    id.setTextColor(Color.BLACK);
+                    item.setTextColor(Color.BLACK);
+                    category.setTextColor(Color.BLACK);
 
-                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item.getLayoutParams();
-                    paramsItem.setMargins(pixelToDP(80), 0, 10, pixelToDP(25));
-
-                    LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) category.getLayoutParams();
-                    paramsCategory.setMargins(pixelToDP(60), 0, 60, pixelToDP(25)); // Left, Top, Right, Bottom
-
-                    LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) spinner.getLayoutParams();
-                    paramsCurrentQTY.setMargins(pixelToDP(20), 0, 0, pixelToDP(25)); //substitute
-
-                    id.setLayoutParams(paramsCounter);
-                    item.setLayoutParams(paramsItem);
-                    category.setLayoutParams(paramsCategory);
-                    spinner.setLayoutParams(paramsCurrentQTY);
+                    Typeface roboto = Typeface.createFromAsset(getAssets(),
+                            "font/Roboto-Light.ttf"); //use this.getAssets if you are calling from an Activity
+                    id.setTypeface(roboto);
+                    item.setTypeface(roboto);
+                    category.setTypeface(roboto);
 
                     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -1497,25 +1603,39 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     final TableRow row = new TableRow(MainActivity.this);
                     row.setClickable(true);
 
-                    final TextView item1 = new TextView(MainActivity.this);
-                    final TextView distributor1 = new TextView(MainActivity.this);
-                    final TextView price1 = new TextView(MainActivity.this);
+                    final TextView item = new TextView(MainActivity.this);
+                    final TextView distributor = new TextView(MainActivity.this);
+                    final TextView price = new TextView(MainActivity.this);
                     TextView par = new TextView(MainActivity.this);
-                    TextView curr_qty1 = new TextView(MainActivity.this);
+                    TextView curr_qty = new TextView(MainActivity.this);
 
-                    item1.setTextSize(12);
-                    distributor1.setTextSize(12);
-                    price1.setTextSize(12);
+                    item.setTextSize(12);
+                    distributor.setTextSize(12);
+                    price.setTextSize(12);
                     par.setTextSize(12);
-                    curr_qty1.setTextSize(12);
+                    curr_qty.setTextSize(12);
 
                     String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
+                    System.out.println("Boop " + Arrays.toString(strArray));
+                    item.setText(strArray[0]); //ITEM
+                    distributor.setText(strArray[1]);
+                    price.setText(strArray[2]);
+                    par.setText(strArray[4] + " - " + strArray[5]);
+                    curr_qty.setText(strArray[5]);
 
-                    item1.setText(strArray[0]); //ITEM
-                    distributor1.setText(strArray[1]);
-                    price1.setText(strArray[2]);
-                    par.setText("2 - 5");
-                    curr_qty1.setText(strArray[3]);
+                    item.setTextColor(Color.BLACK);
+                    distributor.setTextColor(Color.BLACK);
+                    price.setTextColor(Color.BLACK);
+                    par.setTextColor(Color.BLACK);
+                    curr_qty.setTextColor(Color.BLACK);
+
+                    Typeface roboto = Typeface.createFromAsset(getAssets(),
+                            "font/Roboto-Light.ttf"); //use this.getAssets if you are calling from an Activity
+                    item.setTypeface(roboto);
+                    distributor.setTypeface(roboto);
+                    price.setTypeface(roboto);
+                    par.setTypeface(roboto);
+                    curr_qty.setTypeface(roboto);
 
                     ArrayList<String> spinnerArray = new ArrayList<String>();
 
@@ -1529,37 +1649,38 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     spinner.setAdapter(spinnerArrayAdapter);
 
 
-                    row.addView(item1);
-                    row.addView(distributor1);
-                    row.addView(price1);
+                    row.addView(item);
+                    row.addView(distributor);
+                    row.addView(price);
                     row.addView(par);
-                    row.addView(curr_qty1);
+                    row.addView(curr_qty);
                     row.addView(spinner);
 
-                    Log.w("item1", item1.getText().toString());
-                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item1.getLayoutParams();
-                    paramsItem.setMargins(pixelToDP(20), 0, pixelToDP(0), pixelToDP(10));
+                    Log.w("item1", item.getText().toString());
 
-                    LinearLayout.LayoutParams paramsDistributor = (LinearLayout.LayoutParams) distributor1.getLayoutParams();
-                    paramsDistributor.setMargins(pixelToDP(35), 0, 10, pixelToDP(10)); // Left, Top, Right, Bottom
+                    LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) item.getLayoutParams();
+                    paramsItem.setMargins(0, 15 , 0, 25);
 
-                    LinearLayout.LayoutParams paramsPrice = (LinearLayout.LayoutParams) price1.getLayoutParams();
-                    paramsPrice.setMargins(pixelToDP(25), 0, 30, pixelToDP(10));
+                    LinearLayout.LayoutParams paramsDistributor = (LinearLayout.LayoutParams) distributor.getLayoutParams();
+                    paramsDistributor.setMargins(0, 15 , 0, 25); // Left, Top, Right, Bottom
+
+                    LinearLayout.LayoutParams paramsPrice = (LinearLayout.LayoutParams) price.getLayoutParams();
+                    paramsPrice.setMargins(0, 15 , 0, 25);
 
                     LinearLayout.LayoutParams paramsPar = (LinearLayout.LayoutParams) par.getLayoutParams();
-                    paramsPar.setMargins(pixelToDP(10), 0, 10, pixelToDP(10));
+                    paramsPar.setMargins(0, 15 , 0, 25);
 
-                    LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) curr_qty1.getLayoutParams();
-                    paramsCurrentQTY.setMargins(pixelToDP(30), 0, 0, pixelToDP(10));
+                    LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) curr_qty.getLayoutParams();
+                    paramsCurrentQTY.setMargins(0, 15 , 0, 25);
 
                     LinearLayout.LayoutParams paramsDropDown = (LinearLayout.LayoutParams) spinner.getLayoutParams();
-                    paramsDropDown.setMargins(pixelToDP(55), 0, 0, pixelToDP(10));
+                    paramsDropDown.setMargins(0, 15 , 0, 25);
 
-                    item1.setLayoutParams(paramsItem);
-                    distributor1.setLayoutParams(paramsDistributor);
-                    price1.setLayoutParams(paramsPrice);
+                    item.setLayoutParams(paramsItem);
+                    distributor.setLayoutParams(paramsDistributor);
+                    price.setLayoutParams(paramsPrice);
                     par.setLayoutParams(paramsPar);
-                    curr_qty1.setLayoutParams(paramsCurrentQTY);
+                    curr_qty.setLayoutParams(paramsCurrentQTY);
                     spinner.setLayoutParams(paramsDropDown);
 
                     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -1568,7 +1689,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             String currSpinner = (String) parent.getItemAtPosition(position);
 
                             if (Integer.parseInt(currSpinner) > 0) { // Add Item to final list if qty is > 0
-                                String finalStuff = item1.getText() + " " + distributor1.getText() + " " + price1.getText() + " " + currSpinner;
+                                String finalStuff = item.getText() + " " + distributor.getText() + " " + price.getText() + " " + currSpinner;
                                 recepitOrder.add(finalStuff);
                             }
                         }
@@ -1592,7 +1713,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
                     row.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
-                            Log.w("Name of Item Selected", String.valueOf(item1.getText()));
+                            Log.w("Name of Item Selected", String.valueOf(item.getText()));
                         }
                     });
                 }
@@ -1665,9 +1786,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                                     emailIntent.setType("text/plain");
                                                     emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,  "ptbexpress@gmail.com");
                                                     emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-                                                            "RECEIPT #" + receipt_number);
-                                                    emailIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-                                                            currListView.toString());
+                                                            "RECEIPT #" + receipt_number + " Date: " + currDate);
+                                                    String temp = currListView.toString();
+                                                    temp=temp.replaceAll(",", "\n");
+                                                    emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, temp);
 
                                                     emailIntent.setType("message/rfc822");
 
@@ -1766,26 +1888,31 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     row.addView(orderDate);
                     row.addView(status);
                     row.addView(total);
-                    Display display = getWindowManager().getDefaultDisplay();
-                    int width = display.getWidth();
-                    int height = display.getHeight();
-                    int makeTheTextLookNice = width / 24;
 
-                    System.out.println("WIDTH " + width);
-                    System.out.println("HEIGHT " + height);
+                    ticketNumber.setTextColor(Color.BLACK);
+                    orderDate.setTextColor(Color.BLACK);
+                    status.setTextColor(Color.BLACK);
+                    total.setTextColor(Color.BLACK);
+
+                    Typeface roboto = Typeface.createFromAsset(getAssets(),
+                            "font/Roboto-Light.ttf"); //use this.getAssets if you are calling from an Activity
+                    ticketNumber.setTypeface(roboto);
+                    orderDate.setTypeface(roboto);
+                    status.setTypeface(roboto);
+                    total.setTypeface(roboto);
 
                     LinearLayout.LayoutParams paramsItem = (LinearLayout.LayoutParams) ticketNumber.getLayoutParams();
-                    paramsItem.setMargins(makeTheTextLookNice, 0, makeTheTextLookNice, makeTheTextLookNice);
+                    paramsItem.setMargins(25, 15 , 0, 25);
 
                     LinearLayout.LayoutParams paramsCategory = (LinearLayout.LayoutParams) orderDate.getLayoutParams();
-                    paramsCategory.setMargins(makeTheTextLookNice, 0, makeTheTextLookNice, makeTheTextLookNice); // Left, Top,
+                    paramsCategory.setMargins(25, 15 , 0, 25); // Left, Top,
                     // Right, Bottom
 
                     LinearLayout.LayoutParams paramsCurrentQTY = (LinearLayout.LayoutParams) status.getLayoutParams();
-                    paramsCurrentQTY.setMargins(makeTheTextLookNice, 0, makeTheTextLookNice, makeTheTextLookNice);
+                    paramsCurrentQTY.setMargins(25, 15 , 0, 25);
 
                     LinearLayout.LayoutParams paramsMaxQTY = (LinearLayout.LayoutParams) total.getLayoutParams();
-                    paramsMaxQTY.setMargins(makeTheTextLookNice, 0, makeTheTextLookNice, makeTheTextLookNice); //substitute
+                    paramsMaxQTY.setMargins(25, 15 , 0, 25); //substitute
 
                     ticketNumber.setLayoutParams(paramsItem);
                     orderDate.setLayoutParams(paramsCategory);
@@ -2003,6 +2130,5 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         final float scale = this.getResources().getDisplayMetrics().density;
         return (int) ((pixel * scale) + 0.5f);
     }
-
 
 }

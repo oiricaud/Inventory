@@ -144,4 +144,7 @@
     <string name="current_orders_confirm">Confirm</string>
     <string name="time_stamp">Time Stamp</string>
     <string name="min_qty">MIN QTY</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="place_order_dropdown_qty">QTY</string>
 </resources>

@@ -247,7 +247,10 @@
                     <TableLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" android:layout_marginTop="20dp"
-                            android:id="@+id/employee_table">
+                            android:id="@+id/employee_table"
+                            android:divider="?android:attr/dividerHorizontal"
+                            android:stretchColumns="0,1,2"
+                            android:showDividers="middle" android:clickable="true">
                     </TableLayout>
                 </LinearLayout>
             </ScrollView>
@@ -274,7 +277,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/section_Item" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="textStart" android:layout_marginStart="25dp"
+                    android:textAlignment="center" android:layout_marginStart="25dp"
                     android:textColorHighlight="@color/md_white_1000" android:textColor="@color/md_white_1000"
                     android:textColorHint="@color/md_white_1000" android:fontFamily="sans-serif-smallcaps"/>
             <TextView
@@ -282,7 +285,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/section_category" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="textStart" android:textColor="@color/md_white_1000"
+                    android:textAlignment="center" android:textColor="@color/md_white_1000"
                     android:fontFamily="sans-serif-smallcaps"/>
 
         </LinearLayout>
@@ -323,6 +326,9 @@
                     <TableLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" android:layout_marginTop="20dp"
+                            android:divider="?android:attr/dividerHorizontal"
+                            android:stretchColumns="0,1"
+                            android:showDividers="middle" android:clickable="true"
                             android:id="@+id/section_table">
                     </TableLayout>
                 </LinearLayout>
@@ -367,7 +373,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/stock" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:fontFamily="sans-serif-smallcaps"/>
+                    android:fontFamily="sans-serif-smallcaps" android:textAlignment="center"/>
             <TextView
                     android:text="@string/time_stamp"
                     android:textColor="@color/md_white_1000"
@@ -386,11 +392,15 @@
             <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical" android:clickable="true">
                 <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:layout_marginTop="20dp"
-                        android:id="@+id/inventory_table" android:contextClickable="true">
+                        android:id="@+id/inventory_table" android:contextClickable="true"
+                        android:divider="?android:attr/dividerHorizontal"
+                        android:stretchColumns="0,1,2,3"
+                        android:showDividers="middle" android:clickable="true">
+
                 </TableLayout>
 
                 <!-- Dynamically fill table here -->
@@ -404,29 +414,8 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:layout_alignParentBottom="true">
-
-            <!-- Remove Button -->
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/remove_item"
-                    android:backgroundTint="@android:color/holo_red_light"
-                    android:textColor="@color/material_drawer_background" tools:ignore="ButtonStyle"
-                    android:fontFamily="sans-serif-smallcaps"/>
-
-            <!-- Add Button -->
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/add_item"
-                    android:id="@+id/plus_button"
-                    android:backgroundTint="@android:color/holo_blue_light"
-                    android:textColor="@color/material_drawer_background" tools:ignore="ButtonStyle"
-                    android:fontFamily="sans-serif-smallcaps"/>
-
         </LinearLayout>
-        <!-- Begin Add Item View -->
-        <!-- End Add Item -->
+
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -573,14 +562,14 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/weekly_columns">
+                android:id="@+id/weekly_columns" android:layout_marginStart="35dp" android:layout_marginEnd="35dp">
             <!-- ITEM ID -->
             <TextView
                     android:text="@string/item_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/weekly_Item_id" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="center" android:textColorHint="@color/md_white_1000"
+                    android:textAlignment="textStart" android:textColorHint="@color/md_white_1000"
                     android:textColor="@color/md_white_1000"
                     android:textColorHighlight="@color/md_white_1000" android:textCursorDrawable="@color/md_white_1000"
                     android:fontFamily="sans-serif-smallcaps"/>
@@ -590,7 +579,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/weekly_Item" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="center" android:textColorHint="@color/md_white_1000"
+                    android:textAlignment="textStart" android:textColorHint="@color/md_white_1000"
                     android:textColor="@color/md_white_1000"
                     android:textColorHighlight="@color/md_white_1000" android:textCursorDrawable="@color/md_white_1000"
                     android:fontFamily="sans-serif-smallcaps"/>
@@ -601,7 +590,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/weekly_category" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+                    android:textAlignment="textStart" android:fontFamily="sans-serif-smallcaps"/>
             <!-- COUNT TITLE -->
             <TextView
                     android:text="@string/weekly_count"
@@ -609,7 +598,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/count" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
+                    android:textAlignment="textStart" android:fontFamily="sans-serif-smallcaps"/>
         </LinearLayout>
         <ScrollView
                 android:layout_width="fill_parent"
@@ -621,13 +610,18 @@
             <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp">
+                <!-- Dynamically fill table here -->
                 <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:layout_marginTop="20dp"
-                        android:id="@+id/weekly_table" android:contextClickable="true">
+                        android:id="@+id/weekly_table" android:contextClickable="true"
+                        android:divider="?android:attr/dividerHorizontal"
+                        android:stretchColumns="0,1,2,3"
+                        android:showDividers="middle" android:clickable="true">
                 </TableLayout>
-                <!-- Dynamically fill table here -->
             </LinearLayout>
         </ScrollView>
         <LinearLayout
@@ -705,7 +699,10 @@
                 <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:layout_marginTop="20dp"
-                        android:id="@+id/prices_table" android:contextClickable="true">
+                        android:id="@+id/prices_table" android:contextClickable="true"
+                        android:divider="?android:attr/dividerHorizontal"
+                        android:stretchColumns="0,1,2,3"
+                        android:showDividers="middle" android:clickable="true">
                 </TableLayout>
                 <!-- Dynamically fill table here -->
             </LinearLayout>
@@ -876,9 +873,10 @@
     <!-- RECOMMENDED ORDERS -->
     <RelativeLayout
             android:id="@+id/pop_up"
-            android:layout_marginStart="40dp" android:layout_marginEnd="40dp" android:layout_marginTop="130dp"
+            android:layout_marginTop="130dp"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:background="@drawable/black_box" android:layout_marginBottom="80dp">
+            android:background="@drawable/black_box" android:layout_marginBottom="80dp" android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp">
         <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -923,7 +921,7 @@
                             android:layout_height="wrap_content" android:id="@+id/place_order_Item"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="textStart" android:layout_marginStart="25dp"
+                            android:textAlignment="center"
                             android:textColorHighlight="?android:attr/colorControlNormal" android:textColor="@color/primary_dark"
                             android:textColorHint="?android:attr/colorControlNormal"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"/>
@@ -933,50 +931,53 @@
                             android:layout_height="wrap_content" android:id="@+id/place_order_Distributor"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="textStart" android:textColor="@color/primary_dark"
+                            android:textAlignment="center" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
-                            android:layout_marginStart="40dp"/>
+                    />
                     <TextView
                             android:text="@string/place_order_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" android:id="@+id/place_oder_Price"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="textStart" android:textColor="@color/primary_dark"
+                            android:textAlignment="center" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
-                            android:layout_marginStart="50dp"/>
+                    />
                     <TextView
                             android:text="@string/place_order_par"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" android:id="@+id/place_order_Qty"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="textStart" android:textColor="@color/primary_dark"
+                            android:textAlignment="center" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"
-                            android:layout_marginStart="5dp"/>
+                    />
                     <TextView
                             android:text="@string/place_order_recommended"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" android:id="@+id/place_order_recommend"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="textStart" android:textColor="@color/primary_dark"
+                            android:textAlignment="center" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"/>
                     <TextView
-                            android:text="@string/place_order_dropdown_order"
+                            android:text="@string/place_order_dropdown_qty"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" android:id="@+id/place_order_order"
                             android:layout_weight="1"
                             android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                            android:textAlignment="textStart" android:textColor="@color/primary_dark"
+                            android:textAlignment="center" android:textColor="@color/primary_dark"
                             android:fontFamily="sans-serif-smallcaps" android:textSize="16sp"/>
                 </LinearLayout>
 
                 <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:layout_marginTop="20dp"
-                        android:id="@+id/place_order_table" android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp">
+                        android:id="@+id/place_order_table" android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:divider="?android:attr/dividerHorizontal"
+                        android:stretchColumns="0,1,2,3,4,5"
+                        android:showDividers="middle" android:clickable="true">
                 </TableLayout>
                 <Button
                         android:text="@string/place_order"
@@ -1008,7 +1009,7 @@
                     android:layout_height="wrap_content" android:id="@+id/active_orders_ticket_number"
                     android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="textStart" android:textColorHint="@color/md_white_1000"
+                    android:textAlignment="center" android:textColorHint="@color/md_white_1000"
                     android:textColor="@color/md_white_1000"
                     android:textColorHighlight="@color/md_white_1000" android:textCursorDrawable="@color/md_white_1000"
                     android:fontFamily="sans-serif-smallcaps"/>
@@ -1018,21 +1019,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/active_orders_date" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="textStart" android:fontFamily="sans-serif-smallcaps"/>
+                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
             <TextView
                     android:text="@string/active_orders_status"
                     android:textColor="@color/md_white_1000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/active_orders_status" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="textStart" android:fontFamily="sans-serif-smallcaps"/>
+                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
             <TextView
                     android:text="@string/active_orders_total"
                     android:textColor="@color/md_white_1000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/active_orders_total" android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Menu"
-                    android:textAlignment="textStart" android:fontFamily="sans-serif-smallcaps"/>
+                    android:textAlignment="center" android:fontFamily="sans-serif-smallcaps"/>
         </LinearLayout>
 
         <ScrollView
@@ -1048,7 +1049,10 @@
                 <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:layout_marginTop="20dp"
-                        android:id="@+id/active_orders_table" android:contextClickable="true">
+                        android:id="@+id/active_orders_table"
+                        android:divider="?android:attr/dividerHorizontal"
+                        android:stretchColumns="0,1,2,3"
+                        android:showDividers="middle">
                 </TableLayout>
             </LinearLayout>
         </ScrollView>
@@ -1136,7 +1140,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" android:layout_marginTop="20dp"
                             android:id="@+id/current_orders_table" android:layout_marginStart="15dp"
-                            android:layout_marginEnd="15dp">
+                            android:layout_marginEnd="15dp"
+                            android:divider="?android:attr/dividerHorizontal"
+                            android:stretchColumns="0,1,2,3"
+                            android:showDividers="middle" android:clickable="true">
                     </TableLayout>
                     <Button
                             android:text="@string/current_orders_confirm"

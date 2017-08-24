@@ -32,6 +32,7 @@ public class Parser {
 /* Inventory - Distributors */
     private LinkedList<String> inventoryTable = new LinkedList<>();
 
+
 /* Weekly Count */
     private LinkedList<String> weeklyCountTable = new LinkedList<>();
 
@@ -262,14 +263,16 @@ public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedLi
     LinkedList<String> copy = new LinkedList<String>();
 
     LinkedList<String> temp = new LinkedList<>();
+    System.out.println("Low stock " + lowStock);
     for(int i = 0; i < lowStock.size(); i++) {
         String currRowLowStock = lowStock.get(i);
         String lowStockBreak[] = currRowLowStock.split(" ");
 
         System.out.println("lowStockBreak[0]" + lowStockBreak[0]); // Item
         System.out.println("lowStockBreak[1]" + lowStockBreak[1]); // Price
-        System.out.println("lowStockBreak[2]" + lowStockBreak[2]); // qty
-
+        System.out.println("lowStockBreak[2]" + lowStockBreak[2]); // curr_qty
+        System.out.println("lowStockBreak[3]" + lowStockBreak[3]); // min_qty
+        System.out.println("lowStockBreak[4]" + lowStockBreak[4]); // max_qty
 
         for(int j = 0; j < prices.size(); j++){
             String currRowPrice = prices.get(j);
@@ -279,13 +282,9 @@ public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedLi
             System.out.println("    priceBreak[1]" + priceBreak[1]); // Price
             System.out.println("    priceBreak[2]" + priceBreak[2]); // Distributor
 
-            // From the inventory table we found an item that is sold by a distributor
-            if(!copy.contains(lowStockBreak[0])){ //
-                System.out.println("We already added this item " + lowStockBreak[0]);
-                // temp.add(temp.get(j));
-            }
             if(lowStockBreak[0].equalsIgnoreCase(priceBreak[0])){
-                copy.add(lowStockBreak[0] + " " +  priceBreak[2] + " " + priceBreak[1]  + " " + lowStockBreak[2]);
+                System.out.println("ADDING " + lowStockBreak[0]);
+                copy.add(lowStockBreak[0] + " " +  priceBreak[2] + " " + priceBreak[1]  + " " + lowStockBreak[2] + " " + lowStockBreak[3] + " " + lowStockBreak[4]);
             }
         }
 
@@ -294,16 +293,13 @@ public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedLi
             System.out.println("We found a multiple item that is sold by multiple distributors");
         }
     }
-
-    System.out.println("TEMP LIST"  + temp.toString());
+    System.out.println("Copy " + copy.toString());
 
     // If an item is sold in multiple market/distributors then get the cheapest one
-
-
     for(int k = 0; k < copy.size(); k++){
         String currRow = copy.get(k);
         String[] breakString = currRow.split(" ");
-
+        System.out.println("");
         System.out.println("currRow[item] =  " + breakString[0]); // Item
         System.out.println("currRow[seller] = " + breakString[1]); // Seller
         System.out.println("currRow[price] = " + breakString[2]); // Price
@@ -326,16 +322,25 @@ public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedLi
             System.out.println("                C = " + c);
             System.out.println("                D = " + d);
 
-            if(a.equalsIgnoreCase(b)){ // A == B
+            if (a.replace(" ", "").equalsIgnoreCase(b.replace(" ", ""))){
+                System.out.println("                A == B ");
                 if(c < d){
+                    System.out.println("                Copy " + copy.toString());
+                    System.out.println("                Remove " + l);
                     copy.remove(l);
                 }
                 if(c > d){
+                    System.out.println("                Copy " + copy.toString());
+                    System.out.println("                Remove " + (l-1));
                     copy.remove(l-1);
                 }
             }
+            else {
+                System.out.println("                A != B ");
+            }
         }
     }
+    System.out.println("Return copy " + copy);
     return copy;
 }
     public LinkedList<String> removeDuplicates(LinkedList<String> duplicateList) {
@@ -681,41 +686,99 @@ public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedLi
 
 
 /* GETTERS AND SETTERS FOR PRICES */
+
+    /* LAMS */
+    public LinkedList<String> getLamsItemsList() {
+        if(pcLamsPriceList.isEmpty()){
+            System.out.println("Lams Item List is empty");
+        }
+        return pcLamsPriceList;
+    }
     private void addPriceToLams(String item) {
         if(!pcLamsPriceList.contains(item)){ // If the list does not contain the item then don't add it
             pcLamsPriceList.add(item);
         }
+    }
+
+    /* SAMS */
+    public LinkedList<String> getSamsItemsList() {
+        if(pcSamsPriceList.isEmpty()){
+            System.out.println("Sams Item List is empty");
+        }
+        return pcSamsPriceList;
     }
     private void addPriceToSams(String item) {
         if(!pcSamsPriceList.contains(item)){ // If the list does not contain the item then don't add it
             pcSamsPriceList.add(item);
         }
     }
+
+    /* Taiwan Trading */
+    public LinkedList<String> getTaiwanTradingItemsList() {
+        if(pcTaiwanTradingPriceList.isEmpty()){
+            System.out.println("Taiwan Trading Item List is empty");
+        }
+        return pcTaiwanTradingPriceList;
+    }
     private void addPriceToTaiwanTrading(String item) {
         if(!pcTaiwanTradingPriceList.contains(item)){ // If the list does not contain the item then don't add it
             pcTaiwanTradingPriceList.add(item);
         }
     }
+    /* Restaurant Depot */
+    public LinkedList<String> getRestaurantDepotItemsList() {
+        if(pcRestaurantDepotPriceList.isEmpty()){
+            System.out.println("Taiwan Trading Item List is empty");
+        }
+        return pcRestaurantDepotPriceList;
+    }
+
     private void addPriceToRestaurantDepot(String item) {
         if(!pcRestaurantDepotPriceList.contains(item)){ // If the list does not contain the item then don't add it
             pcRestaurantDepotPriceList.add(item);
         }
+    }
+
+    /* Shamrock */
+    public LinkedList<String> getShamrockItemsList() {
+        if(pcShamrockPriceList.isEmpty()){
+            System.out.println("Shamrock List is empty");
+        }
+        return pcShamrockPriceList;
     }
     private void addPriceToShamrock(String item) {
         if(!pcShamrockPriceList.contains(item)){ // If the list does not contain the item then don't add it
             pcShamrockPriceList.add(item);
         }
     }
+
+    /* Cosco */
+    public LinkedList<String> getCoscoItemsList() {
+        if(pcCoscoPriceList.isEmpty()){
+            System.out.println("Shamrock List is empty");
+        }
+        return pcCoscoPriceList;
+    }
+
     private void addPriceToCosco(String item) {
         if(!pcCoscoPriceList.contains(item)){ // If the list does not contain the item then don't add it
             pcCoscoPriceList.add(item);
         }
+    }
+
+/* Food Of King */
+    public LinkedList<String> getFoodOfKingItemListItemList() {
+        if(pcFoodOfKingPriceList.isEmpty()){
+            System.out.println("Food Of King List is empty");
+        }
+        return pcFoodOfKingPriceList;
     }
     private void addPriceToFoodKing(String item) {
         if(!pcFoodOfKingPriceList.contains(item)){ // If the list does not contain the item then don't add it
             pcFoodOfKingPriceList.add(item);
         }
     }
+
     public LinkedList<String> getAllPrices(){
         LinkedList<String> concatenateLists = new LinkedList<>();
 
