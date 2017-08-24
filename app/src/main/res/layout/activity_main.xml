@@ -707,28 +707,6 @@
                 <!-- Dynamically fill table here -->
             </LinearLayout>
         </ScrollView>
-        <LinearLayout
-                android:id="@+id/buttonsForPrices"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:layout_alignParentBottom="true">
-
-            <!-- Remove Button -->
-
-            <!-- Add Button -->
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/add_item"
-                    android:id="@+id/plus_button_for_prices"
-                    android:backgroundTint="@android:color/holo_blue_light"
-                    android:textColor="@color/material_drawer_background" tools:ignore="ButtonStyle"
-                    android:fontFamily="sans-serif-smallcaps"/>
-
-        </LinearLayout>
         <!-- Begin Add Item View -->
         <!-- End Add Item -->
         <RelativeLayout

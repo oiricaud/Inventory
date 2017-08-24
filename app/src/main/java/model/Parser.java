@@ -422,6 +422,7 @@ public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedLi
 
         try {
             String currentRow = String.valueOf(jsonObject);
+            String id = String.valueOf(jsonObject.get("id"));
             String item = String.valueOf(jsonObject.get("item"));
             String distributor = String.valueOf(jsonObject.get("distributor"));
             String price = String.valueOf(jsonObject.get("price"));
@@ -432,7 +433,7 @@ public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedLi
             String who_placed_order = String.valueOf(jsonObject.get("who_placed_order"));
 
             Log.w("parseActiveOrders", currentRow);
-
+            Log.w("id", id);
             Log.w("item", item);
             Log.w("distributor", distributor);
             Log.w("price", price);
@@ -442,6 +443,7 @@ public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedLi
             Log.w("order_status", status);
             Log.w("who_placed_order", who_placed_order);
 
+            id= id.replace(' ', '-');
             item = item.replace(' ', '-');
             distributor = distributor.replace(' ', '-');
             price = price.replace(' ', '-');
@@ -450,7 +452,7 @@ public LinkedList<String> parseRecommended(LinkedList<String> lowStock, LinkedLi
             ticket_number = ticket_number.replace(' ', '-');
             status = status.replace(' ', '-');
             who_placed_order = who_placed_order.replace(' ', '-');
-            String activeOrderCurrentRow = ticket_number + " " + item + " " + qty + " " + price;
+            String activeOrderCurrentRow = id + " " + item + " " +  ticket_number + " " + qty + " " + price;
             listOfItems.add(activeOrderCurrentRow);
             if (who_placed_order.equalsIgnoreCase("Pho-Tre-Bien") && !tempCounter.contains(ticket_number)) {
                 countNumberOfOrders++;

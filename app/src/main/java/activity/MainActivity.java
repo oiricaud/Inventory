@@ -469,6 +469,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 /* INVENTORY DROP DOWN */
         if (item.getTitle().equals("Add")) {
             launchAddItemView();
+            launchAddPricesView();
         }
         if (item.getTitle().equals("Remove")) {
             launchRemoveItemView();
@@ -1288,9 +1289,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         String strArray[] = list.replace("[", "").replace("]", "").replace(",", "").split(" ");
         String id = strArray[0];
         String item = strArray[1];
-        String category = strArray[2];
+        //String category = strArray[2];
         String curr_qty = strArray[3];
-        String max_qty = strArray[4];
+        //String max_qty = strArray[4];
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date date = new Date();
@@ -1299,18 +1300,18 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         System.out.println("Update Inventory ");
         System.out.println("                Sid " + id);
         System.out.println("                Sitem " + item);
-        System.out.println("                Scategory " + category);
+        //System.out.println("                Scategory " + category);
         System.out.println("                Scurr_qty " + curr_qty);
-        System.out.println("                Smax_qty " + max_qty);
+        //System.out.println("                Smax_qty " + max_qty);
         System.out.println("                Slast_time_updated " + last_time_updated);
 
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
         nameValuePairs.add(new BasicNameValuePair("id", id));
         nameValuePairs.add(new BasicNameValuePair("item", item));
-        nameValuePairs.add(new BasicNameValuePair("category", category));
+        //nameValuePairs.add(new BasicNameValuePair("category", category));
         nameValuePairs.add(new BasicNameValuePair("curr_qty", curr_qty));
-        nameValuePairs.add(new BasicNameValuePair("max_qty", max_qty));
+        //nameValuePairs.add(new BasicNameValuePair("max_qty", max_qty));
         nameValuePairs.add(new BasicNameValuePair("last_time_updated", last_time_updated));
 
         try {
@@ -1350,8 +1351,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             if(code==1) {
                 Toast.makeText(getBaseContext(), "Update Successfully",
                         Toast.LENGTH_SHORT).show();
-                //updateWeeklyCount();
-                //updateWeeklyCount(); updateInventoryView();
+                loading.setVisibility(View.INVISIBLE);
             }
             else {
                 Toast.makeText(getBaseContext(), "Sorry, Try Again",
@@ -1385,16 +1385,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         mToolbar.setTitle("Prices - All Prices from sellers");
         new talkToDataBase().execute();
-
-
-        Button plusButton = (Button) findViewById(R.id.plus_button_for_prices);
-        plusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchAddPricesView();
-                Log.w("Button pressed", "Blah");
-            }
-        });
 
     }
 
@@ -1880,6 +1870,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         new talkToDataBase().execute();
 
     }
+
     /* ----> Active Order Table */
     private void updateActiveOrdersView(){
         runOnUiThread(new Runnable() {
@@ -1956,9 +1947,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             activeOrdersPopUp.setVisibility(View.VISIBLE);
                             TextView tvTicketNumber = (TextView) findViewById(R.id.ticket_number);
                             tvTicketNumber.setText("Ticket Number: " + ticketNumber.getText());
-                            LinkedList<String> currPopUpSelected = parser.getOrder(String.valueOf(ticketNumber.getText()));
+                            final LinkedList<String> currPopUpSelected = parser.getOrder(String.valueOf(ticketNumber.getText()));
                             System.out.println("ACTIVE ORDERS " + currPopUpSelected);
                             activeOrdersTablePopUp.removeAllViews();
+
                             for(int i = 0 ; i < currPopUpSelected.size(); i++){
                                 String aCurrListView = currPopUpSelected.get(i);
 
@@ -1972,8 +1964,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                 final String strArray[] = aCurrListView.replace("[", "").replace("]", "").replace(",", "").split(" ");
 
                                 item.setText(strArray[1]);
-                                qty.setText(strArray[2]);
-                                price.setText(strArray[3]);
+                                qty.setText(strArray[3]);
+                                price.setText(strArray[4]);
 
                                 row.addView(item);
                                 row.addView(qty);
@@ -1990,6 +1982,32 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                 paramsCurrentQTY.setMargins(25, 15 , 0, 25);
 
                                 activeOrdersTablePopUp.addView(row, new TableLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT));
+
+                                Button confirm = (Button) findViewById(R.id.current_orders_confirm);
+                                confirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Thread thread = new Thread() {
+                                            public void run() {
+                                                Looper.prepare();
+                                                final Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        // UPDATE INVENTORY TABLE HERE TO DATABASE
+                                                        updateInventory(currPopUpSelected.toString());
+                                                        handler.removeCallbacks(this);
+                                                        Looper.myLooper().quit();
+                                                    }
+                                                }, 400);
+                                                Looper.loop();
+                                            }
+                                        };
+                                        thread.start();
+                                        toast("SUCCESS UPDATING INVENTORY", 10000);
+
+                                    }
+                                });
                             }
 
                             FloatingActionButton closePopUp = (FloatingActionButton) findViewById(R.id.active_orders_close_pop_up);
@@ -1999,6 +2017,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                     activeOrdersPopUp.setVisibility(View.INVISIBLE);
                                 }
                             });
+
                         }
                     });
                 }
