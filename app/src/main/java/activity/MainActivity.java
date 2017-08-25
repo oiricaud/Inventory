@@ -871,7 +871,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
 
-
 /* Inventory View **/
     private void launchInventoryView() {
         loading = (LinearLayout) findViewById(R.id.layout_progressbar);
@@ -1097,7 +1096,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private void launchRemoveItemView() {
 
     }
-
 
 
 /* Weekly Count View **/

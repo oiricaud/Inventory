@@ -17,6 +17,7 @@ public class Parser {
     private LinkedList<String> lowStockItems = new LinkedList<>();
 
 /* Employees  */
+    
     private LinkedList<String> employees = new LinkedList<>();
     private LinkedList<String> epFrontOfHouse = new LinkedList<>();
     private LinkedList<String> epBackOfHouse = new LinkedList<>();
