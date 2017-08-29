@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                                 toast("Error, please try again", 5000);
-                                Log.w("Employee Name:", employeename);
+                                Log.w("Employees Name:", employeename);
                                 Log.w("User Name:", username);
                                 Log.w("Password:", password);
                                 Log.w("User Type:", usertype);
@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     if(mToolbar.getTitle().equals("Pho Tre Bien")){ // Display the settings icon
         getMenuInflater().inflate(R.menu.home_menu, menu);
     }
-    if(mToolbar.getTitle().equals("Employee - All Employees")){ // Display the settings icon
+    if(mToolbar.getTitle().equals("Employees - All Employees")){ // Display the settings icon
         getMenuInflater().inflate(R.menu.employees_menu, menu);
         getMenuInflater().inflate(R.menu.prices_menu, menu); // Search Icon
     }
@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             updateEmployeesView();
         }
         if (item.getTitle().equals("All Employees")) {
-            mToolbar.setTitle("Employee - All Employees");
+            mToolbar.setTitle("Employees - All Employees");
             currListView = parser.getAllEmployee();
             updateEmployeesView();
         }
@@ -689,7 +689,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
 
-/* Employee View **/
+/* Employees View **/
     private void launchEmployeesView() {
 
         menuGridView.setVisibility(RelativeLayout.INVISIBLE);
@@ -708,12 +708,12 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mToolbar.setTitle("Employee - All Employees");
+        mToolbar.setTitle("Employees - All Employees");
 
         new talkToDataBase().execute();
     }
 
-    /* ----> Employee Table */
+    /* ----> Employees Table */
     private void updateEmployeesView() {
 
         runOnUiThread(new Runnable() {
@@ -2038,7 +2038,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             /* Building Parameters */
             List<NameValuePair> params = new ArrayList<>();
             JSONObject json = new JSONObject();
-            if(mToolbar.getTitle().equals("Employee - All Employees")){
+            if(mToolbar.getTitle().equals("Employees - All Employees")){
                 String URL_PHP = "http://www.narped.com/inventory/Employees.php";
                 json = jParser.makeHttpRequest(URL_PHP, "GET", params);
             }
@@ -2077,7 +2077,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                         for (int i = 0; i < JAStuff.length(); i++) {
                             JSONObject JOStuff = JAStuff.getJSONObject(i);
 
-                            if(mToolbar.getTitle().equals("Employee - All Employees")){
+                            if(mToolbar.getTitle().equals("Employees - All Employees")){
                                 parser.parseEmployees(JOStuff);
                             }
                             else if(mToolbar.getTitle().equals("Restaurant - All Sections")){
@@ -2111,7 +2111,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            if(mToolbar.getTitle().equals("Employee - All Employees")){
+            if(mToolbar.getTitle().equals("Employees - All Employees")){
                 currListView = parser.getAllEmployee();
                 loading.setVisibility(View.INVISIBLE);
                 updateEmployeesView();
