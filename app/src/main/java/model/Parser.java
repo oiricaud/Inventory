@@ -17,7 +17,6 @@ public class Parser {
     private LinkedList<String> lowStockItems = new LinkedList<>();
 
 /* Employees  */
-    private Employees employee = new Employees();
     private LinkedList<String> employees = new LinkedList<>();
     private LinkedList<String> epFrontOfHouse = new LinkedList<>();
     private LinkedList<String> epBackOfHouse = new LinkedList<>();
@@ -86,8 +85,6 @@ public class Parser {
             } else if (userType.equalsIgnoreCase("Bar")) {
                 addEmployeeToBar(fullName + " " + username + " " + userType);
             }
-            employee.addEmployee(userType, fullName, username);
-
             employees.add(fullName);
             employees.add(username);
             employees.add(userType);
