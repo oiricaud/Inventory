@@ -9,4 +9,4 @@ folder includes all of the back end code which communicates with the android app
 
 # Motivation
 
-I was not sure if I wanted to make this project open source but I realized that I can obtain feedback from other programmers. My goal is to create an API and make this repisotory generic as possible an offer this service to other restaurants. As technology is merging with the food industry it would be really cool to see the various types of datas.
+I was not sure if I wanted to make this project open source but I realized that I can obtain feedback from other programmers. My goal is to create an API and make this repisotory generic as possible an offer this service to other restaurants. As technology is merging with the food industry it would be really cool to see the various food-trends based off locations.
